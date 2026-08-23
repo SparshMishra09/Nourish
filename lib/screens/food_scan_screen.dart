@@ -72,15 +72,24 @@ class _FoodScanScreenState extends State<FoodScanScreen> {
       _analysis = null;
     });
     try {
+      final bytes = await image.readAsBytes();
       final result = await _analysisService.analyze(
-        imageBytes: await image.readAsBytes(),
-        mimeType: _mimeType(image.path),
+        imageBytes: bytes,
+        mimeType: detectImageMimeType(bytes, filePath: image.path),
         contextHint: _hintController.text,
       );
       if (!mounted) return;
       setState(() => _analysis = result);
     } on FoodAnalysisException catch (error) {
       if (mounted) setState(() => _error = error.message);
+    } catch (error) {
+      debugPrint('Could not read the selected food photo: $error');
+      if (mounted) {
+        setState(
+          () => _error =
+              'Nourish could not read this photo. Retake it with the app camera and try again. [PHOTO]',
+        );
+      }
     } finally {
       if (mounted) setState(() => _analyzing = false);
     }
@@ -107,14 +116,6 @@ class _FoodScanScreenState extends State<FoodScanScreen> {
     } finally {
       if (mounted) setState(() => _saving = false);
     }
-  }
-
-  String _mimeType(String path) {
-    final lower = path.toLowerCase();
-    if (lower.endsWith('.png')) return 'image/png';
-    if (lower.endsWith('.webp')) return 'image/webp';
-    if (lower.endsWith('.heic') || lower.endsWith('.heif')) return 'image/heic';
-    return 'image/jpeg';
   }
 
   @override

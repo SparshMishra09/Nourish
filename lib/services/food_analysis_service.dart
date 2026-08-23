@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:firebase_ai/firebase_ai.dart';
@@ -14,12 +15,17 @@ class FoodAnalysisException implements Exception {
 }
 
 class FoodAnalysisService {
-  FoodAnalysisService({GenerativeModel? model})
-    : _model = model ?? _buildModel();
+  FoodAnalysisService({
+    GenerativeModel? primaryModel,
+    GenerativeModel? fallbackModel,
+  }) : _models = [
+         primaryModel ?? _buildModel('gemini-3.7-flash'),
+         fallbackModel ?? _buildModel('gemini-3.5-flash'),
+       ];
 
-  final GenerativeModel _model;
+  final List<GenerativeModel> _models;
 
-  static GenerativeModel _buildModel() {
+  static GenerativeModel _buildModel(String modelName) {
     final responseSchema = Schema.object(
       properties: {
         'isFood': Schema.boolean(
@@ -97,7 +103,7 @@ class FoodAnalysisService {
     );
 
     return FirebaseAI.googleAI().generativeModel(
-      model: 'gemini-3.7-flash',
+      model: modelName,
       generationConfig: GenerationConfig(
         temperature: 0.1,
         maxOutputTokens: 4096,
@@ -126,9 +132,12 @@ class FoodAnalysisService {
     }
     final hint = contextHint.trim();
     final prompt = StringBuffer(
-      'Analyze this meal photo. Return a conservative nutrition estimate for the '
-      'complete visible serving. Consider plate/bowl scale, item count, cooking method, '
-      'and likely added oil. List each detected item and its estimated weight.',
+      'Analyze this food photo. It may show a plated meal or packaged food. Return a '
+      'conservative nutrition estimate for the complete visible serving. For packaged '
+      'food, read the product name, visible claims, serving size, and nutrition label '
+      'when available; never invent label values that are not visible. For meals, '
+      'consider plate/bowl scale, item count, cooking method, and likely added oil. '
+      'List each detected item and its estimated weight.',
     );
     if (hint.isNotEmpty) {
       prompt.write(
@@ -136,34 +145,113 @@ class FoodAnalysisService {
       );
     }
 
-    try {
-      final response = await _model.generateContent([
-        Content.multi([
-          TextPart(prompt.toString()),
-          InlineDataPart(mimeType, imageBytes),
-        ]),
-      ]);
-      final text = response.text;
-      if (text == null || text.trim().isEmpty) {
-        throw const FoodAnalysisException(
-          'The food analyzer returned no result. Try a clearer photo.',
+    Object? lastError;
+    StackTrace? lastStackTrace;
+    for (var index = 0; index < _models.length; index++) {
+      try {
+        final response = await _models[index]
+            .generateContent([
+              Content.multi([
+                TextPart(prompt.toString()),
+                InlineDataPart(mimeType, imageBytes),
+              ]),
+            ])
+            .timeout(const Duration(seconds: 55));
+        final text = response.text;
+        if (text == null || text.trim().isEmpty) {
+          throw const FormatException('The model returned an empty response.');
+        }
+        final decoded = jsonDecode(text);
+        if (decoded is! Map) {
+          throw const FormatException('The model response was not an object.');
+        }
+        return FoodAnalysis.fromJson(Map<String, dynamic>.from(decoded));
+      } catch (error, stackTrace) {
+        lastError = error;
+        lastStackTrace = stackTrace;
+        debugPrint(
+          'Food analysis attempt ${index + 1}/${_models.length} failed: $error',
         );
+        if (index + 1 < _models.length && _canRetry(error)) {
+          await Future<void>.delayed(Duration(milliseconds: 700 * (index + 1)));
+          continue;
+        }
+        break;
       }
-      final decoded = jsonDecode(text);
-      if (decoded is! Map) {
-        throw const FoodAnalysisException(
-          'The food analyzer returned an unreadable result.',
-        );
+    }
+
+    debugPrintStack(stackTrace: lastStackTrace);
+    throw FoodAnalysisException(_friendlyError(lastError));
+  }
+
+  bool _canRetry(Object error) =>
+      error is ServerException ||
+      error is QuotaExceeded ||
+      error is FirebaseAISdkException ||
+      error is FormatException ||
+      error is TimeoutException;
+
+  String _friendlyError(Object? error) {
+    if (error is QuotaExceeded) {
+      return 'The food scanner is busy right now. Wait a minute, then tap Analyze again. [LIMIT]';
+    }
+    if (error is UnsupportedUserLocation) {
+      return 'Food scanning is not available from this location. [REGION]';
+    }
+    if (error is InvalidApiKey || error is ServiceApiNotEnabled) {
+      return 'The Nourish scan service needs an update. Install the latest APK and try again. [SETUP]';
+    }
+    if (error is TimeoutException) {
+      return 'The photo upload timed out. Use a stable connection and tap Analyze again. [TIMEOUT]';
+    }
+    if (error is FormatException || error is FirebaseAISdkException) {
+      return 'The result could not be read. Retake the photo in good light and try again. [RESULT]';
+    }
+    if (error is FirebaseAIException) {
+      final message = error.message.toLowerCase();
+      if (message.contains('permission') ||
+          message.contains('app check') ||
+          message.contains('attestation') ||
+          message.contains('403')) {
+        return 'Nourish could not verify this installation. Close and reopen the app, then try again. [VERIFY]';
       }
-      return FoodAnalysis.fromJson(Map<String, dynamic>.from(decoded));
-    } on FoodAnalysisException {
-      rethrow;
-    } catch (error, stackTrace) {
-      debugPrint('Food analysis request failed: $error');
-      debugPrintStack(stackTrace: stackTrace);
-      throw const FoodAnalysisException(
-        'Food analysis is temporarily unavailable. Check your connection and try again.',
-      );
+      if (message.contains('image') || message.contains('invalid argument')) {
+        return 'This photo format could not be processed. Retake it with the Nourish camera and try again. [PHOTO]';
+      }
+    }
+    return 'The AI service did not respond. Check your connection and tap Analyze again. [SERVER]';
+  }
+}
+
+String detectImageMimeType(Uint8List bytes, {String filePath = ''}) {
+  if (bytes.length >= 3 &&
+      bytes[0] == 0xff &&
+      bytes[1] == 0xd8 &&
+      bytes[2] == 0xff) {
+    return 'image/jpeg';
+  }
+  if (bytes.length >= 8 &&
+      bytes[0] == 0x89 &&
+      bytes[1] == 0x50 &&
+      bytes[2] == 0x4e &&
+      bytes[3] == 0x47) {
+    return 'image/png';
+  }
+  if (bytes.length >= 12 &&
+      String.fromCharCodes(bytes.sublist(0, 4)) == 'RIFF' &&
+      String.fromCharCodes(bytes.sublist(8, 12)) == 'WEBP') {
+    return 'image/webp';
+  }
+  if (bytes.length >= 12 &&
+      String.fromCharCodes(bytes.sublist(4, 8)) == 'ftyp') {
+    final brand = String.fromCharCodes(bytes.sublist(8, 12)).toLowerCase();
+    if (brand.startsWith('hei') || brand == 'mif1' || brand == 'msf1') {
+      return 'image/heic';
     }
   }
+  final lower = filePath.toLowerCase();
+  if (lower.endsWith('.png')) return 'image/png';
+  if (lower.endsWith('.webp')) return 'image/webp';
+  if (lower.endsWith('.heic') || lower.endsWith('.heif')) return 'image/heic';
+  return 'image/jpeg';
 }

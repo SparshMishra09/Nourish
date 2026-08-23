@@ -43,4 +43,15 @@ Build the Android APK with:
 flutter build apk --release
 ```
 
+The normal release build keeps Firebase App Check with Play Integrity enabled
+for Play-distributed production installs. For a directly installed QA APK, use:
+
+```sh
+flutter build apk --release --dart-define=NOURISH_SIDELOAD=true
+```
+
+The sideload flag avoids blocking test installs on Play Integrity attestation.
+Use it only while Firebase AI Logic App Check enforcement is in monitoring/off
+mode; production distribution should use the normal Play Integrity build.
+
 Nutrition and body targets are general wellness estimates, not medical advice. Recipe nutrition varies with brands, oil, preparation, and serving size. Exercise should be adjusted or stopped if pain, dizziness, or unusual discomfort occurs.
