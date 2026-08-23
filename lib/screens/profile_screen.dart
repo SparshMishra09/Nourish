@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/app_theme.dart';
 import '../models/user_profile.dart';
 import '../widgets/shared_ui.dart';
+import '../widgets/year_activity_heatmap.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
@@ -10,6 +11,7 @@ class ProfileScreen extends StatelessWidget {
     required this.profile,
     required this.onEditPlan,
     required this.onSignOut,
+    required this.completedDayKeys,
     this.photoUrl,
   });
 
@@ -17,6 +19,7 @@ class ProfileScreen extends StatelessWidget {
   final String? photoUrl;
   final VoidCallback onEditPlan;
   final Future<void> Function() onSignOut;
+  final Set<String> completedDayKeys;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class ProfileScreen extends StatelessWidget {
               20,
               MediaQuery.paddingOf(context).top + 16,
               20,
-              30,
+              18,
             ),
             decoration: const BoxDecoration(
               color: AppPalette.ink,
@@ -37,6 +40,7 @@ class ProfileScreen extends StatelessWidget {
             ),
             child: SafeArea(
               top: false,
+              bottom: false,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -45,7 +49,7 @@ class ProfileScreen extends StatelessWidget {
                     photoUrl: photoUrl,
                     onTap: () {},
                   ),
-                  const SizedBox(height: 25),
+                  const SizedBox(height: 18),
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -79,23 +83,36 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 25),
-                  Row(
-                    children: [
-                      _ProfileStat(value: '${profile.age}', label: 'years'),
-                      _ProfileStat(
-                        value: '${profile.heightCm.round()}',
-                        label: 'cm',
+                  const SizedBox(height: 18),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 13,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.07),
+                      borderRadius: BorderRadius.circular(19),
+                      border: Border.all(
+                        color: Colors.white.withValues(alpha: 0.06),
                       ),
-                      _ProfileStat(
-                        value: '${profile.weightKg.round()}',
-                        label: 'kg',
-                      ),
-                      _ProfileStat(
-                        value: profile.bmi.toStringAsFixed(1),
-                        label: 'BMI*',
-                      ),
-                    ],
+                    ),
+                    child: Row(
+                      children: [
+                        _ProfileStat(value: '${profile.age}', label: 'years'),
+                        _ProfileStat(
+                          value: '${profile.heightCm.round()}',
+                          label: 'cm',
+                        ),
+                        _ProfileStat(
+                          value: '${profile.weightKg.round()}',
+                          label: 'kg',
+                        ),
+                        _ProfileStat(
+                          value: profile.bmi.toStringAsFixed(1),
+                          label: 'BMI',
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -193,6 +210,24 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
         SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 26, 20, 12),
+          sliver: SliverToBoxAdapter(
+            child: SectionHeader(
+              title: 'Your year',
+              subtitle: 'Days when every daily essential came together',
+            ),
+          ),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          sliver: SliverToBoxAdapter(
+            child: YearActivityHeatmap(
+              completedDayKeys: completedDayKeys,
+              year: DateTime.now().year,
+            ),
+          ),
+        ),
+        SliverPadding(
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
           sliver: SliverToBoxAdapter(
             child: Container(
@@ -285,7 +320,7 @@ class _ProfileStat extends StatelessWidget {
             value,
             style: const TextStyle(
               color: Colors.white,
-              fontSize: 20,
+              fontSize: 18,
               fontWeight: FontWeight.w800,
             ),
           ),

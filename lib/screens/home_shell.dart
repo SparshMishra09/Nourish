@@ -3,13 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 
 import '../core/app_theme.dart';
+import '../models/daily_goal.dart';
 import '../models/food_analysis.dart';
 import '../models/recipe.dart';
+import '../models/reminder_settings.dart';
 import '../models/user_profile.dart';
 import '../models/workout.dart';
 import '../services/auth_service.dart';
 import '../services/firestore_service.dart';
+import '../services/notification_service.dart';
 import '../services/plan_engine.dart';
+import '../widgets/goal_celebration_dialog.dart';
+import '../widgets/reminder_settings_sheet.dart';
 import '../widgets/shared_ui.dart';
 import 'dashboard_screen.dart';
 import 'food_scan_screen.dart';
@@ -46,8 +51,20 @@ class _HomeShellState extends State<HomeShell> {
   DailyNutrition _todayNutrition = const DailyNutrition();
   int _waterLoggedMl = 0;
   int _completedWorkouts = 0;
+  bool _todayWorkoutCompleted = false;
+  bool _todayGoalRecorded = false;
+  bool _goalCheckInFlight = false;
+  bool _reminderSettingsLoaded = false;
+  bool _reminderSaveInProgress = false;
+  Set<String> _completedDayKeys = const {};
+  ReminderSettings _reminderSettings = const ReminderSettings();
   StreamSubscription<DailyNutrition>? _nutritionSubscription;
   StreamSubscription<int>? _waterSubscription;
+  StreamSubscription<bool>? _todayWorkoutSubscription;
+  StreamSubscription<int>? _workoutCountSubscription;
+  StreamSubscription<bool>? _goalSubscription;
+  StreamSubscription<Set<String>>? _completionDaysSubscription;
+  StreamSubscription<ReminderSettings>? _reminderSubscription;
 
   @override
   void initState() {
@@ -60,10 +77,22 @@ class _HomeShellState extends State<HomeShell> {
   void didUpdateWidget(covariant HomeShell oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (oldWidget.profile.uid != widget.profile.uid) {
+      _todayWorkoutCompleted = false;
+      _todayGoalRecorded = false;
+      _completedDayKeys = const {};
+      _reminderSettingsLoaded = false;
       _watchDailyProgress();
     }
     if (_planInputsChanged(oldWidget.profile, widget.profile)) {
       _loadPlan();
+      if (_reminderSettingsLoaded) {
+        unawaited(
+          NotificationService.instance.scheduleWorkoutReminders(
+            profile: widget.profile,
+            settings: _reminderSettings,
+          ),
+        );
+      }
     }
   }
 
@@ -71,22 +100,123 @@ class _HomeShellState extends State<HomeShell> {
   void dispose() {
     _nutritionSubscription?.cancel();
     _waterSubscription?.cancel();
+    _todayWorkoutSubscription?.cancel();
+    _workoutCountSubscription?.cancel();
+    _goalSubscription?.cancel();
+    _completionDaysSubscription?.cancel();
+    _reminderSubscription?.cancel();
     super.dispose();
   }
 
   void _watchDailyProgress() {
     _nutritionSubscription?.cancel();
     _waterSubscription?.cancel();
+    _todayWorkoutSubscription?.cancel();
+    _workoutCountSubscription?.cancel();
+    _goalSubscription?.cancel();
+    _completionDaysSubscription?.cancel();
+    _reminderSubscription?.cancel();
     _nutritionSubscription = widget.firestoreService
         .watchTodayNutrition(widget.profile.uid)
         .listen((nutrition) {
-          if (mounted) setState(() => _todayNutrition = nutrition);
+          if (!mounted) return;
+          setState(() => _todayNutrition = nutrition);
+          unawaited(_evaluateDailyGoal());
         });
     _waterSubscription = widget.firestoreService
         .watchTodayWater(widget.profile.uid)
         .listen((water) {
-          if (mounted) setState(() => _waterLoggedMl = water);
+          if (!mounted) return;
+          setState(() => _waterLoggedMl = water);
+          unawaited(_evaluateDailyGoal());
         });
+    _todayWorkoutSubscription = widget.firestoreService
+        .watchTodayWorkoutComplete(widget.profile.uid)
+        .listen((completed) {
+          if (!mounted) return;
+          setState(() => _todayWorkoutCompleted = completed);
+          unawaited(_evaluateDailyGoal());
+        });
+    _workoutCountSubscription = widget.firestoreService
+        .watchThisWeekWorkoutCount(widget.profile.uid)
+        .listen((count) {
+          if (mounted) setState(() => _completedWorkouts = count);
+        });
+    _goalSubscription = widget.firestoreService
+        .watchTodayGoalCompleted(widget.profile.uid)
+        .listen((completed) {
+          if (!mounted) return;
+          setState(() => _todayGoalRecorded = completed);
+          if (!completed) unawaited(_evaluateDailyGoal());
+        });
+    _completionDaysSubscription = widget.firestoreService
+        .watchCompletedDayKeys(widget.profile.uid)
+        .listen((days) {
+          if (mounted) setState(() => _completedDayKeys = days);
+        });
+    _reminderSubscription = widget.firestoreService
+        .watchReminderSettings(widget.profile.uid)
+        .listen((settings) {
+          if (!mounted) return;
+          final isFirstLoad = !_reminderSettingsLoaded;
+          setState(() {
+            _reminderSettings = settings;
+            _reminderSettingsLoaded = true;
+          });
+          if (isFirstLoad && !_reminderSaveInProgress) {
+            unawaited(
+              NotificationService.instance.scheduleWorkoutReminders(
+                profile: widget.profile,
+                settings: settings,
+              ),
+            );
+          }
+        });
+  }
+
+  Future<void> _evaluateDailyGoal() async {
+    if (!mounted || _todayGoalRecorded || _goalCheckInFlight) return;
+    final todayLabel = const [
+      'MON',
+      'TUE',
+      'WED',
+      'THU',
+      'FRI',
+      'SAT',
+      'SUN',
+    ][DateTime.now().weekday - 1];
+    final evaluation = DailyGoalEvaluator.evaluate(
+      profile: widget.profile,
+      nutrition: _todayNutrition,
+      waterLoggedMl: _waterLoggedMl,
+      workoutScheduled: widget.profile.availableWorkoutDays.contains(
+        todayLabel,
+      ),
+      workoutCompleted: _todayWorkoutCompleted,
+    );
+    if (!evaluation.isComplete) return;
+
+    _goalCheckInFlight = true;
+    try {
+      final newlyCompleted = await widget.firestoreService
+          .markTodayGoalComplete(widget.profile.uid);
+      if (!mounted) return;
+      setState(() {
+        _todayGoalRecorded = true;
+        _completedDayKeys = {
+          ..._completedDayKeys,
+          FirestoreService.dayKey(DateTime.now()),
+        };
+      });
+      if (newlyCompleted) {
+        await showGoalCelebration(context, name: widget.profile.name);
+      }
+    } catch (_) {
+      // Progress remains visible and the next nutrition, water, or workout
+      // update will safely try the private completion record again.
+    } finally {
+      _goalCheckInFlight = false;
+    }
   }
 
   bool _planInputsChanged(UserProfile oldProfile, UserProfile newProfile) {
@@ -106,7 +236,11 @@ class _HomeShellState extends State<HomeShell> {
       final allRecipes = await widget.firestoreService.getRecipes();
       final recommended = _engine.recommendRecipes(allRecipes, widget.profile);
       final plan = _engine.buildWorkoutPlan(widget.profile);
-      await widget.firestoreService.saveWorkoutPlan(widget.profile.uid, plan);
+      unawaited(
+        widget.firestoreService
+            .saveWorkoutPlan(widget.profile.uid, plan)
+            .catchError((_) {}),
+      );
       if (!mounted) return;
       setState(() {
         _recipes = recommended;
@@ -133,7 +267,92 @@ class _HomeShellState extends State<HomeShell> {
 
   Future<void> _completeWorkout(WorkoutDay day) async {
     await widget.firestoreService.completeWorkout(widget.profile.uid, day);
-    if (mounted) setState(() => _completedWorkouts++);
+    if (mounted) {
+      setState(() => _todayWorkoutCompleted = true);
+      unawaited(_evaluateDailyGoal());
+    }
+  }
+
+  Future<void> _openReminderSettings() async {
+    final updated = await showModalBottomSheet<ReminderSettings>(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      showDragHandle: true,
+      backgroundColor: AppPalette.canvas,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      builder: (sheetContext) => ReminderSettingsSheet(
+        initialSettings: _reminderSettings,
+        profile: widget.profile,
+        onTestNotification: NotificationService.instance.showTestNotification,
+      ),
+    );
+    if (updated == null || !mounted) return;
+
+    setState(() => _reminderSettings = updated);
+    _reminderSaveInProgress = true;
+    try {
+      final result = await NotificationService.instance
+          .scheduleWorkoutReminders(
+            profile: widget.profile,
+            settings: updated,
+            requestPermissions: updated.anyEnabled,
+          );
+      var cloudSynced = true;
+      try {
+        await widget.firestoreService
+            .saveReminderSettings(widget.profile.uid, updated)
+            .timeout(const Duration(seconds: 4));
+      } on TimeoutException {
+        // Firestore has already accepted the local write and will sync it when
+        // the device reconnects. Local alarms should never wait on the cloud.
+        cloudSynced = false;
+      } catch (_) {
+        cloudSynced = false;
+      }
+      if (!mounted) return;
+      if (!cloudSynced) {
+        showAppMessage(
+          context,
+          updated.anyEnabled
+              ? 'Reminders are active on this device. Cloud backup will finish when you’re online.'
+              : 'Workout alerts are off. Cloud backup will finish when you’re online.',
+        );
+      } else if (!updated.anyEnabled) {
+        showAppMessage(
+          context,
+          'Workout alerts are off. Your chosen time is saved.',
+        );
+      } else if (!result.notificationsAllowed) {
+        showAppMessage(
+          context,
+          'Your reminder is saved, but Android notifications are off for Nourish.',
+        );
+      } else if (updated.alarmEnabled && !result.exactTiming) {
+        showAppMessage(
+          context,
+          'Reminders saved. Android may deliver them within a few minutes of your time.',
+        );
+      } else {
+        showAppMessage(
+          context,
+          'Reminders saved for ${updated.timeLabel} on your workout days.',
+        );
+      }
+    } catch (error, stackTrace) {
+      debugPrint('Nourish reminder scheduling failed: $error');
+      debugPrintStack(stackTrace: stackTrace);
+      if (mounted) {
+        showAppMessage(
+          context,
+          'Your reminder could not be saved right now. Please try again.',
+        );
+      }
+    } finally {
+      _reminderSaveInProgress = false;
+    }
   }
 
   void _openRecipe(Recipe recipe) {
@@ -230,6 +449,8 @@ class _HomeShellState extends State<HomeShell> {
         onScanTap: () => setState(() => _selectedIndex = 2),
         onWaterTap: _openWaterTracker,
         onWorkoutTap: () => setState(() => _selectedIndex = 3),
+        onReminderTap: _openReminderSettings,
+        remindersEnabled: _reminderSettings.anyEnabled,
       ),
       NutritionScreen(
         profile: widget.profile,
@@ -251,6 +472,7 @@ class _HomeShellState extends State<HomeShell> {
         photoUrl: widget.userPhotoUrl,
         onEditPlan: _editPlan,
         onSignOut: widget.authService.signOut,
+        completedDayKeys: _completedDayKeys,
       ),
     ];
 

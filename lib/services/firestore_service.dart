@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,6 +6,7 @@ import 'package:flutter/services.dart';
 
 import '../models/food_analysis.dart';
 import '../models/recipe.dart';
+import '../models/reminder_settings.dart';
 import '../models/user_profile.dart';
 import '../models/workout.dart';
 
@@ -107,13 +109,13 @@ class FirestoreService {
   Future<void> logScannedMeal(String uid, FoodAnalysis analysis) {
     return _database.collection('users').doc(uid).collection('mealLogs').add({
       ...analysis.toLogMap(),
-      'dayKey': _dayKey(DateTime.now()),
+      'dayKey': dayKey(DateTime.now()),
       'loggedAt': FieldValue.serverTimestamp(),
     });
   }
 
   Stream<int> watchTodayWater(String uid, {DateTime? now}) {
-    final key = _dayKey(now ?? DateTime.now());
+    final key = dayKey(now ?? DateTime.now());
     return _database
         .collection('users')
         .doc(uid)
@@ -124,7 +126,7 @@ class FirestoreService {
   }
 
   Future<void> addWater(String uid, int amountMl) async {
-    final key = _dayKey(DateTime.now());
+    final key = dayKey(DateTime.now());
     final reference = _database
         .collection('users')
         .doc(uid)
@@ -160,11 +162,118 @@ class FirestoreService {
           'title': day.title,
           'durationMinutes': day.durationMinutes,
           'exerciseCount': day.exercises.length,
+          'dayKey': dayKey(DateTime.now()),
           'completedAt': FieldValue.serverTimestamp(),
         });
   }
 
-  static String _dayKey(DateTime date) {
+  Stream<bool> watchTodayWorkoutComplete(String uid, {DateTime? now}) {
+    final key = dayKey(now ?? DateTime.now());
+    return _database
+        .collection('users')
+        .doc(uid)
+        .collection('workoutLogs')
+        .where('dayKey', isEqualTo: key)
+        .snapshots()
+        .map((snapshot) => snapshot.docs.isNotEmpty);
+  }
+
+  Stream<int> watchThisWeekWorkoutCount(String uid, {DateTime? now}) {
+    final current = now ?? DateTime.now();
+    final start = DateTime(
+      current.year,
+      current.month,
+      current.day,
+    ).subtract(Duration(days: current.weekday - DateTime.monday));
+    return _database
+        .collection('users')
+        .doc(uid)
+        .collection('workoutLogs')
+        .where('completedAt', isGreaterThanOrEqualTo: Timestamp.fromDate(start))
+        .snapshots()
+        .map((snapshot) => snapshot.docs.length);
+  }
+
+  Stream<bool> watchTodayGoalCompleted(String uid, {DateTime? now}) {
+    final key = dayKey(now ?? DateTime.now());
+    return _database
+        .collection('users')
+        .doc(uid)
+        .collection('dailyStats')
+        .doc(key)
+        .snapshots()
+        .map((snapshot) => snapshot.data()?['goalCompleted'] as bool? ?? false);
+  }
+
+  Stream<Set<String>> watchCompletedDayKeys(String uid) {
+    return _database
+        .collection('users')
+        .doc(uid)
+        .collection('dailyStats')
+        .where('goalCompleted', isEqualTo: true)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs
+              .map(
+                (document) =>
+                    document.data()['dayKey'] as String? ?? document.id,
+              )
+              .where((key) => key.isNotEmpty)
+              .toSet(),
+        );
+  }
+
+  Future<bool> markTodayGoalComplete(String uid, {DateTime? now}) async {
+    final key = dayKey(now ?? DateTime.now());
+    final reference = _database
+        .collection('users')
+        .doc(uid)
+        .collection('dailyStats')
+        .doc(key);
+    var alreadyCompleted = false;
+    try {
+      final cached = await reference.get(
+        const GetOptions(source: Source.cache),
+      );
+      alreadyCompleted = cached.data()?['goalCompleted'] as bool? ?? false;
+    } on FirebaseException {
+      // A brand-new day has no cached document yet.
+    }
+    if (alreadyCompleted) return false;
+
+    final write = reference.set({
+      'dayKey': key,
+      'goalCompleted': true,
+      'goalCompletedAt': FieldValue.serverTimestamp(),
+      'updatedAt': FieldValue.serverTimestamp(),
+    }, SetOptions(merge: true));
+    unawaited(write.catchError((_) {}));
+    return true;
+  }
+
+  Stream<ReminderSettings> watchReminderSettings(String uid) {
+    return _database
+        .collection('users')
+        .doc(uid)
+        .collection('settings')
+        .doc('reminders')
+        .snapshots()
+        .map((snapshot) => ReminderSettings.fromMap(snapshot.data()));
+  }
+
+  Future<void> saveReminderSettings(String uid, ReminderSettings settings) {
+    return _database
+        .collection('users')
+        .doc(uid)
+        .collection('settings')
+        .doc('reminders')
+        .set({
+          ...settings.toMap(),
+          'updatedAt': FieldValue.serverTimestamp(),
+        }, SetOptions(merge: true));
+  }
+
+  static String dayKey(DateTime date) {
     final month = date.month.toString().padLeft(2, '0');
     final day = date.day.toString().padLeft(2, '0');
     return '${date.year}-$month-$day';

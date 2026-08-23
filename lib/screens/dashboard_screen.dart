@@ -25,6 +25,8 @@ class DashboardScreen extends StatelessWidget {
     required this.onScanTap,
     required this.onWaterTap,
     required this.onWorkoutTap,
+    required this.onReminderTap,
+    required this.remindersEnabled,
     this.photoUrl,
   });
 
@@ -41,6 +43,8 @@ class DashboardScreen extends StatelessWidget {
   final VoidCallback onScanTap;
   final VoidCallback onWaterTap;
   final VoidCallback onWorkoutTap;
+  final VoidCallback onReminderTap;
+  final bool remindersEnabled;
 
   @override
   Widget build(BuildContext context) {
@@ -84,15 +88,51 @@ class DashboardScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: BoxDecoration(
+                Semantics(
+                  button: true,
+                  label: remindersEnabled
+                      ? 'Workout reminders on'
+                      : 'Set workout reminders',
+                  child: Material(
                     color: Colors.white,
-                    shape: BoxShape.circle,
-                    border: Border.all(color: AppPalette.line),
+                    shape: CircleBorder(
+                      side: BorderSide(
+                        color: remindersEnabled
+                            ? AppPalette.mint
+                            : AppPalette.line,
+                      ),
+                    ),
+                    child: InkWell(
+                      onTap: onReminderTap,
+                      customBorder: const CircleBorder(),
+                      child: SizedBox(
+                        width: 44,
+                        height: 44,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            Icon(
+                              remindersEnabled
+                                  ? Icons.notifications_active_rounded
+                                  : Icons.notifications_none_rounded,
+                            ),
+                            if (remindersEnabled)
+                              const Positioned(
+                                right: 7,
+                                top: 7,
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    color: AppPalette.lime,
+                                    shape: BoxShape.circle,
+                                  ),
+                                  child: SizedBox.square(dimension: 8),
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  child: const Icon(Icons.notifications_none_rounded),
                 ),
               ],
             ),
