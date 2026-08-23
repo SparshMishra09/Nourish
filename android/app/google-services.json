@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "650381305143",
+    "project_id": "rohitproject-fit-ai",
+    "storage_bucket": "rohitproject-fit-ai.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:650381305143:android:01324ece8d360b405726b2",
+        "android_client_info": {
+          "package_name": "com.rohitproject.rohit_fit_ai"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "650381305143-bf4jfeun67bk3erb1dg6k7m7p598el7c.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.rohitproject.rohit_fit_ai",
+            "certificate_hash": "896b6fa154bf65c4243013c042675ae0636d816c"
+          }
+        },
+        {
+          "client_id": "650381305143-a4v2brv0spnp4237eqhos909h0nlbkp3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxFcNBcHoCzeh5I9IZ1wzCh5enjTefSs4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "650381305143-a4v2brv0spnp4237eqhos909h0nlbkp3.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
