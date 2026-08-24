@@ -18,6 +18,7 @@ class ReminderSettingsSheet extends StatefulWidget {
     required this.onRequestExactAlarmPermission,
     required this.onOpenNotificationSettings,
     required this.onTestNotification,
+    required this.onTestAlarm,
   });
 
   final ReminderSettings initialSettings;
@@ -27,6 +28,7 @@ class ReminderSettingsSheet extends StatefulWidget {
   final Future<bool> Function() onRequestExactAlarmPermission;
   final Future<bool> Function() onOpenNotificationSettings;
   final Future<bool> Function() onTestNotification;
+  final Future<bool> Function() onTestAlarm;
 
   @override
   State<ReminderSettingsSheet> createState() => _ReminderSettingsSheetState();
@@ -39,12 +41,17 @@ class _ReminderSettingsSheetState extends State<ReminderSettingsSheet>
   bool _checkingPermissions = true;
   bool _requestingPermissions = false;
   bool _testing = false;
+  bool _testingAlarm = false;
   bool _saving = false;
   String? _statusMessage;
   bool _statusSuccess = false;
 
   bool get _busy =>
-      _checkingPermissions || _requestingPermissions || _testing || _saving;
+      _checkingPermissions ||
+      _requestingPermissions ||
+      _testing ||
+      _testingAlarm ||
+      _saving;
 
   @override
   void initState() {
@@ -255,6 +262,43 @@ class _ReminderSettingsSheetState extends State<ReminderSettingsSheet>
       }
     } finally {
       if (mounted) setState(() => _testing = false);
+    }
+  }
+
+  Future<void> _testAlarm() async {
+    setState(() {
+      _testingAlarm = true;
+      _statusMessage = null;
+    });
+    try {
+      if (!await _ensureNotificationPermission() || !mounted) {
+        setState(() {
+          _statusSuccess = false;
+          _statusMessage =
+              'Alarm test not started. Allow notifications, then try once more.';
+        });
+        return;
+      }
+      final sent = await widget.onTestAlarm();
+      if (!mounted) return;
+      setState(() {
+        _statusSuccess = sent;
+        _statusMessage = sent
+            ? 'Alarm test started. Nourish uses your phone’s Alarm volume.'
+            : 'Alarm test not started. Android notifications are still blocked.';
+      });
+    } catch (error, stackTrace) {
+      debugPrint('Nourish alarm sound test failed: $error');
+      debugPrintStack(stackTrace: stackTrace);
+      if (mounted) {
+        setState(() {
+          _statusSuccess = false;
+          _statusMessage =
+              'The alarm sound could not be tested right now. Please try again.';
+        });
+      }
+    } finally {
+      if (mounted) setState(() => _testingAlarm = false);
     }
   }
 
@@ -530,6 +574,17 @@ class _ReminderSettingsSheetState extends State<ReminderSettingsSheet>
                   : const Icon(Icons.notification_add_outlined),
               label: const Text('Send a test notification'),
             ),
+            if (_settings.alarmEnabled)
+              TextButton.icon(
+                onPressed: _busy ? null : _testAlarm,
+                icon: _testingAlarm
+                    ? const SizedBox.square(
+                        dimension: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.alarm_on_rounded),
+                label: const Text('Test workout alarm sound'),
+              ),
             const SizedBox(height: 8),
             FilledButton.icon(
               onPressed: _busy ? null : _save,

@@ -294,6 +294,7 @@ class _HomeShellState extends State<HomeShell> {
         onOpenNotificationSettings:
             NotificationService.instance.openNotificationSettings,
         onTestNotification: NotificationService.instance.showTestNotification,
+        onTestAlarm: NotificationService.instance.showTestAlarm,
       ),
     );
     if (updated == null || !mounted) return;
@@ -341,7 +342,10 @@ class _HomeShellState extends State<HomeShell> {
       } else {
         showAppMessage(
           context,
-          '${result.scheduledCount} reminders active for ${updated.timeLabel} on your workout days.',
+          result.confirmationMessage(
+            settings: updated,
+            workoutDayCount: widget.profile.availableWorkoutDays.toSet().length,
+          ),
         );
       }
     } catch (error, stackTrace) {
