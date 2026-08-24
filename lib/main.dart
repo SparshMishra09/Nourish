@@ -15,7 +15,13 @@ import 'services/auth_service.dart';
 import 'services/firestore_service.dart';
 import 'widgets/shared_ui.dart';
 
-const _isSideloadBuild = bool.fromEnvironment('NOURISH_SIDELOAD');
+// Downloadable APKs are sideloaded, so Play Integrity cannot attest that they
+// came from Google Play. Keep App Check opt-in for an eventual Play build:
+// --dart-define=NOURISH_SIDELOAD=false
+const _isSideloadBuild = bool.fromEnvironment(
+  'NOURISH_SIDELOAD',
+  defaultValue: true,
+);
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/app_theme.dart';
 import '../models/user_profile.dart';
 import '../models/workout.dart';
+import '../widgets/exercise_guide_sheet.dart';
 import '../widgets/shared_ui.dart';
 
 class WorkoutScreen extends StatefulWidget {
@@ -168,7 +169,8 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
           sliver: SliverToBoxAdapter(
             child: SectionHeader(
               title: 'Exercise flow',
-              subtitle: '${day.exercises.length} moves · warm up first',
+              subtitle:
+                  '${day.exercises.length} moves · tap any move for its form loop',
             ),
           ),
         ),
@@ -335,56 +337,93 @@ class _ExerciseCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.white,
+    return Material(
+      color: Colors.white,
+      shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: AppPalette.line),
+        side: const BorderSide(color: AppPalette.line),
       ),
-      child: Row(
-        children: [
-          Container(
-            width: 50,
-            height: 50,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              color: index.isEven
-                  ? AppPalette.lime.withValues(alpha: 0.28)
-                  : AppPalette.violet.withValues(alpha: 0.14),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Text(exercise.icon, style: const TextStyle(fontSize: 24)),
-          ),
-          const SizedBox(width: 13),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(exercise.name, style: context.text.titleMedium),
-                const SizedBox(height: 4),
-                Text(
-                  exercise.focus,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => showExerciseGuideSheet(context, exercise),
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Row(
+            children: [
+              Stack(
+                clipBehavior: Clip.none,
+                children: [
+                  Container(
+                    width: 50,
+                    height: 50,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: index.isEven
+                          ? AppPalette.lime.withValues(alpha: 0.28)
+                          : AppPalette.violet.withValues(alpha: 0.14),
+                      borderRadius: BorderRadius.circular(16),
+                    ),
+                    child: Text(
+                      exercise.icon,
+                      style: const TextStyle(fontSize: 24),
+                    ),
+                  ),
+                  Positioned(
+                    right: -5,
+                    bottom: -5,
+                    child: Container(
+                      width: 21,
+                      height: 21,
+                      decoration: const BoxDecoration(
+                        color: AppPalette.ink,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.play_arrow_rounded,
+                        color: AppPalette.lime,
+                        size: 16,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(width: 13),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(exercise.name, style: context.text.titleMedium),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${exercise.focus} · watch form',
+                      style: const TextStyle(
+                        color: AppPalette.muted,
+                        fontSize: 11.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 10,
+                  vertical: 8,
+                ),
+                decoration: BoxDecoration(
+                  color: AppPalette.canvas,
+                  borderRadius: BorderRadius.circular(13),
+                ),
+                child: Text(
+                  exercise.detail,
                   style: const TextStyle(
-                    color: AppPalette.muted,
-                    fontSize: 11.5,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 11,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            decoration: BoxDecoration(
-              color: AppPalette.canvas,
-              borderRadius: BorderRadius.circular(13),
-            ),
-            child: Text(
-              exercise.detail,
-              style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 11),
-            ),
-          ),
-        ],
+        ),
       ),
     );
   }

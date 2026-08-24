@@ -21,6 +21,7 @@ class FoodAnalysisService {
   }) : _models = [
          primaryModel ?? _buildModel('gemini-3.7-flash'),
          fallbackModel ?? _buildModel('gemini-3.5-flash'),
+         _buildModel('gemini-3.5-flash-lite'),
        ];
 
   final List<GenerativeModel> _models;
@@ -172,8 +173,8 @@ class FoodAnalysisService {
         debugPrint(
           'Food analysis attempt ${index + 1}/${_models.length} failed: $error',
         );
-        if (index + 1 < _models.length && _canRetry(error)) {
-          await Future<void>.delayed(Duration(milliseconds: 700 * (index + 1)));
+        if (index + 1 < _models.length && shouldRetryFoodAnalysis(error)) {
+          await Future<void>.delayed(Duration(milliseconds: 450 * (index + 1)));
           continue;
         }
         break;
@@ -181,46 +182,58 @@ class FoodAnalysisService {
     }
 
     debugPrintStack(stackTrace: lastStackTrace);
-    throw FoodAnalysisException(_friendlyError(lastError));
+    throw FoodAnalysisException(foodAnalysisErrorMessage(lastError));
   }
+}
 
-  bool _canRetry(Object error) =>
-      error is ServerException ||
-      error is QuotaExceeded ||
+bool shouldRetryFoodAnalysis(Object error) {
+  if (error is InvalidApiKey ||
+      error is ServiceApiNotEnabled ||
+      error is UnsupportedUserLocation) {
+    return false;
+  }
+  return error is FirebaseAIException ||
       error is FirebaseAISdkException ||
       error is FormatException ||
       error is TimeoutException;
+}
 
-  String _friendlyError(Object? error) {
-    if (error is QuotaExceeded) {
-      return 'The food scanner is busy right now. Wait a minute, then tap Analyze again. [LIMIT]';
-    }
-    if (error is UnsupportedUserLocation) {
-      return 'Food scanning is not available from this location. [REGION]';
-    }
-    if (error is InvalidApiKey || error is ServiceApiNotEnabled) {
-      return 'The Nourish scan service needs an update. Install the latest APK and try again. [SETUP]';
-    }
-    if (error is TimeoutException) {
-      return 'The photo upload timed out. Use a stable connection and tap Analyze again. [TIMEOUT]';
-    }
-    if (error is FormatException || error is FirebaseAISdkException) {
-      return 'The result could not be read. Retake the photo in good light and try again. [RESULT]';
-    }
-    if (error is FirebaseAIException) {
-      final message = error.message.toLowerCase();
-      if (message.contains('permission') ||
-          message.contains('app check') ||
-          message.contains('attestation') ||
-          message.contains('403')) {
-        return 'Nourish could not verify this installation. Close and reopen the app, then try again. [VERIFY]';
-      }
-      if (message.contains('image') || message.contains('invalid argument')) {
-        return 'This photo format could not be processed. Retake it with the Nourish camera and try again. [PHOTO]';
-      }
-    }
-    return 'The AI service did not respond. Check your connection and tap Analyze again. [SERVER]';
+String foodAnalysisErrorMessage(Object? error) {
+  if (error is QuotaExceeded) {
+    return 'The food scanner is busy right now. Your photo is still here—wait a minute, then try again.';
   }
+  if (error is UnsupportedUserLocation) {
+    return 'Food scanning is not available in your current region yet.';
+  }
+  if (error is InvalidApiKey || error is ServiceApiNotEnabled) {
+    return 'This version cannot reach the Nourish scanner. Install the latest APK and try again.';
+  }
+  if (error is TimeoutException) {
+    return 'The scan took too long, but your photo is safe. Tap Analyze to try again.';
+  }
+  if (error is FormatException || error is FirebaseAISdkException) {
+    return 'Nourish could not finish reading that result. Keep the photo and try once more.';
+  }
+  if (error is FirebaseAIException) {
+    final message = error.message.toLowerCase();
+    if (message.contains('high demand') ||
+        message.contains('temporar') ||
+        message.contains('unavailable') ||
+        message.contains('500') ||
+        message.contains('503')) {
+      return 'Nourish’s scanner is busy right now. Your photo is still here—tap Analyze to retry in a moment.';
+    }
+    if (message.contains('permission') ||
+        message.contains('app check') ||
+        message.contains('attestation') ||
+        message.contains('403')) {
+      return 'Nourish could not verify this installation. Install the latest APK, reopen it, and try again.';
+    }
+    if (message.contains('image') || message.contains('invalid argument')) {
+      return 'This photo format could not be processed. Retake it with the Nourish camera and try again.';
+    }
+  }
+  return 'Nourish’s scanner did not respond. Your internet may be fine and your photo is still here—tap Analyze to retry.';
 }
 
 String detectImageMimeType(Uint8List bytes, {String filePath = ''}) {

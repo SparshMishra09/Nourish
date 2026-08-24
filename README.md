@@ -11,8 +11,10 @@ Nourish is a Firebase-backed Flutter app for personalized nutrition, hydration, 
 - 12 Firestore recipes with complete ingredients, instructions, allergen labels, and nutrition estimates
 - Goal-aware recipe ranking for fat loss, muscle building, or weight maintenance
 - Camera and gallery meal scanning with Firebase AI Logic, structured food recognition, confidence and assumption review, portion correction, and calorie/macro/fibre/sugar/sodium estimates
+- Sideload-safe scanning with supported Gemini fallbacks and retry messages that keep the captured photo ready
 - Confirmed scanned meals added to the user's live Today totals; food photos are not stored by Nourish
 - Two-to-six-day workout plans placed on the user's selected weekdays, with duration-aware exercise selection and bodyweight alternatives
+- Offline Nourish Form Loops for every generated exercise, with an animated movement, setup/action/breathing steps, form cues, and common mistakes—no subscription or external video service
 - Persistent water quick-add and undo controls backed by per-user daily Firestore records
 - One-time daily-plan celebration when energy, protein, fibre, hydration, and scheduled movement are complete
 - A GitHub-style yearly consistency heatmap backed by private daily completion records
@@ -30,7 +32,7 @@ Nourish is a Firebase-backed Flutter app for personalized nutrition, hydration, 
 - Firestore region: `asia-south1`
 - Android package: `com.rohitproject.rohit_fit_ai`
 
-The committed Firestore rules allow authenticated users to read the shared recipe catalog and restrict profile, meal, hydration, workout, and plan data to the matching Firebase user ID. Firebase App Check uses its debug provider in debug builds and Play Integrity in release builds.
+The committed Firestore rules allow authenticated users to read the shared recipe catalog and restrict profile, meal, hydration, workout, and plan data to the matching Firebase user ID. Directly installed APKs use sideload mode because Play Integrity cannot attest a package installed outside Google Play. Play-distributed builds can explicitly enable Firebase App Check with Play Integrity.
 
 ## Run and test
 
@@ -47,15 +49,11 @@ Build the Android APK with:
 flutter build apk --release
 ```
 
-The normal release build keeps Firebase App Check with Play Integrity enabled
-for Play-distributed production installs. For a directly installed QA APK, use:
+Downloadable APKs default to sideload mode. For a Play-distributed production
+build with Firebase App Check and Play Integrity enabled, use:
 
 ```sh
-flutter build apk --release --dart-define=NOURISH_SIDELOAD=true
+flutter build apk --release --dart-define=NOURISH_SIDELOAD=false
 ```
-
-The sideload flag avoids blocking test installs on Play Integrity attestation.
-Use it only while Firebase AI Logic App Check enforcement is in monitoring/off
-mode; production distribution should use the normal Play Integrity build.
 
 Nutrition and body targets are general wellness estimates, not medical advice. Recipe nutrition varies with brands, oil, preparation, and serving size. Exercise should be adjusted or stopped if pain, dizziness, or unusual discomfort occurs.

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:nourish/models/food_analysis.dart';
 import 'package:nourish/services/food_analysis_service.dart';
@@ -73,5 +74,25 @@ void main() {
     expect(detectImageMimeType(png, filePath: 'photo.jpg'), 'image/png');
     expect(detectImageMimeType(webp), 'image/webp');
     expect(detectImageMimeType(heic), 'image/heic');
+  });
+
+  test(
+    'temporary server failures use the next model without blaming internet',
+    () {
+      final error = FirebaseAIException(
+        'Server Error [500]: model is currently experiencing high demand.',
+      );
+      final message = foodAnalysisErrorMessage(error);
+
+      expect(message.toLowerCase(), isNot(contains('check your connection')));
+      expect(message, isNot(contains('[SERVER]')));
+      expect(message.toLowerCase(), contains('busy'));
+      expect(shouldRetryFoodAnalysis(error), isTrue);
+    },
+  );
+
+  test('configuration and region failures do not cycle through models', () {
+    expect(shouldRetryFoodAnalysis(InvalidApiKey('bad key')), isFalse);
+    expect(shouldRetryFoodAnalysis(UnsupportedUserLocation()), isFalse);
   });
 }

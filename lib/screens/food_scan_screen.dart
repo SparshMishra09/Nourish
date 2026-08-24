@@ -87,7 +87,7 @@ class _FoodScanScreenState extends State<FoodScanScreen> {
       if (mounted) {
         setState(
           () => _error =
-              'Nourish could not read this photo. Retake it with the app camera and try again. [PHOTO]',
+              'Nourish could not read this photo. Retake it with the app camera and try again.',
         );
       }
     } finally {

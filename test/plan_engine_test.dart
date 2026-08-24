@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:nourish/models/exercise_guide.dart';
 import 'package:nourish/models/recipe.dart';
 import 'package:nourish/models/user_profile.dart';
 import 'package:nourish/services/plan_engine.dart';
@@ -57,6 +58,42 @@ void main() {
     expect(plan.nextWorkout(DateTime(2026, 8, 28)).dayLabel, 'SAT');
     expect(plan.nextWorkout(DateTime(2026, 8, 30)).dayLabel, 'SUN');
   });
+
+  test('every exercise the planner can generate has an offline form guide', () {
+    const goals = ['Build muscle', 'Lose fat', 'Maintain weight'];
+    const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    final generatedNames = <String>{};
+
+    for (final goal in goals) {
+      for (final equipment in const [
+        ['Bodyweight'],
+        ['Bodyweight', 'Dumbbells'],
+      ]) {
+        final plan = engine.buildWorkoutPlan(
+          _profile(
+            goal: goal,
+            workoutDays: 6,
+            availableWorkoutDays: days,
+            sessionMinutes: 45,
+            equipment: equipment,
+          ),
+        );
+        generatedNames.addAll(
+          plan.days.expand((day) => day.exercises).map((item) => item.name),
+        );
+      }
+    }
+
+    expect(generatedNames, hasLength(33));
+    expect(
+      generatedNames.difference(ExerciseGuideCatalog.coveredExerciseNames),
+      isEmpty,
+    );
+    expect(
+      ExerciseGuideCatalog.coveredExerciseNames.difference(generatedNames),
+      isEmpty,
+    );
+  });
 }
 
 UserProfile _profile({
@@ -66,6 +103,7 @@ UserProfile _profile({
   int sessionMinutes = 35,
   List<String>? availableWorkoutDays,
   List<String> avoidFoods = const [],
+  List<String> equipment = const ['Bodyweight'],
 }) {
   return UserProfile(
     uid: 'test-user',
@@ -82,7 +120,7 @@ UserProfile _profile({
     availableWorkoutDays:
         availableWorkoutDays ?? suggestedWorkoutDays(workoutDays),
     sessionMinutes: sessionMinutes,
-    equipment: const ['Bodyweight'],
+    equipment: equipment,
     avoidFoods: avoidFoods,
     onboardingComplete: true,
   );
