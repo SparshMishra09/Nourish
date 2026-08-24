@@ -16,7 +16,7 @@ Nourish is a Firebase-backed Flutter app for personalized nutrition, hydration, 
 - Persistent water quick-add and undo controls backed by per-user daily Firestore records
 - One-time daily-plan celebration when energy, protein, fibre, hydration, and scheduled movement are complete
 - A GitHub-style yearly consistency heatmap backed by private daily completion records
-- Per-user workout alarms and advance reminders on selected training weekdays, with local-time scheduling, restart recovery, notification test, and independent disable controls
+- Per-user workout alarms and advance reminders on selected training weekdays, with local-time scheduling, restart recovery, live Android permission status, notification test, and independent disable controls
 - Branded Android notifications with the Nourish raccoon logo and exact-alarm fallback when the device does not grant precise timing
 - Meal and workout logging in private per-user Firestore subcollections
 - Editable profile and persistent Firebase workout plans

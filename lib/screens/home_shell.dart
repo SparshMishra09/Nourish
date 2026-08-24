@@ -286,6 +286,13 @@ class _HomeShellState extends State<HomeShell> {
       builder: (sheetContext) => ReminderSettingsSheet(
         initialSettings: _reminderSettings,
         profile: widget.profile,
+        onGetPermissionState: NotificationService.instance.getPermissionState,
+        onRequestNotificationPermission:
+            NotificationService.instance.requestNotificationPermission,
+        onRequestExactAlarmPermission:
+            NotificationService.instance.requestExactAlarmPermission,
+        onOpenNotificationSettings:
+            NotificationService.instance.openNotificationSettings,
         onTestNotification: NotificationService.instance.showTestNotification,
       ),
     );
@@ -295,11 +302,7 @@ class _HomeShellState extends State<HomeShell> {
     _reminderSaveInProgress = true;
     try {
       final result = await NotificationService.instance
-          .scheduleWorkoutReminders(
-            profile: widget.profile,
-            settings: updated,
-            requestPermissions: updated.anyEnabled,
-          );
+          .scheduleWorkoutReminders(profile: widget.profile, settings: updated);
       var cloudSynced = true;
       try {
         await widget.firestoreService
@@ -338,7 +341,7 @@ class _HomeShellState extends State<HomeShell> {
       } else {
         showAppMessage(
           context,
-          'Reminders saved for ${updated.timeLabel} on your workout days.',
+          '${result.scheduledCount} reminders active for ${updated.timeLabel} on your workout days.',
         );
       }
     } catch (error, stackTrace) {
