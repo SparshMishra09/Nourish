@@ -279,13 +279,21 @@ class _ReminderSettingsSheetState extends State<ReminderSettingsSheet>
         });
         return;
       }
+      if (!await _ensureExactAlarmPermission() || !mounted) {
+        setState(() {
+          _statusSuccess = false;
+          _statusMessage =
+              'The scheduled test needs exact-alarm access. Allow it, then try again.';
+        });
+        return;
+      }
       final sent = await widget.onTestAlarm();
       if (!mounted) return;
       setState(() {
         _statusSuccess = sent;
         _statusMessage = sent
-            ? 'Alarm test started. Nourish uses your phone’s Alarm volume.'
-            : 'Alarm test not started. Android notifications are still blocked.';
+            ? 'Scheduled test ready. It will ring in 10 seconds using your phone’s Alarm volume.'
+            : 'Alarm test was not registered by Android. Check the access card and try again.';
       });
     } catch (error, stackTrace) {
       debugPrint('Nourish alarm sound test failed: $error');
@@ -334,6 +342,13 @@ class _ReminderSettingsSheetState extends State<ReminderSettingsSheet>
 
   @override
   Widget build(BuildContext context) {
+    final nextAlarm = _settings.alarmEnabled
+        ? nextWorkoutAlarmAt(
+            workoutDays: widget.profile.availableWorkoutDays,
+            hour: _settings.hour,
+            minute: _settings.minute,
+          )
+        : null;
     return SafeArea(
       top: false,
       child: SingleChildScrollView(
@@ -559,6 +574,10 @@ class _ReminderSettingsSheetState extends State<ReminderSettingsSheet>
                 ],
               ),
             ),
+            if (nextAlarm != null) ...[
+              const SizedBox(height: 12),
+              _NextAlarmCard(alarmAt: nextAlarm),
+            ],
             if (_statusMessage != null) ...[
               const SizedBox(height: 12),
               _InlineStatus(message: _statusMessage!, success: _statusSuccess),
@@ -583,7 +602,7 @@ class _ReminderSettingsSheetState extends State<ReminderSettingsSheet>
                         child: CircularProgressIndicator(strokeWidth: 2),
                       )
                     : const Icon(Icons.alarm_on_rounded),
-                label: const Text('Test workout alarm sound'),
+                label: const Text('Test scheduled alarm · 10 sec'),
               ),
             const SizedBox(height: 8),
             FilledButton.icon(
@@ -605,6 +624,66 @@ class _ReminderSettingsSheetState extends State<ReminderSettingsSheet>
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class _NextAlarmCard extends StatelessWidget {
+  const _NextAlarmCard({required this.alarmAt});
+
+  final DateTime alarmAt;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(15),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFE8FBD8), Color(0xFFF2F9E5)],
+        ),
+        borderRadius: BorderRadius.circular(19),
+        border: Border.all(color: const Color(0xFFD3EAB8)),
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: BoxDecoration(
+              color: AppPalette.lime,
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: const Icon(Icons.alarm_on_rounded, color: AppPalette.ink),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Next alarm ${formatAlarmCountdown(alarmAt)}',
+                  style: const TextStyle(
+                    color: AppPalette.ink,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 3),
+                Text(
+                  formatAlarmDayAndTime(alarmAt),
+                  style: const TextStyle(
+                    color: AppPalette.inkSoft,
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const Icon(Icons.chevron_right_rounded, color: AppPalette.inkSoft),
+        ],
       ),
     );
   }

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:developer' as developer;
 import 'dart:typed_data';
@@ -17,18 +18,21 @@ class NotificationScheduleResult {
     required this.exactTiming,
     required this.alarmCount,
     required this.advanceCount,
+    required this.nextAlarmAt,
   });
 
   final bool notificationsAllowed;
   final bool exactTiming;
   final int alarmCount;
   final int advanceCount;
+  final DateTime? nextAlarmAt;
 
   int get scheduledCount => alarmCount + advanceCount;
 
   String confirmationMessage({
     required ReminderSettings settings,
     required int workoutDayCount,
+    DateTime? now,
   }) {
     final dayWord = workoutDayCount == 1 ? 'day' : 'days';
     final details = <String>[
@@ -37,7 +41,10 @@ class NotificationScheduleResult {
       if (advanceCount > 0)
         '$advanceCount get-ready ${advanceCount == 1 ? 'notification' : 'notifications'} ${settings.advanceMinutes} min before',
     ];
-    return 'Active on $workoutDayCount workout $dayWord: ${details.join(' + ')}.';
+    final next = nextAlarmAt == null
+        ? ''
+        : 'Next alarm ${formatAlarmCountdown(nextAlarmAt!, from: now)}. ';
+    return '${next}Active on $workoutDayCount workout $dayWord: ${details.join(' + ')}.';
   }
 }
 
@@ -65,6 +72,7 @@ class NotificationService {
       FlutterLocalNotificationsPlugin();
   bool _initialized = false;
   Future<void>? _initializing;
+  Future<void> _scheduleTail = Future<void>.value();
 
   Future<void> initialize() async {
     if (_initialized) return;
@@ -114,17 +122,33 @@ class NotificationService {
   Future<NotificationScheduleResult> scheduleWorkoutReminders({
     required UserProfile profile,
     required ReminderSettings settings,
+  }) {
+    final previous = _scheduleTail;
+    final operation = () async {
+      await previous;
+      return _scheduleWorkoutReminders(profile: profile, settings: settings);
+    }();
+    _scheduleTail = operation.then<void>(
+      (_) {},
+      onError: (Object _, StackTrace _) {},
+    );
+    return operation;
+  }
+
+  Future<NotificationScheduleResult> _scheduleWorkoutReminders({
+    required UserProfile profile,
+    required ReminderSettings settings,
   }) async {
     await initialize();
     await _cancelWorkoutReminders();
     await _plugin.cancel(id: _testId);
-    await _plugin.cancel(id: _alarmTestId);
     if (!settings.anyEnabled) {
       return const NotificationScheduleResult(
         notificationsAllowed: true,
         exactTiming: false,
         alarmCount: 0,
         advanceCount: 0,
+        nextAlarmAt: null,
       );
     }
 
@@ -138,11 +162,15 @@ class NotificationService {
         exactTiming: false,
         alarmCount: 0,
         advanceCount: 0,
+        nextAlarmAt: null,
       );
     }
 
-    final mode = exactTiming
+    final reminderMode = exactTiming
         ? AndroidScheduleMode.exactAllowWhileIdle
+        : AndroidScheduleMode.inexactAllowWhileIdle;
+    final alarmMode = exactTiming
+        ? AndroidScheduleMode.alarmClock
         : AndroidScheduleMode.inexactAllowWhileIdle;
     final firstName = profile.name.trim().split(RegExp(r'\s+')).first;
     final days = profile.availableWorkoutDays
@@ -151,6 +179,7 @@ class NotificationService {
         .toSet();
     var alarmCount = 0;
     var advanceCount = 0;
+    tz.TZDateTime? nextAlarmAt;
 
     for (final weekday in days) {
       if (settings.alarmEnabled) {
@@ -166,15 +195,18 @@ class NotificationService {
               'Your ${profile.sessionMinutes}-minute Nourish session is ready. Let’s get moving.',
           scheduledDate: scheduled,
           notificationDetails: _details(
-            channelId: 'nourish_workout_alarm_v3',
+            channelId: 'nourish_workout_alarm_v4',
             channelName: 'Workout alarms',
             channelDescription: 'Alerts at your chosen workout time',
           ),
-          androidScheduleMode: mode,
+          androidScheduleMode: alarmMode,
           matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
           payload: 'workout',
         );
         alarmCount++;
+        if (nextAlarmAt == null || scheduled.isBefore(nextAlarmAt)) {
+          nextAlarmAt = scheduled;
+        }
       }
 
       if (settings.advanceEnabled) {
@@ -200,7 +232,7 @@ class NotificationService {
             channelDescription: 'Gentle reminders before scheduled workouts',
             alarmLike: false,
           ),
-          androidScheduleMode: mode,
+          androidScheduleMode: reminderMode,
           matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime,
           payload: 'workout',
         );
@@ -208,11 +240,19 @@ class NotificationService {
       }
     }
 
+    final registeredCount = await pendingWorkoutReminderCount();
+    if (registeredCount != alarmCount + advanceCount) {
+      throw StateError(
+        'Android registered $registeredCount of ${alarmCount + advanceCount} workout alerts.',
+      );
+    }
+
     return NotificationScheduleResult(
       notificationsAllowed: true,
       exactTiming: exactTiming,
       alarmCount: alarmCount,
       advanceCount: advanceCount,
+      nextAlarmAt: nextAlarmAt,
     );
   }
 
@@ -298,16 +338,22 @@ class NotificationService {
   Future<bool> showTestAlarm() async {
     await initialize();
     if (!await requestNotificationPermission()) return false;
+    final permissions = await getPermissionState();
+    if (!permissions.exactAlarmsAllowed) return false;
     await _plugin.cancel(id: _alarmTestId);
-    await _plugin.show(
+    await _plugin.zonedSchedule(
       id: _alarmTestId,
       title: 'Nourish workout alarm ⏰',
       body: 'This is how your workout-time alarm will sound.',
+      scheduledDate: tz.TZDateTime.now(
+        tz.local,
+      ).add(const Duration(seconds: 10)),
       notificationDetails: _details(
-        channelId: 'nourish_workout_alarm_v3',
+        channelId: 'nourish_workout_alarm_v4',
         channelName: 'Workout alarms',
         channelDescription: 'Audible alerts at your chosen workout time',
       ),
+      androidScheduleMode: AndroidScheduleMode.alarmClock,
       payload: 'alarm_test',
     );
     return true;
@@ -343,7 +389,18 @@ class NotificationService {
         priority: Priority.high,
         enableVibration: true,
         vibrationPattern: alarmLike
-            ? Int64List.fromList(const [0, 700, 300, 700, 300, 1000])
+            ? Int64List.fromList(const [
+                0,
+                650,
+                250,
+                650,
+                250,
+                650,
+                250,
+                650,
+                250,
+                900,
+              ])
             : null,
         playSound: true,
         sound: alarmLike

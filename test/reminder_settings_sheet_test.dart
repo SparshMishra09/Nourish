@@ -27,11 +27,12 @@ const _profile = UserProfile(
 
 void main() {
   test('schedule confirmation explains the eight-alert breakdown', () {
-    const result = NotificationScheduleResult(
+    final result = NotificationScheduleResult(
       notificationsAllowed: true,
       exactTiming: true,
       alarmCount: 4,
       advanceCount: 4,
+      nextAlarmAt: DateTime(2026, 8, 24, 15, 8),
     );
     const settings = ReminderSettings(
       alarmEnabled: true,
@@ -43,8 +44,12 @@ void main() {
 
     expect(result.scheduledCount, 8);
     expect(
-      result.confirmationMessage(settings: settings, workoutDayCount: 4),
-      'Active on 4 workout days: 4 workout-time alarms at 3:08 PM + 4 get-ready notifications 30 min before.',
+      result.confirmationMessage(
+        settings: settings,
+        workoutDayCount: 4,
+        now: DateTime(2026, 8, 24, 15, 6),
+      ),
+      'Next alarm in 2 mins. Active on 4 workout days: 4 workout-time alarms at 3:08 PM + 4 get-ready notifications 30 min before.',
     );
   });
 
@@ -142,7 +147,7 @@ void main() {
     expect(find.text('Exact alarms allowed'), findsOneWidget);
   });
 
-  testWidgets('workout alarm has a separate audible test', (tester) async {
+  testWidgets('workout alarm has a real scheduled test', (tester) async {
     var alarmTests = 0;
     await tester.pumpWidget(
       MaterialApp(
@@ -169,13 +174,15 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.ensureVisible(find.text('Test workout alarm sound'));
-    await tester.tap(find.text('Test workout alarm sound'));
+    await tester.ensureVisible(find.text('Test scheduled alarm · 10 sec'));
+    await tester.tap(find.text('Test scheduled alarm · 10 sec'));
     await tester.pumpAndSettle();
 
     expect(alarmTests, 1);
     expect(
-      find.text('Alarm test started. Nourish uses your phone’s Alarm volume.'),
+      find.text(
+        'Scheduled test ready. It will ring in 10 seconds using your phone’s Alarm volume.',
+      ),
       findsOneWidget,
     );
   });
