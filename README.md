@@ -14,7 +14,7 @@ Nourish is a Firebase-backed Flutter app for personalized nutrition, hydration, 
 - Sideload-safe scanning with supported Gemini fallbacks and retry messages that keep the captured photo ready
 - Confirmed scanned meals added to the user's live Today totals; food photos are not stored by Nourish
 - Two-to-six-day workout plans placed on the user's selected weekdays, with duration-aware exercise selection and bodyweight alternatives
-- Offline Nourish Form Loops for every generated exercise, with an animated movement, setup/action/breathing steps, form cues, and common mistakes—no subscription or external video service
+- Professional ExerciseDB demonstrations for every generated exercise, with highlighted working muscles, exact source labels, disk caching, friendly retry states, and Nourish setup/action/breathing coaching
 - Persistent water quick-add and undo controls backed by per-user daily Firestore records
 - One-time daily-plan celebration when energy, protein, fibre, hydration, and scheduled movement are complete
 - A GitHub-style yearly consistency heatmap backed by private daily completion records
@@ -24,6 +24,20 @@ Nourish is a Firebase-backed Flutter app for personalized nutrition, hydration, 
 - Editable profile and persistent Firebase workout plans
 - Nourish raccoon branding across the app, Android splash screen, and adaptive launcher icon
 - Safe-area-aware, responsive Material 3 interface for modern Android devices
+
+## Screenshots
+
+<p align="center">
+  <img src="docs/screenshots/workout-plan.png" alt="Nourish workout plan with professional demo actions" width="42%" />
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/exercise-demo.png" alt="Nourish professional ExerciseDB push-up demonstration" width="42%" />
+</p>
+
+## Exercise demonstrations
+
+Nourish uses the official [ExerciseDB V1 free API](https://oss.exercisedb.dev/docs) media CDN for its professional anatomical GIF demonstrations. The app stores fixed, reviewed media IDs instead of searching at runtime, credits the exact ExerciseDB movement in each guide, and caches successful downloads on the device. No RapidAPI key or subscription is required for the current non-commercial build; an internet connection is needed the first time a demonstration is opened.
+
+ExerciseDB requires AscendAPI attribution and limits its free 180p GIF dataset to personal, educational, community, prototype, and other non-commercial use. A commercial or monetised distribution must obtain the appropriate ExerciseDB/RapidAPI plan before release. Nourish links to the provider's CDN and does not commit or redistribute its media files.
 
 ## Firebase
 

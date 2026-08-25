@@ -59,7 +59,7 @@ void main() {
     expect(plan.nextWorkout(DateTime(2026, 8, 30)).dayLabel, 'SUN');
   });
 
-  test('every exercise the planner can generate has an offline form guide', () {
+  test('every generated exercise has coaching and a professional demo', () {
     const goals = ['Build muscle', 'Lose fat', 'Maintain weight'];
     const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
     final generatedNames = <String>{};
@@ -93,6 +93,17 @@ void main() {
       ExerciseGuideCatalog.coveredExerciseNames.difference(generatedNames),
       isEmpty,
     );
+    expect(
+      generatedNames.difference(ExerciseGuideCatalog.coveredDemoNames),
+      isEmpty,
+    );
+    for (final exerciseName in generatedNames) {
+      final demo = ExerciseGuideCatalog.demoForName(exerciseName);
+      expect(demo, isNotNull, reason: '$exerciseName needs a demonstration');
+      expect(demo!.exerciseDbId, hasLength(7));
+      expect(demo.mediaUrl, startsWith('https://static.exercisedb.dev/media/'));
+      expect(demo.sourceName, isNotEmpty);
+    }
   });
 }
 

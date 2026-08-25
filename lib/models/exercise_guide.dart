@@ -46,12 +46,27 @@ class ExerciseGuide {
   final String avoid;
 }
 
+class ExerciseDemo {
+  const ExerciseDemo({required this.exerciseDbId, required this.sourceName});
+
+  final String exerciseDbId;
+  final String sourceName;
+
+  String get mediaUrl =>
+      'https://static.exercisedb.dev/media/$exerciseDbId.gif';
+}
+
 class ExerciseGuideCatalog {
   const ExerciseGuideCatalog._();
 
   static ExerciseGuide? forName(String exerciseName) => _guides[exerciseName];
 
+  static ExerciseDemo? demoForName(String exerciseName) =>
+      _exerciseDbDemos[exerciseName];
+
   static Set<String> get coveredExerciseNames => _guides.keys.toSet();
+
+  static Set<String> get coveredDemoNames => _exerciseDbDemos.keys.toSet();
 }
 
 const _guides = <String, ExerciseGuide>{
@@ -348,5 +363,128 @@ const _guides = <String, ExerciseGuide>{
     breathing: 'Inhale down · exhale up.',
     cues: ['Surface cannot move', 'Body stays straight', 'Elbows about 45°'],
     avoid: 'Do not use a chair or table that can slide or tip.',
+  ),
+};
+
+const _exerciseDbDemos = <String, ExerciseDemo>{
+  'Push-up': ExerciseDemo(exerciseDbId: 'I4hDWkc', sourceName: 'push-up'),
+  'One-arm dumbbell row': ExerciseDemo(
+    exerciseDbId: 'C0MA9bC',
+    sourceName: 'dumbbell one arm bent-over row',
+  ),
+  'Dumbbell shoulder press': ExerciseDemo(
+    exerciseDbId: 'znQUdHY',
+    sourceName: 'dumbbell seated shoulder press',
+  ),
+  'Close-grip push-up': ExerciseDemo(
+    exerciseDbId: 'x6KpKpq',
+    sourceName: 'close-grip push-up',
+  ),
+  'Reverse snow angel': ExerciseDemo(
+    exerciseDbId: 'EAs3xL9',
+    sourceName: 'dumbbell reverse fly',
+  ),
+  'Dead bug': ExerciseDemo(exerciseDbId: 'iny3m5y', sourceName: 'dead bug'),
+  'Dumbbell goblet squat': ExerciseDemo(
+    exerciseDbId: 'yn8yg1r',
+    sourceName: 'dumbbell goblet squat',
+  ),
+  'Dumbbell Romanian deadlift': ExerciseDemo(
+    exerciseDbId: 'rR0LJzx',
+    sourceName: 'dumbbell Romanian deadlift',
+  ),
+  'Reverse lunge': ExerciseDemo(
+    exerciseDbId: 'SSsBDwB',
+    sourceName: 'dumbbell rear lunge',
+  ),
+  'Glute bridge': ExerciseDemo(
+    exerciseDbId: 'u0cNiij',
+    sourceName: 'low glute bridge on floor',
+  ),
+  'Calf raise': ExerciseDemo(
+    exerciseDbId: 'bJYHBIN',
+    sourceName: 'bodyweight standing calf raise',
+  ),
+  'Side plank': ExerciseDemo(
+    exerciseDbId: 'RKjH6Lt',
+    sourceName: 'side bridge v. 2',
+  ),
+  'Plank shoulder tap': ExerciseDemo(
+    exerciseDbId: 'yRpV5TC',
+    sourceName: 'shoulder tap',
+  ),
+  'Tempo bodyweight squat': ExerciseDemo(
+    exerciseDbId: '5BZHW9s',
+    sourceName: 'squat to overhead reach with twist',
+  ),
+  'Prone Y-T-W raises': ExerciseDemo(
+    exerciseDbId: 'EKXOMEh',
+    sourceName: 'dumbbell rear delt row',
+  ),
+  'Single-leg hip hinge': ExerciseDemo(
+    exerciseDbId: 'gKozT8X',
+    sourceName: 'dumbbell single leg deadlift',
+  ),
+  'Pike push-up': ExerciseDemo(
+    exerciseDbId: 'sVvXT5J',
+    sourceName: 'exercise ball pike push up',
+  ),
+  'Mountain climber': ExerciseDemo(
+    exerciseDbId: 'RJgzwny',
+    sourceName: 'mountain climber',
+  ),
+  'Boxer shuffle': ExerciseDemo(
+    exerciseDbId: 'zfNHMN9',
+    sourceName: 'skater hops',
+  ),
+  'Fast feet': ExerciseDemo(exerciseDbId: 'HtfCpfi', sourceName: 'star jump'),
+  'Knee drive': ExerciseDemo(
+    exerciseDbId: 'ealLwvX',
+    sourceName: 'high knee against wall',
+  ),
+  'Lateral step & reach': ExerciseDemo(
+    exerciseDbId: '1jXLYEw',
+    sourceName: 'standing lateral stretch',
+  ),
+  'Power march': ExerciseDemo(
+    exerciseDbId: 'J9zIWig',
+    sourceName: 'walking high knees lunge',
+  ),
+  'Standing mountain climber': ExerciseDemo(
+    exerciseDbId: 'RJgzwny',
+    sourceName: 'mountain climber',
+  ),
+  'Step jack': ExerciseDemo(exerciseDbId: '1g5bPpA', sourceName: 'jack jump'),
+  'Squat to reach': ExerciseDemo(
+    exerciseDbId: 'QChZi3x',
+    sourceName: 'squat to overhead reach',
+  ),
+  'Marching bridge': ExerciseDemo(
+    exerciseDbId: 'GibBPPg',
+    sourceName: 'glute bridge march',
+  ),
+  'Bird dog': ExerciseDemo(
+    exerciseDbId: 'lCKm4Rs',
+    sourceName: 'exercise ball prone leg raise',
+  ),
+  '90/90 hip switch': ExerciseDemo(
+    exerciseDbId: 'bWlZvXh',
+    sourceName: 'butterfly yoga pose',
+  ),
+  'Child’s pose breathing': ExerciseDemo(
+    exerciseDbId: 'HIgYKAB',
+    sourceName: 'seated wide angle pose sequence',
+  ),
+  'World’s greatest stretch': ExerciseDemo(
+    exerciseDbId: 'DFGXwZr',
+    sourceName: 'world greatest stretch',
+  ),
+  'Standing cooldown flow': ExerciseDemo(
+    exerciseDbId: 'qOKcgVP',
+    sourceName: 'standing calves stretch',
+  ),
+  'Incline push-up': ExerciseDemo(
+    exerciseDbId: 'B1EVP9F',
+    sourceName: 'incline push-up',
   ),
 };

@@ -170,7 +170,7 @@ class _WorkoutScreenState extends State<WorkoutScreen> {
             child: SectionHeader(
               title: 'Exercise flow',
               subtitle:
-                  '${day.exercises.length} moves · tap any move for its form loop',
+                  '${day.exercises.length} moves · tap any move for a professional demo',
             ),
           ),
         ),
@@ -395,7 +395,7 @@ class _ExerciseCard extends StatelessWidget {
                     Text(exercise.name, style: context.text.titleMedium),
                     const SizedBox(height: 4),
                     Text(
-                      '${exercise.focus} · watch form',
+                      '${exercise.focus} · watch demo',
                       style: const TextStyle(
                         color: AppPalette.muted,
                         fontSize: 11.5,
