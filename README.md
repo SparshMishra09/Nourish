@@ -11,12 +11,12 @@
     <img src="https://img.shields.io/badge/Flutter-3.x-54C5F8?logo=flutter&logoColor=white" alt="Flutter" />
     <img src="https://img.shields.io/badge/Android-7.0%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+" />
     <img src="https://img.shields.io/badge/Firebase-powered-FFCA28?logo=firebase&logoColor=black" alt="Firebase" />
-    <img src="https://img.shields.io/badge/release-v1.4.0-A8F20D" alt="Release v1.4.0" />
-    <img src="https://img.shields.io/badge/tests-23%20passing-05B875" alt="23 tests passing" />
+    <img src="https://img.shields.io/badge/release-v1.11.0-A8F20D" alt="Release v1.11.0" />
+    <img src="https://img.shields.io/badge/tests-48%20passing-05B875" alt="48 tests passing" />
   </p>
 
   <p>
-    <a href="https://github.com/SparshMishra09/Nourish/releases/download/v1.4.0/Nourish-Android-v1.4.0.apk">
+    <a href="https://github.com/SparshMishra09/Nourish/releases/download/v1.11.0/Nourish-Android-v1.11.0.apk">
       <img src="https://img.shields.io/badge/Download_Nourish-Android_APK-A8F20D?style=for-the-badge&logo=android&logoColor=101B17" alt="Download Nourish Android APK" />
     </a>
   </p>
@@ -59,19 +59,31 @@ The experience is designed around a simple loop:
 
 | Release | APK | Android support | Package |
 |---|---|---|---|
-| **Nourish v1.4.0** (`versionCode 9`) | [`Nourish-Android-v1.4.0.apk`](https://github.com/SparshMishra09/Nourish/releases/download/v1.4.0/Nourish-Android-v1.4.0.apk) | Android 7.0 / API 24 or newer | `com.rohitproject.rohit_fit_ai` |
+| **Nourish v1.11.0** (`versionCode 16`) | [`Nourish-Android-v1.11.0.apk`](https://github.com/SparshMishra09/Nourish/releases/download/v1.11.0/Nourish-Android-v1.11.0.apk) | Android 7.0 / API 24 or newer | `com.rohitproject.rohit_fit_ai` |
 
-You can also use the [Cortex organization release mirror](https://github.com/Cortex-org-in/Nourish/releases/download/v1.4.0/Nourish-Android-v1.4.0.apk).
+You can also use the [Cortex organization release mirror](https://github.com/Cortex-org-in/Nourish/releases/download/v1.11.0/Nourish-Android-v1.11.0.apk).
 
 To install the APK directly:
 
-1. Download **`Nourish-Android-v1.4.0.apk`** from the button above.
+1. Download **`Nourish-Android-v1.11.0.apk`** from the button above.
 2. Open the file on the Android device.
 3. If Android asks, allow installation from the browser or file manager used to open it.
 4. Install Nourish, open it, and grant camera/notification permissions only when the relevant feature needs them.
 
 > [!NOTE]
 > This repository provides a release-mode APK for direct testing. Because it is installed outside Google Play, Nourish uses its sideload-safe Firebase configuration. A Play-distributed build can enable Play Integrity App Check explicitly.
+
+## What is new in v1.11.0
+
+- **Verified packaged-food scanning** — barcode and strict product matching now progress through Open Food Facts, grounded Google Search, and a source-visible public product-page fallback. Nourish uses a complete nutrition panel when available and never silently replaces a scan with a vaguely similar product.
+- **Evidence before logging** — packaged scans show the matched serving, exact-product confidence, source notes, and clickable product pages before anything is added to Today.
+- **A scanner that explains its work** — a polished scan-line animation moves through package reading, product matching, live-source verification, and review preparation while protecting the selected photo from accidental replacement.
+- **100 complete recipes** — breakfast, lunch, dinner, snack, and simple-side collections each contain 20 unique recipes with food photography, nutrition, ingredients, allergens, and full preparation steps.
+- **Better workout sessions** — optional goal- and movement-specific warm-ups and cooldowns frame every generated workout, while every planned exercise continues to open a professional ExerciseDB demonstration.
+
+### Scanner accuracy check
+
+The release was tested on Android with a front-only photo of a True Elements Choc 'N' Roll Almond Protein Bar and no typed hint. Nourish independently found the exact 50 g product label and returned `197 kcal`, `10.3 g protein`, `22.6 g carbohydrates`, `9 g fat`, `7.7 g fibre`, `8.1 g sugar`, and `23 mg sodium` with a 95% identity match. The result linked the [manufacturer page](https://true-elements.com/products/true-elements-choc-n-roll-almond-protein-bar-50gm-pack-of-6) and [published product label](https://www.bbassets.com/media/uploads/p/xxl/40358457-4_1-true-elements-choc-n-roll-almond-protein-bar.jpg) for review.
 
 ## Product tour
 
@@ -146,6 +158,19 @@ The AI meal scanner is built around what the user actually ate—not what they p
 
 The user confirms or corrects the portion before saving. Confirmed nutrition is added to the live Today totals. Nourish does **not** save the captured food photo to its database.
 
+Packaged food uses an additional verification pipeline so a visual guess does not silently become a label value:
+
+1. Nourish reads the exact brand, product variant, flavour, serving clue, and visible barcode.
+2. A barcode lookup is attempted against the live Open Food Facts product-label database.
+3. Without a readable barcode, Nourish performs a strict brand-and-variant match and rejects merely similar products.
+4. If no strong structured match exists, Firebase AI can use grounded Google Search to find the exact current product label.
+5. If grounded search is unavailable, Nourish performs an exact-name public search, opens the matching product pages, and reads their current nutrition-panel images with the vision model. Unsupported images and incomplete labels are rejected.
+6. If the identity, serving, primary nutrients, or supporting sources remain ambiguous, the original result stays clearly marked as a **visual estimate**.
+
+Verified scans show the matched serving, identity confidence, source links, and Google Search suggestions when applicable. Users can inspect that evidence before adding anything to Today. Product recipes and labels can differ by flavour and country, so Nourish always asks the user to confirm the exact package and number of servings.
+
+While verification runs, a staged scan animation explains whether Nourish is reading the package, matching the product, checking live sources, or preparing the review. Camera and gallery controls are temporarily locked to prevent accidental replacement of the image mid-scan.
+
 ### 4. Turn workout plans into followable sessions
 
 Nourish creates two-to-six-day workout plans on the user's chosen weekdays. Exercise selection responds to goal, session length, and available equipment, with bodyweight alternatives where appropriate.
@@ -180,8 +205,8 @@ Nourish considers the daily plan complete when energy is within a practical rang
 | **Onboarding** | Four focused stages for body details, goal, diet, activity, weekly availability, session length, and equipment |
 | **Personal targets** | Estimated calories, protein, carbohydrates, fibre, water, BMR, and BMI with practical wellness guardrails |
 | **Meal discovery** | Vegetarian, non-vegetarian, and vegan filtering plus goal-aware ranking and ingredient exclusions |
-| **Recipes** | 12 bundled/Firestore recipes with nutrition, allergens, ingredients, cooking time, servings, and complete instructions |
-| **AI meal scan** | Camera/gallery input, Firebase AI Logic analysis, portion review, nutrition breakdown, and Today logging |
+| **Recipes** | 100 offline-first/Firestore recipes—20 each for breakfast, lunch, dinner, snacks, and simple sides—with original food photography, nutrition, allergens, measured ingredients, cooking time, servings, and complete instructions |
+| **AI meal scan** | Camera/gallery input, plate estimation, strict barcode/product matching, live Open Food Facts labels, grounded web verification with visible sources, portion review, and Today logging |
 | **Hydration** | Persistent quick-add, target progress, and undo controls for the current day |
 | **Workout planning** | Two-to-six-day programs aligned to exact available weekdays, duration, goal, and equipment |
 | **Exercise guidance** | Professional ExerciseDB demonstrations for all generated movements plus written technique coaching |
@@ -216,7 +241,7 @@ These numbers are intentionally presented as wellness estimates. They are not a 
 
 ### Recipe ranking
 
-The recommendation engine first enforces diet and excluded-ingredient constraints, then scores eligible recipes for the user's goal and nutrition priorities. The same catalog remains searchable and filterable by meal type.
+The recommendation engine first enforces diet and excluded-ingredient constraints, then scores eligible recipes for the user's goal and nutrition priorities. Daily suggestions rotate through the eight strongest matches for meaningful variety, while the complete 100-recipe catalog remains searchable and filterable by meal type. The catalog includes 20 unique options for each main meal category plus 20 quick, optional side dishes. Sides remain in discovery and never replace breakfast, lunch, dinner, or snacks in the daily plan. Dedicated exclusions cover dairy, egg, gluten, peanut, soy, fish, shellfish, sesame, and tree nuts.
 
 ### Workout construction
 
@@ -238,6 +263,7 @@ Nourish uses Firebase Authentication and Cloud Firestore. The committed security
 Important privacy behaviour:
 
 - food photos are analysed but are not stored by Nourish;
+- packaged-food identity text and barcodes may be checked against Open Food Facts, grounded Google Search, and exact-name public product pages to verify a current label; the captured food photo itself is not sent to public-search sites;
 - personal progress is separated by Firebase UID;
 - reminder configuration is backed up per user while alarms remain local to the Android device;
 - the app requests camera, notification, and exact-alarm capabilities in context;
@@ -260,7 +286,8 @@ No RapidAPI key or subscription is required for this current non-commercial buil
 | Platform | Android, minimum API 24, target API 36 |
 | Authentication | Firebase Authentication and Google Sign-In |
 | Database | Cloud Firestore (`asia-south1`) |
-| AI analysis | Firebase AI Logic with supported Gemini fallbacks |
+| AI analysis | Firebase AI Logic with supported Gemini fallbacks and grounded Google Search |
+| Product labels | Open Food Facts barcode/search APIs plus source-visible public product-page label reading with strict identity matching |
 | Camera/gallery | `image_picker` |
 | Notifications | `flutter_local_notifications`, timezone-aware local scheduling |
 | Exercise media | ExerciseDB by AscendAPI and `cached_network_image` |
@@ -345,16 +372,21 @@ The automated suite covers the product logic and the most failure-prone UI contr
 - daily goal requirements, including scheduled versus rest days;
 - reminder confirmation, permission messaging, and alert breakdowns;
 - yearly heatmap layout and completion reporting;
-- exercise demonstration loading and attribution.
+- exercise demonstration loading and attribution;
+- packaged-food identity rejection, per-serving label conversion, incomplete-label handling, and web-source fallback;
+- staged scanner-animation rendering and progress messaging;
+- complete 100-recipe catalog integrity, photography, and meal-plan coverage;
+- workout-specific optional warm-up and cooldown construction.
 
 Before packaging the current release:
 
 ```text
 flutter analyze  → no issues
-flutter test     → 23 tests passed
+flutter test     → 48 tests passed
 Android QA       → auth, onboarding, live data, water, reminders, meals,
                    recipes, scan, workouts, demos, profile, heatmap,
-                   completion celebration, and offline media cache checked
+                   completion celebration, web-label evidence, scanner animation,
+                   and offline media cache checked
 ```
 
 ## Product boundaries
@@ -368,15 +400,15 @@ Android QA       → auth, onboarding, live data, water, reminders, meals,
 
 ## Release information
 
-**Current release:** `v1.4.0`<br />
-**APK name:** `Nourish-Android-v1.4.0.apk`<br />
-**Build:** `1.4.0+9`<br />
-**SHA-256:** `F57E0DC1D3E2DE3D07C7506EE125B5EC75C67F43A50317C9188F1AE02B2D44BD`
+**Current release:** `v1.11.0`<br />
+**APK name:** `Nourish-Android-v1.11.0.apk`<br />
+**Build:** `1.11.0+16`<br />
+**SHA-256:** `441C6D015689C59775973B70C0367030CCEE53E197F43ACA9BC6F6CCB4C9DC5A`
 
 Release downloads:
 
-- [Primary GitHub release](https://github.com/SparshMishra09/Nourish/releases/tag/v1.4.0)
-- [Cortex organization mirror](https://github.com/Cortex-org-in/Nourish/releases/tag/v1.4.0)
+- [Primary GitHub release](https://github.com/SparshMishra09/Nourish/releases/tag/v1.11.0)
+- [Cortex organization mirror](https://github.com/Cortex-org-in/Nourish/releases/tag/v1.11.0)
 
 ## Contributing
 

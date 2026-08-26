@@ -364,7 +364,10 @@ class _HomeShellState extends State<HomeShell> {
 
   void _openRecipe(Recipe recipe) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => RecipeDetailScreen(recipe: recipe)),
+      MaterialPageRoute(
+        builder: (_) =>
+            RecipeDetailScreen(recipe: recipe, profile: widget.profile),
+      ),
     );
   }
 

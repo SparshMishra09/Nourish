@@ -5,6 +5,7 @@ import 'package:firebase_ai/firebase_ai.dart';
 import 'package:flutter/foundation.dart';
 
 import '../models/food_analysis.dart';
+import 'product_nutrition_lookup.dart';
 
 class FoodAnalysisException implements Exception {
   const FoodAnalysisException(this.message);
@@ -18,13 +19,16 @@ class FoodAnalysisService {
   FoodAnalysisService({
     GenerativeModel? primaryModel,
     GenerativeModel? fallbackModel,
+    ProductNutritionLookup? productLookup,
   }) : _models = [
          primaryModel ?? _buildModel('gemini-3.7-flash'),
          fallbackModel ?? _buildModel('gemini-3.5-flash'),
          _buildModel('gemini-3.5-flash-lite'),
-       ];
+       ],
+       _productLookup = productLookup ?? HybridProductNutritionLookup();
 
   final List<GenerativeModel> _models;
+  final ProductNutritionLookup _productLookup;
 
   static GenerativeModel _buildModel(String modelName) {
     final responseSchema = Schema.object(
@@ -34,6 +38,22 @@ class FoodAnalysisService {
         ),
         'mealName': Schema.string(
           description: 'A concise name for the complete visible meal.',
+        ),
+        'isPackagedFood': Schema.boolean(
+          description:
+              'True when the photo shows branded, factory-packaged food.',
+        ),
+        'brandName': Schema.string(
+          description:
+              'Exact visible brand for packaged food, otherwise empty.',
+        ),
+        'productName': Schema.string(
+          description:
+              'Exact product, flavour, and variant visible on the package, otherwise empty.',
+        ),
+        'barcode': Schema.string(
+          description:
+              'Only barcode digits that are clearly readable, otherwise empty.',
         ),
         'items': Schema.array(
           minItems: 0,
@@ -90,6 +110,10 @@ class FoodAnalysisService {
       propertyOrdering: const [
         'isFood',
         'mealName',
+        'isPackagedFood',
+        'brandName',
+        'productName',
+        'barcode',
         'items',
         'calories',
         'protein',
@@ -118,7 +142,9 @@ class FoodAnalysisService {
         'Use familiar Indian dish names when appropriate. Nutrition must total the entire '
         'visible serving, not 100 g. Never claim medical certainty. If the photo is unclear '
         'or portion size is ambiguous, lower confidence and explain the assumption. If the '
-        'image is not food, set isFood false and all nutrient values to zero.',
+        'image is not food, set isFood false and all nutrient values to zero. For packaged '
+        'food, transcribe the exact brand, product name, flavour, variant, and barcode only '
+        'when visible. Never guess missing package identity text.',
       ),
     );
   }
@@ -135,8 +161,9 @@ class FoodAnalysisService {
     final prompt = StringBuffer(
       'Analyze this food photo. It may show a plated meal or packaged food. Return a '
       'conservative nutrition estimate for the complete visible serving. For packaged '
-      'food, read the product name, visible claims, serving size, and nutrition label '
-      'when available; never invent label values that are not visible. For meals, '
+      'food, transcribe the exact brand, full product variant/flavour, barcode, serving '
+      'size, and nutrition label when available; never invent label values or identity '
+      'text that are not visible. For meals, '
       'consider plate/bowl scale, item count, cooking method, and likely added oil. '
       'List each detected item and its estimated weight.',
     );
@@ -166,7 +193,26 @@ class FoodAnalysisService {
         if (decoded is! Map) {
           throw const FormatException('The model response was not an object.');
         }
-        return FoodAnalysis.fromJson(Map<String, dynamic>.from(decoded));
+        final visualAnalysis = FoodAnalysis.fromJson(
+          Map<String, dynamic>.from(decoded),
+        );
+        if (!visualAnalysis.isFood || !visualAnalysis.isPackagedFood) {
+          return visualAnalysis;
+        }
+        final hasSearchableIdentity =
+            visualAnalysis.barcode.replaceAll(RegExp(r'\D'), '').length >= 8 ||
+            (visualAnalysis.brandName.trim().isNotEmpty &&
+                visualAnalysis.productName.trim().isNotEmpty);
+        if (!hasSearchableIdentity) return visualAnalysis;
+        try {
+          final productMatch = await _productLookup.lookup(visualAnalysis);
+          return productMatch == null
+              ? visualAnalysis
+              : visualAnalysis.withProductMatch(productMatch);
+        } catch (error) {
+          debugPrint('Packaged-food verification was unavailable: $error');
+          return visualAnalysis;
+        }
       } catch (error, stackTrace) {
         lastError = error;
         lastStackTrace = stackTrace;

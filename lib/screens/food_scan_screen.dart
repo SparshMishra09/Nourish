@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 import '../core/app_theme.dart';
 import '../models/food_analysis.dart';
@@ -148,7 +150,7 @@ class _FoodScanScreenState extends State<FoodScanScreen> {
                 ),
                 const SizedBox(height: 9),
                 const Text(
-                  'Take a clear, top-down photo of the full plate. Confirm the portion before it counts toward today.',
+                  'Photograph the full plate—or keep a package’s exact brand and flavour clearly visible. Confirm the serving before it counts toward today.',
                   style: TextStyle(color: AppPalette.muted, height: 1.45),
                 ),
               ],
@@ -160,6 +162,7 @@ class _FoodScanScreenState extends State<FoodScanScreen> {
           sliver: SliverToBoxAdapter(
             child: _CaptureCard(
               image: _image,
+              analyzing: _analyzing,
               onCamera: () => _pick(ImageSource.camera),
               onGallery: () => _pick(ImageSource.gallery),
             ),
@@ -174,7 +177,7 @@ class _FoodScanScreenState extends State<FoodScanScreen> {
                 textInputAction: TextInputAction.done,
                 decoration: const InputDecoration(
                   labelText: 'Optional details for better accuracy',
-                  hintText: 'e.g. homemade paneer curry, 2 rotis',
+                  hintText: 'e.g. brand, flavour, pack size or recipe details',
                   prefixIcon: Icon(Icons.edit_note_rounded),
                 ),
               ),
@@ -201,7 +204,7 @@ class _FoodScanScreenState extends State<FoodScanScreen> {
                     : const Icon(Icons.auto_awesome_rounded),
                 label: Text(
                   _analyzing
-                      ? 'Analyzing the full plate…'
+                      ? 'Identifying and checking sources…'
                       : 'Analyze this meal',
                 ),
               ),
@@ -262,11 +265,13 @@ class _PrivacyBadge extends StatelessWidget {
 class _CaptureCard extends StatelessWidget {
   const _CaptureCard({
     required this.image,
+    required this.analyzing,
     required this.onCamera,
     required this.onGallery,
   });
 
   final XFile? image;
+  final bool analyzing;
   final VoidCallback onCamera;
   final VoidCallback onGallery;
 
@@ -315,7 +320,7 @@ class _CaptureCard extends StatelessWidget {
                   ),
                   SizedBox(height: 13),
                   Text(
-                    'Keep the whole plate in frame',
+                    'Keep the food or label in frame',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.w800,
@@ -324,7 +329,7 @@ class _CaptureCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   Text(
-                    'Good light · top-down · no blur',
+                    'Good light · exact variant · no blur',
                     style: TextStyle(color: Colors.white54, fontSize: 12),
                   ),
                 ],
@@ -345,39 +350,216 @@ class _CaptureCard extends StatelessWidget {
                 ),
               ),
             ),
-          Positioned(
-            left: 16,
-            right: 16,
-            bottom: 16,
-            child: Row(
-              children: [
-                Expanded(
-                  child: FilledButton.icon(
-                    onPressed: onCamera,
-                    style: FilledButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                      backgroundColor: AppPalette.lime,
+          if (analyzing) const Positioned.fill(child: ScannerLoadingOverlay()),
+          if (!analyzing)
+            Positioned(
+              left: 16,
+              right: 16,
+              bottom: 16,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: FilledButton.icon(
+                      onPressed: onCamera,
+                      style: FilledButton.styleFrom(
+                        minimumSize: const Size.fromHeight(50),
+                        backgroundColor: AppPalette.lime,
+                        foregroundColor: AppPalette.ink,
+                      ),
+                      icon: const Icon(Icons.photo_camera_rounded),
+                      label: Text(image == null ? 'Take photo' : 'Retake'),
+                    ),
+                  ),
+                  const SizedBox(width: 10),
+                  IconButton.filled(
+                    onPressed: onGallery,
+                    tooltip: 'Choose from gallery',
+                    style: IconButton.styleFrom(
+                      minimumSize: const Size(52, 52),
+                      backgroundColor: Colors.white,
                       foregroundColor: AppPalette.ink,
                     ),
-                    icon: const Icon(Icons.photo_camera_rounded),
-                    label: Text(image == null ? 'Take photo' : 'Retake'),
+                    icon: const Icon(Icons.photo_library_rounded),
                   ),
-                ),
-                const SizedBox(width: 10),
-                IconButton.filled(
-                  onPressed: onGallery,
-                  tooltip: 'Choose from gallery',
-                  style: IconButton.styleFrom(
-                    minimumSize: const Size(52, 52),
-                    backgroundColor: Colors.white,
-                    foregroundColor: AppPalette.ink,
-                  ),
-                  icon: const Icon(Icons.photo_library_rounded),
-                ),
-              ],
+                ],
+              ),
             ),
-          ),
         ],
+      ),
+    );
+  }
+}
+
+class ScannerLoadingOverlay extends StatefulWidget {
+  const ScannerLoadingOverlay({super.key});
+
+  @override
+  State<ScannerLoadingOverlay> createState() => _ScannerLoadingOverlayState();
+}
+
+class _ScannerLoadingOverlayState extends State<ScannerLoadingOverlay>
+    with SingleTickerProviderStateMixin {
+  static const _stages = [
+    'Reading the package',
+    'Matching the exact product',
+    'Checking live nutrition sources',
+    'Preparing your review',
+  ];
+
+  late final AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 5600),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ColoredBox(
+      color: AppPalette.ink.withValues(alpha: 0.82),
+      child: AnimatedBuilder(
+        animation: _controller,
+        builder: (context, _) {
+          final value = _controller.value;
+          final travel = value <= 0.5 ? value * 2 : (1 - value) * 2;
+          final stage = (value * _stages.length).floor().clamp(
+            0,
+            _stages.length - 1,
+          );
+          return LayoutBuilder(
+            builder: (context, constraints) {
+              final beamTop = 18 + (constraints.maxHeight - 36) * travel;
+              return Stack(
+                children: [
+                  Positioned(
+                    left: 18,
+                    right: 18,
+                    top: beamTop,
+                    child: Container(
+                      height: 2,
+                      decoration: BoxDecoration(
+                        color: AppPalette.lime,
+                        borderRadius: BorderRadius.circular(4),
+                        boxShadow: [
+                          BoxShadow(
+                            color: AppPalette.lime.withValues(alpha: 0.85),
+                            blurRadius: 16,
+                            spreadRadius: 3,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  Center(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox.square(
+                          dimension: 66,
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              RotationTransition(
+                                turns: _controller,
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                      color: AppPalette.lime.withValues(
+                                        alpha: 0.75,
+                                      ),
+                                      width: 2.5,
+                                    ),
+                                  ),
+                                  child: const Align(
+                                    alignment: Alignment.topCenter,
+                                    child: CircleAvatar(
+                                      radius: 4,
+                                      backgroundColor: AppPalette.lime,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              Container(
+                                width: 48,
+                                height: 48,
+                                decoration: BoxDecoration(
+                                  color: Colors.white.withValues(alpha: 0.1),
+                                  shape: BoxShape.circle,
+                                ),
+                                child: const Icon(
+                                  Icons.document_scanner_rounded,
+                                  color: Colors.white,
+                                  size: 25,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 15),
+                        AnimatedSwitcher(
+                          duration: const Duration(milliseconds: 280),
+                          child: Text(
+                            _stages[stage],
+                            key: ValueKey(stage),
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w800,
+                              fontSize: 15,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Identity first · nutrition second',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.6),
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Positioned(
+                    left: 0,
+                    right: 0,
+                    bottom: 17,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.shield_outlined,
+                          size: 14,
+                          color: AppPalette.mint,
+                        ),
+                        const SizedBox(width: 5),
+                        Text(
+                          'Your photo is not saved',
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.72),
+                            fontSize: 10.5,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
       ),
     );
   }
@@ -572,6 +754,10 @@ class _AnalysisCard extends StatelessWidget {
             ),
           ],
         ),
+        if (analysis.isPackagedFood) ...[
+          const SizedBox(height: 14),
+          _NutritionEvidenceCard(analysis: analysis),
+        ],
         const SizedBox(height: 18),
         Text('How much did you eat?', style: context.text.titleLarge),
         const SizedBox(height: 9),
@@ -644,16 +830,316 @@ class _AnalysisCard extends StatelessWidget {
           label: Text(saving ? 'Adding to today…' : 'Confirm and add to today'),
         ),
         const SizedBox(height: 9),
-        const Text(
-          'Image-based nutrition is an estimate. Portion confirmation improves tracking; labels or a dietitian are best when precision is critical.',
+        Text(
+          analysis.hasVerifiedOnlineNutrition
+              ? 'These values apply to ${analysis.sourceServing}. Confirm the exact flavour and number of servings before adding it.'
+              : 'Image-based nutrition is an estimate. Portion confirmation improves tracking; a readable package label or dietitian is best when precision is critical.',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 10.5,
             height: 1.4,
             color: AppPalette.muted,
           ),
         ),
       ],
+    );
+  }
+}
+
+class _NutritionEvidenceCard extends StatelessWidget {
+  const _NutritionEvidenceCard({required this.analysis});
+
+  final FoodAnalysis analysis;
+
+  @override
+  Widget build(BuildContext context) {
+    final verified = analysis.hasVerifiedOnlineNutrition;
+    final isGrounded = analysis.nutritionSource == 'googleSearch';
+    final color = verified ? AppPalette.mint : AppPalette.sun;
+    final title = verified
+        ? isGrounded
+              ? 'Verified with live web sources'
+              : 'Matched to a live product label'
+        : 'No exact online label match';
+    final detail = verified
+        ? '${analysis.sourceServing} · ${(analysis.sourceMatchConfidence * 100).round()}% identity match'
+        : 'Using a visual estimate. Retake the front label in good light or add the exact brand and flavour.';
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(21),
+        border: Border.all(color: color.withValues(alpha: 0.25)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: color.withValues(alpha: 0.18),
+              borderRadius: BorderRadius.circular(13),
+            ),
+            child: Icon(
+              verified ? Icons.fact_check_rounded : Icons.manage_search_rounded,
+              color: color,
+              size: 21,
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  title,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 13,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  detail,
+                  style: const TextStyle(
+                    color: AppPalette.muted,
+                    fontSize: 11.5,
+                    height: 1.4,
+                  ),
+                ),
+                if (verified) ...[
+                  const SizedBox(height: 7),
+                  InkWell(
+                    onTap: () => _showNutritionSources(context, analysis),
+                    borderRadius: BorderRadius.circular(10),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 3),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'See match evidence',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w800,
+                            ),
+                          ),
+                          SizedBox(width: 4),
+                          Icon(Icons.arrow_forward_rounded, size: 15),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+void _showNutritionSources(BuildContext context, FoodAnalysis analysis) {
+  showModalBottomSheet<void>(
+    context: context,
+    isScrollControlled: true,
+    useSafeArea: true,
+    backgroundColor: AppPalette.canvas,
+    shape: const RoundedRectangleBorder(
+      borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+    ),
+    builder: (sheetContext) => DraggableScrollableSheet(
+      expand: false,
+      initialChildSize: 0.68,
+      minChildSize: 0.45,
+      maxChildSize: 0.92,
+      builder: (context, controller) => ListView(
+        controller: controller,
+        padding: const EdgeInsets.fromLTRB(22, 12, 22, 28),
+        children: [
+          Center(
+            child: Container(
+              width: 46,
+              height: 5,
+              decoration: BoxDecoration(
+                color: AppPalette.line,
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
+          const SizedBox(height: 24),
+          Text('Why these numbers?', style: context.text.headlineMedium),
+          const SizedBox(height: 7),
+          Text(
+            analysis.sourceNote,
+            style: const TextStyle(color: AppPalette.muted, height: 1.45),
+          ),
+          const SizedBox(height: 18),
+          Container(
+            padding: const EdgeInsets.all(16),
+            decoration: BoxDecoration(
+              color: AppPalette.ink,
+              borderRadius: BorderRadius.circular(22),
+            ),
+            child: Row(
+              children: [
+                const Icon(Icons.restaurant_rounded, color: AppPalette.lime),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        analysis.mealName,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w800,
+                        ),
+                      ),
+                      const SizedBox(height: 3),
+                      Text(
+                        analysis.sourceServing,
+                        style: const TextStyle(
+                          color: Colors.white60,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
+                  '${(analysis.sourceMatchConfidence * 100).round()}%',
+                  style: const TextStyle(
+                    color: AppPalette.lime,
+                    fontWeight: FontWeight.w900,
+                    fontSize: 19,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          if (analysis.searchEntryPointHtml.isNotEmpty) ...[
+            const SizedBox(height: 20),
+            const Text(
+              'Search suggestions',
+              style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+            ),
+            const SizedBox(height: 9),
+            _GoogleSearchEntryPoint(html: analysis.searchEntryPointHtml),
+          ],
+          const SizedBox(height: 20),
+          const Text(
+            'Sources used',
+            style: TextStyle(fontWeight: FontWeight.w800, fontSize: 15),
+          ),
+          const SizedBox(height: 9),
+          ...analysis.sources.map((source) => _SourceLink(source: source)),
+          const SizedBox(height: 12),
+          const Text(
+            'Product recipes and labels can change by country or flavour. Always compare the serving and package name before logging.',
+            style: TextStyle(
+              color: AppPalette.muted,
+              fontSize: 11,
+              height: 1.4,
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _SourceLink extends StatelessWidget {
+  const _SourceLink({required this.source});
+
+  final NutritionSourceRef source;
+
+  Future<void> _open(BuildContext context) async {
+    final uri = Uri.tryParse(source.url);
+    final opened =
+        uri != null &&
+        await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!opened && context.mounted) {
+      showAppMessage(context, 'That source could not be opened right now.');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Material(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(17),
+        child: InkWell(
+          onTap: () => _open(context),
+          borderRadius: BorderRadius.circular(17),
+          child: Padding(
+            padding: const EdgeInsets.all(14),
+            child: Row(
+              children: [
+                const Icon(
+                  Icons.open_in_new_rounded,
+                  color: AppPalette.mint,
+                  size: 20,
+                ),
+                const SizedBox(width: 11),
+                Expanded(
+                  child: Text(
+                    source.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 12.5,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _GoogleSearchEntryPoint extends StatefulWidget {
+  const _GoogleSearchEntryPoint({required this.html});
+
+  final String html;
+
+  @override
+  State<_GoogleSearchEntryPoint> createState() =>
+      _GoogleSearchEntryPointState();
+}
+
+class _GoogleSearchEntryPointState extends State<_GoogleSearchEntryPoint> {
+  late final WebViewController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.transparent)
+      ..loadHtmlString(widget.html);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 105,
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(17),
+        border: Border.all(color: AppPalette.line),
+      ),
+      child: WebViewWidget(controller: _controller),
     );
   }
 }

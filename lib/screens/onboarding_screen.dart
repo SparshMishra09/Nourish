@@ -384,23 +384,32 @@ class _GoalStep extends StatelessWidget {
           Wrap(
             spacing: 8,
             runSpacing: 8,
-            children: ['Dairy', 'Egg', 'Gluten', 'Peanut', 'Soy', 'Fish'].map((
-              item,
-            ) {
-              final selected = profile.avoidFoods.contains(item);
-              return FilterChip(
-                label: Text(item),
-                selected: selected,
-                onSelected: (value) {
-                  final next = List<String>.from(profile.avoidFoods);
-                  value ? next.add(item) : next.remove(item);
-                  onChanged(profile.copyWith(avoidFoods: next));
-                },
-                selectedColor: AppPalette.coral.withValues(alpha: 0.2),
-                checkmarkColor: AppPalette.coral,
-                side: const BorderSide(color: AppPalette.line),
-              );
-            }).toList(),
+            children:
+                [
+                  'Dairy',
+                  'Egg',
+                  'Gluten',
+                  'Peanut',
+                  'Soy',
+                  'Fish',
+                  'Shellfish',
+                  'Sesame',
+                  'Tree nuts',
+                ].map((item) {
+                  final selected = profile.avoidFoods.contains(item);
+                  return FilterChip(
+                    label: Text(item),
+                    selected: selected,
+                    onSelected: (value) {
+                      final next = List<String>.from(profile.avoidFoods);
+                      value ? next.add(item) : next.remove(item);
+                      onChanged(profile.copyWith(avoidFoods: next));
+                    },
+                    selectedColor: AppPalette.coral.withValues(alpha: 0.2),
+                    checkmarkColor: AppPalette.coral,
+                    side: const BorderSide(color: AppPalette.line),
+                  );
+                }).toList(),
           ),
         ],
       ),

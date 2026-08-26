@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../core/app_theme.dart';
+import '../models/meal_plan.dart';
 import '../models/recipe.dart';
 import '../models/user_profile.dart';
+import '../services/plan_engine.dart';
 import '../widgets/recipe_card.dart';
+import '../widgets/recipe_image.dart';
 import '../widgets/shared_ui.dart';
 
 class NutritionScreen extends StatefulWidget {
@@ -38,7 +41,13 @@ class _NutritionScreenState extends State<NutritionScreen> {
       final queryMatches =
           normalized.isEmpty ||
           recipe.name.toLowerCase().contains(normalized) ||
-          recipe.tags.any((tag) => tag.toLowerCase().contains(normalized));
+          recipe.description.toLowerCase().contains(normalized) ||
+          recipe.dietType.toLowerCase().contains(normalized) ||
+          recipe.mealType.toLowerCase().contains(normalized) ||
+          recipe.tags.any((tag) => tag.toLowerCase().contains(normalized)) ||
+          recipe.ingredients.any(
+            (ingredient) => ingredient.toLowerCase().contains(normalized),
+          );
       return mealMatches && queryMatches;
     }).toList();
   }
@@ -46,6 +55,8 @@ class _NutritionScreenState extends State<NutritionScreen> {
   @override
   Widget build(BuildContext context) {
     final recipes = _visibleRecipes;
+    final engine = const PlanEngine();
+    final dailyPlan = engine.buildDailyMealPlan(widget.recipes, widget.profile);
     return CustomScrollView(
       key: const PageStorageKey('nutrition'),
       slivers: [
@@ -126,6 +137,15 @@ class _NutritionScreenState extends State<NutritionScreen> {
             ),
           ),
         ),
+        SliverPadding(
+          padding: const EdgeInsets.fromLTRB(20, 8, 20, 22),
+          sliver: SliverToBoxAdapter(
+            child: _DailyMealMap(
+              plan: dailyPlan,
+              onRecipeTap: widget.onRecipeTap,
+            ),
+          ),
+        ),
         SliverToBoxAdapter(
           child: SizedBox(
             height: 44,
@@ -138,6 +158,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
                 'Lunch',
                 'Dinner',
                 'Snack',
+                'Side',
               ].length,
               separatorBuilder: (_, _) => const SizedBox(width: 8),
               itemBuilder: (context, index) {
@@ -147,10 +168,11 @@ class _NutritionScreenState extends State<NutritionScreen> {
                   'Lunch',
                   'Dinner',
                   'Snack',
+                  'Side',
                 ][index];
                 final selected = filter == _mealFilter;
                 return ChoiceChip(
-                  label: Text(filter),
+                  label: Text(filter == 'Side' ? 'Sides' : filter),
                   selected: selected,
                   onSelected: (_) => setState(() => _mealFilter = filter),
                   selectedColor: AppPalette.ink,
@@ -170,8 +192,15 @@ class _NutritionScreenState extends State<NutritionScreen> {
           sliver: SliverToBoxAdapter(
             child: Row(
               children: [
-                Text('Recommended', style: context.text.headlineMedium),
-                const Spacer(),
+                Expanded(
+                  child: Text(
+                    'Recommended',
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: context.text.headlineMedium,
+                  ),
+                ),
+                const SizedBox(width: 12),
                 Text(
                   '${recipes.length} recipes',
                   style: const TextStyle(
@@ -196,11 +225,168 @@ class _NutritionScreenState extends State<NutritionScreen> {
               separatorBuilder: (_, _) => const SizedBox(height: 14),
               itemBuilder: (context, index) => RecipeCard(
                 recipe: recipes[index],
+                fitLabel: engine.recipeFitReason(
+                  recipes[index],
+                  widget.profile,
+                ),
+                portionLabel: PlannedMeal(
+                  mealType: recipes[index].mealType,
+                  recipe: recipes[index],
+                  servingScale: engine.suggestedServingScale(
+                    recipes[index],
+                    widget.profile,
+                  ),
+                  fitReason: '',
+                ).portionLabel,
                 onTap: () => widget.onRecipeTap(recipes[index]),
               ),
             ),
           ),
       ],
+    );
+  }
+}
+
+class _DailyMealMap extends StatelessWidget {
+  const _DailyMealMap({required this.plan, required this.onRecipeTap});
+
+  final DailyMealPlan plan;
+  final ValueChanged<Recipe> onRecipeTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(17),
+      decoration: BoxDecoration(
+        color: AppPalette.ink,
+        borderRadius: BorderRadius.circular(27),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'YOUR DAY, PLANNED',
+                      style: TextStyle(
+                        color: AppPalette.lime,
+                        fontSize: 10,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: 1.3,
+                      ),
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      '${plan.plannedCalories} kcal · ${plan.plannedProtein}g protein',
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 17,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: AppPalette.lime.withValues(alpha: 0.14),
+                  shape: BoxShape.circle,
+                ),
+                child: const Icon(
+                  Icons.auto_awesome_rounded,
+                  color: AppPalette.lime,
+                  size: 20,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 15),
+          ...plan.meals.map(
+            (meal) => Padding(
+              padding: const EdgeInsets.only(bottom: 9),
+              child: Material(
+                color: Colors.white.withValues(alpha: 0.07),
+                borderRadius: BorderRadius.circular(18),
+                clipBehavior: Clip.antiAlias,
+                child: InkWell(
+                  onTap: () => onRecipeTap(meal.recipe),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
+                      children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(13),
+                          child: RecipeImage(
+                            recipe: meal.recipe,
+                            width: 54,
+                            height: 54,
+                          ),
+                        ),
+                        const SizedBox(width: 11),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                meal.mealType.toUpperCase(),
+                                style: TextStyle(
+                                  color: Colors.white.withValues(alpha: 0.5),
+                                  fontSize: 9,
+                                  letterSpacing: 1.1,
+                                  fontWeight: FontWeight.w800,
+                                ),
+                              ),
+                              const SizedBox(height: 3),
+                              Text(
+                                meal.recipe.name,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 13.5,
+                                ),
+                              ),
+                              const SizedBox(height: 2),
+                              Text(
+                                '${meal.portionLabel} · ${meal.calories} kcal',
+                                style: const TextStyle(
+                                  color: AppPalette.lime,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: 10.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(
+                          Icons.chevron_right_rounded,
+                          color: Colors.white54,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 2),
+          Text(
+            'A suggested menu—not a meal log. Only food you scan or log changes Today.',
+            style: TextStyle(
+              color: Colors.white.withValues(alpha: 0.55),
+              fontSize: 10.5,
+              height: 1.35,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

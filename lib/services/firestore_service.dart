@@ -9,6 +9,7 @@ import '../models/recipe.dart';
 import '../models/reminder_settings.dart';
 import '../models/user_profile.dart';
 import '../models/workout.dart';
+import 'recipe_catalog.dart';
 
 class FirestoreService {
   FirestoreService({FirebaseFirestore? database})
@@ -37,26 +38,40 @@ class FirestoreService {
   }
 
   Future<List<Recipe>> getRecipes() async {
+    final bundled = await loadBundledRecipes();
     try {
       final snapshot = await _database.collection('recipes').get();
       if (snapshot.docs.isNotEmpty) {
-        return snapshot.docs
+        final remote = snapshot.docs
             .map((document) => Recipe.fromMap(document.id, document.data()))
             .toList();
+        return RecipeCatalog.merge(bundled: bundled, remote: remote);
       }
     } on FirebaseException {
       // The bundled catalog keeps the experience useful when temporarily offline.
     }
-    return loadBundledRecipes();
+    return bundled;
   }
 
   Future<List<Recipe>> loadBundledRecipes() async {
-    final source = await rootBundle.loadString('assets/data/recipes.json');
-    final records = jsonDecode(source) as List<dynamic>;
-    return records.map((record) {
-      final map = Map<String, dynamic>.from(record as Map);
-      return Recipe.fromMap(map.remove('id') as String, map);
-    }).toList();
+    const catalogAssets = [
+      'assets/data/recipes.json',
+      'assets/data/recipe_expansion.json',
+      'assets/data/recipe_expansion_v2.json',
+      'assets/data/recipe_sides.json',
+    ];
+    final recipes = <Recipe>[];
+    for (final asset in catalogAssets) {
+      final source = await rootBundle.loadString(asset);
+      final records = jsonDecode(source) as List<dynamic>;
+      recipes.addAll(
+        records.map((record) {
+          final map = Map<String, dynamic>.from(record as Map);
+          return Recipe.fromMap(map.remove('id') as String, map);
+        }),
+      );
+    }
+    return recipes;
   }
 
   Future<void> saveWorkoutPlan(String uid, WorkoutPlan plan) {

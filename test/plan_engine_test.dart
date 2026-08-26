@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:nourish/models/exercise_guide.dart';
 import 'package:nourish/models/recipe.dart';
 import 'package:nourish/models/user_profile.dart';
+import 'package:nourish/models/workout.dart';
 import 'package:nourish/services/plan_engine.dart';
 
 void main() {
@@ -59,10 +60,11 @@ void main() {
     expect(plan.nextWorkout(DateTime(2026, 8, 30)).dayLabel, 'SUN');
   });
 
-  test('every generated exercise has coaching and a professional demo', () {
+  test('every generated exercise and support move has a professional demo', () {
     const goals = ['Build muscle', 'Lose fat', 'Maintain weight'];
     const days = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
     final generatedNames = <String>{};
+    final supportNames = <String>{};
 
     for (final goal in goals) {
       for (final equipment in const [
@@ -81,23 +83,29 @@ void main() {
         generatedNames.addAll(
           plan.days.expand((day) => day.exercises).map((item) => item.name),
         );
+        supportNames.addAll(
+          plan.days
+              .expand(
+                (day) => [...day.warmUp.exercises, ...day.coolDown.exercises],
+              )
+              .map((item) => item.name),
+        );
       }
     }
 
+    final allNames = {...generatedNames, ...supportNames};
     expect(generatedNames, hasLength(33));
+    expect(supportNames, hasLength(12));
     expect(
-      generatedNames.difference(ExerciseGuideCatalog.coveredExerciseNames),
+      allNames.difference(ExerciseGuideCatalog.coveredExerciseNames),
       isEmpty,
     );
     expect(
-      ExerciseGuideCatalog.coveredExerciseNames.difference(generatedNames),
+      ExerciseGuideCatalog.coveredExerciseNames.difference(allNames),
       isEmpty,
     );
-    expect(
-      generatedNames.difference(ExerciseGuideCatalog.coveredDemoNames),
-      isEmpty,
-    );
-    for (final exerciseName in generatedNames) {
+    expect(allNames.difference(ExerciseGuideCatalog.coveredDemoNames), isEmpty);
+    for (final exerciseName in allNames) {
       final demo = ExerciseGuideCatalog.demoForName(exerciseName);
       expect(demo, isNotNull, reason: '$exerciseName needs a demonstration');
       expect(demo!.exerciseDbId, hasLength(7));
@@ -105,7 +113,141 @@ void main() {
       expect(demo.sourceName, isNotEmpty);
     }
   });
+
+  test(
+    'support blocks cover every planner edge without changing session time',
+    () {
+      const goals = ['Build muscle', 'Lose fat', 'Maintain weight'];
+      const week = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+
+      for (final goal in goals) {
+        for (final equipment in const [
+          ['Bodyweight'],
+          ['Bodyweight', 'Dumbbells'],
+        ]) {
+          for (final minutes in const [20, 35, 45]) {
+            for (var dayCount = 2; dayCount <= 6; dayCount++) {
+              final plan = engine.buildWorkoutPlan(
+                _profile(
+                  goal: goal,
+                  workoutDays: dayCount,
+                  availableWorkoutDays: week.take(dayCount).toList(),
+                  sessionMinutes: minutes,
+                  equipment: equipment,
+                ),
+              );
+
+              expect(plan.days, hasLength(dayCount));
+              for (final day in plan.days) {
+                final mainNames = day.exercises
+                    .map((item) => item.name)
+                    .toSet();
+                final warmUpNames = day.warmUp.exercises
+                    .map((item) => item.name)
+                    .toSet();
+                final coolDownNames = day.coolDown.exercises
+                    .map((item) => item.name)
+                    .toSet();
+
+                expect(day.durationMinutes, minutes);
+                expect(day.warmUp.title, 'Warm-up');
+                expect(day.coolDown.title, 'Cool-down');
+                expect(day.warmUp.estimatedMinutes, inInclusiveRange(4, 5));
+                expect(day.coolDown.estimatedMinutes, 4);
+                expect(day.warmUp.exercises.length, inInclusiveRange(3, 4));
+                expect(day.coolDown.exercises.length, inInclusiveRange(3, 4));
+                expect(day.warmUp.reason, isNotEmpty);
+                expect(day.coolDown.reason, isNotEmpty);
+                expect(mainNames.intersection(warmUpNames), isEmpty);
+                expect(mainNames.intersection(coolDownNames), isEmpty);
+                expect(day.optionalExtraMinutes, inInclusiveRange(8, 9));
+              }
+            }
+          }
+        }
+      }
+    },
+  );
+
+  test('support selection follows the actual workout pattern', () {
+    final plan = engine.buildWorkoutPlan(
+      _profile(
+        goal: 'Build muscle',
+        workoutDays: 3,
+        availableWorkoutDays: const ['MON', 'WED', 'FRI'],
+        sessionMinutes: 45,
+        equipment: const ['Bodyweight', 'Dumbbells'],
+      ),
+    );
+
+    final upper = plan.days.firstWhere((day) => day.title.contains('Upper'));
+    expect(_supportNames(upper.warmUp), contains('Scapula push-up'));
+    expect(
+      _supportNames(upper.coolDown),
+      containsAll(['Chest & shoulder stretch', 'Kneeling lat stretch']),
+    );
+
+    final lower = plan.days.firstWhere((day) => day.title.contains('Lower'));
+    expect(_supportNames(lower.warmUp), contains('Ankle circles'));
+    expect(
+      _supportNames(lower.coolDown),
+      containsAll([
+        'Hamstring stretch',
+        'Side-lying quad stretch',
+        'Standing calf stretch',
+      ]),
+    );
+
+    final cardioPlan = engine.buildWorkoutPlan(
+      _profile(
+        goal: 'Lose fat',
+        workoutDays: 3,
+        availableWorkoutDays: const ['MON', 'WED', 'FRI'],
+        sessionMinutes: 45,
+      ),
+    );
+    final cardio = cardioPlan.days.firstWhere(
+      (day) => day.title == 'Low-impact cardio',
+    );
+    expect(cardio.coolDown.exercises.first.name, 'Back & forth step');
+    expect(
+      cardio.coolDown.exercises.first.detail,
+      contains('gradually slower'),
+    );
+  });
+
+  test('workout support serialization is backward compatible', () {
+    final generated = engine
+        .buildWorkoutPlan(
+          _profile(
+            goal: 'Maintain weight',
+            workoutDays: 2,
+            availableWorkoutDays: const ['TUE', 'SAT'],
+          ),
+        )
+        .days
+        .first;
+    final restored = WorkoutDay.fromMap(generated.toMap());
+
+    expect(restored.warmUp.toMap(), generated.warmUp.toMap());
+    expect(restored.coolDown.toMap(), generated.coolDown.toMap());
+    expect(restored.optionalExtraMinutes, generated.optionalExtraMinutes);
+
+    final legacy = WorkoutDay.fromMap({
+      'dayLabel': 'MON',
+      'title': 'Legacy workout',
+      'subtitle': 'Previously saved',
+      'durationMinutes': 30,
+      'exercises': const [],
+    });
+    expect(legacy.warmUp.isEmpty, isTrue);
+    expect(legacy.coolDown.isEmpty, isTrue);
+    expect(legacy.optionalExtraMinutes, 0);
+  });
 }
+
+Set<String> _supportNames(WorkoutSupportBlock block) =>
+    block.exercises.map((item) => item.name).toSet();
 
 UserProfile _profile({
   String goal = 'Lose fat',

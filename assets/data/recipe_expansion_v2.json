@@ -1,0 +1,322 @@
+[
+  {
+    "id": "savoury_quinoa_pongal", "name": "Savoury Quinoa Pongal", "description": "Peppery quinoa and moong dal with ginger and curry leaves for a warm, steady-energy breakfast.",
+    "dietType": "Vegan", "mealType": "Breakfast", "emoji": "🥣", "imageAsset": "assets/images/recipes/savoury_quinoa_pongal.webp",
+    "calories": 390, "protein": 18, "carbs": 59, "fat": 10, "fiber": 10, "prepMinutes": 24, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "One pot"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Tree nuts"],
+    "ingredients": ["1/2 cup quinoa, rinsed", "1/3 cup yellow moong dal", "1 tsp oil", "1 tsp grated ginger", "Cumin, black pepper and curry leaves", "1 tbsp chopped cashews", "2 1/2 cups water", "Coriander and salt"],
+    "steps": ["Dry-roast the moong dal for 2 minutes, then rinse it with the quinoa.", "Heat oil and bloom cumin, pepper, ginger and curry leaves until fragrant.", "Add quinoa, dal, water and salt; cover and simmer for 18 minutes until creamy.", "Loosen with hot water if needed and finish with coriander and chopped cashews."]
+  },
+  {
+    "id": "spinach_corn_uttapam", "name": "Spinach Corn Uttapam", "description": "Soft savoury pancakes with spinach, corn and vegetables, served with bright tomato chutney.",
+    "dietType": "Vegan", "mealType": "Breakfast", "emoji": "🥞", "imageAsset": "assets/images/recipes/spinach_corn_uttapam.webp",
+    "calories": 370, "protein": 13, "carbs": 62, "fat": 8, "fiber": 9, "prepMinutes": 20, "servings": 1,
+    "tags": ["Vegan", "Indian", "Family friendly"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 cup fermented idli batter", "1 packed cup spinach", "1/3 cup sweet corn", "1/4 cup chopped tomato", "2 tbsp chopped onion", "1 tsp oil", "Cumin, chilli and salt", "3 tbsp tomato chutney"],
+    "steps": ["Blend spinach with two tablespoons of water and stir it into the idli batter.", "Fold in corn, tomato, onion, cumin, chilli and a small pinch of salt.", "Spoon three small rounds onto a lightly oiled pan and cook until bubbles appear.", "Flip, cook until golden and serve hot with tomato chutney."]
+  },
+  {
+    "id": "beetroot_idli_sambar", "name": "Beetroot Idli Sambar", "description": "Naturally pink steamed idlis paired with vegetable-rich sambar for a colourful balanced morning.",
+    "dietType": "Vegan", "mealType": "Breakfast", "emoji": "🩷", "imageAsset": "assets/images/recipes/beetroot_idli_sambar.webp",
+    "calories": 400, "protein": 16, "carbs": 73, "fat": 6, "fiber": 11, "prepMinutes": 28, "servings": 1,
+    "tags": ["Vegan", "Steamed", "Indian"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 cup fermented idli batter", "1/3 cup grated beetroot", "3/4 cup cooked toor dal", "1 cup mixed sambar vegetables", "1 small tomato", "1 tsp sambar powder", "Tamarind, curry leaves and mustard seeds", "1 tsp oil and salt"],
+    "steps": ["Blend beetroot into a smooth puree and fold it evenly through the idli batter.", "Steam four idlis in greased moulds for 10-12 minutes, then rest for 2 minutes.", "Simmer dal, vegetables, tomato, sambar powder and tamarind until tender.", "Temper mustard seeds and curry leaves in oil, pour over the sambar and serve with idlis."]
+  },
+  {
+    "id": "paneer_peas_breakfast_paratha", "name": "Paneer Peas Breakfast Paratha", "description": "Whole-wheat paratha packed with paneer and peas for a practical high-protein breakfast.",
+    "dietType": "Vegetarian", "mealType": "Breakfast", "emoji": "🫓", "imageAsset": "assets/images/recipes/paneer_peas_breakfast_paratha.webp",
+    "calories": 480, "protein": 29, "carbs": 54, "fat": 17, "fiber": 9, "prepMinutes": 28, "servings": 1,
+    "tags": ["High protein", "Indian", "Meal prep"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Dairy", "Gluten"],
+    "ingredients": ["2/3 cup whole-wheat flour", "120 g low-fat paneer, crumbled", "1/3 cup green peas, mashed", "2 tbsp chopped onion", "Cumin, chilli and garam masala", "1 tsp oil", "3 tbsp mint yogurt", "Coriander, water and salt"],
+    "steps": ["Knead flour, salt and water into a soft dough and rest it for 10 minutes.", "Mix paneer, peas, onion, coriander and spices into a dry filling.", "Enclose the filling in the dough, roll gently and cook on a hot pan with oil.", "Turn until both sides have brown spots, slice and serve with mint yogurt."]
+  },
+  {
+    "id": "berry_amaranth_breakfast_bowl", "name": "Berry Amaranth Breakfast Bowl", "description": "Creamy amaranth, yogurt and berries with almonds for a fibre-rich make-ahead bowl.",
+    "dietType": "Vegetarian", "mealType": "Breakfast", "emoji": "🫐", "imageAsset": "assets/images/recipes/berry_amaranth_breakfast_bowl.webp",
+    "calories": 410, "protein": 21, "carbs": 56, "fat": 12, "fiber": 9, "prepMinutes": 22, "servings": 1,
+    "tags": ["Gluten free", "Meal prep", "High fiber"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Dairy", "Tree nuts"],
+    "ingredients": ["1/2 cup amaranth grain", "1 1/2 cups water", "150 g low-fat yogurt", "1/2 cup mixed berries", "1 tbsp chopped almonds", "1 tsp chia seeds", "1/2 tsp vanilla", "Cinnamon and a pinch of salt"],
+    "steps": ["Simmer amaranth, water and salt for 18 minutes until tender and creamy.", "Cool for 5 minutes, then stir through vanilla and half the yogurt.", "Transfer to a bowl and add the remaining yogurt and mixed berries.", "Finish with almonds, chia and cinnamon; chill if preparing ahead."]
+  },
+  {
+    "id": "masala_egg_sweet_potato_bowl", "name": "Masala Egg Sweet Potato Bowl", "description": "Roasted sweet potato, eggs and spinach with tangy masala for a filling gluten-free start.",
+    "dietType": "Non-vegetarian", "mealType": "Breakfast", "emoji": "🍳", "imageAsset": "assets/images/recipes/masala_egg_sweet_potato_bowl.webp",
+    "calories": 430, "protein": 23, "carbs": 48, "fat": 17, "fiber": 9, "prepMinutes": 25, "servings": 1,
+    "tags": ["Gluten free", "Balanced", "Meal prep"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Egg"],
+    "ingredients": ["220 g sweet potato, cubed", "2 large eggs", "1 packed cup spinach", "1 small tomato, chopped", "1/4 red onion, sliced", "1 tsp oil", "Cumin, chaat masala and chilli", "Lime, coriander and salt"],
+    "steps": ["Toss sweet potato with half the oil and spices, then roast at 210°C for 18 minutes.", "Boil eggs for 8 minutes, cool, peel and halve them.", "Saute tomato, onion and spinach in the remaining oil until just wilted.", "Assemble the vegetables, potato and eggs; finish with chaat masala, lime and coriander."]
+  },
+  {
+    "id": "chicken_spinach_breakfast_patties", "name": "Chicken Spinach Breakfast Patties", "description": "Lean chicken and spinach patties with a crisp salad and herb dip for a protein-forward morning.",
+    "dietType": "Non-vegetarian", "mealType": "Breakfast", "emoji": "🍗", "imageAsset": "assets/images/recipes/chicken_spinach_breakfast_patties.webp",
+    "calories": 390, "protein": 42, "carbs": 26, "fat": 13, "fiber": 6, "prepMinutes": 24, "servings": 1,
+    "tags": ["High protein", "Gluten free", "Lower carb"], "goalTags": ["Lose fat", "Build muscle"], "allergens": ["Dairy"],
+    "ingredients": ["180 g lean chicken mince", "1 packed cup finely chopped spinach", "2 tbsp grated carrot", "2 tbsp chopped onion", "1 tbsp chickpea flour", "1 tsp oil", "3 tbsp yogurt-herb dip", "Garlic, paprika, pepper and salt"],
+    "steps": ["Mix chicken, spinach, carrot, onion, chickpea flour, garlic and seasonings.", "Shape into four compact patties with damp hands.", "Pan-cook in oil over medium heat for 4-5 minutes per side until cooked through.", "Rest briefly and serve with cucumber-tomato salad and yogurt-herb dip."]
+  },
+  {
+    "id": "coconut_millet_porridge", "name": "Coconut Millet Porridge", "description": "Creamy millet with banana, seeds and coconut for a comforting dairy-free breakfast.",
+    "dietType": "Vegan", "mealType": "Breakfast", "emoji": "🥥", "imageAsset": "assets/images/recipes/coconut_millet_porridge.webp",
+    "calories": 420, "protein": 12, "carbs": 66, "fat": 14, "fiber": 10, "prepMinutes": 22, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "One pot"], "goalTags": ["Maintain weight"], "allergens": [],
+    "ingredients": ["1/2 cup pearl millet", "1 cup light coconut milk", "1 cup water", "1 small banana, sliced", "1 tbsp pumpkin seeds", "2 tbsp pomegranate", "1/2 tsp cinnamon", "Vanilla and a pinch of salt"],
+    "steps": ["Rinse millet and simmer it with water and salt for 15 minutes.", "Add coconut milk and cook for another 5 minutes, stirring until creamy.", "Mash half the banana into the porridge with vanilla and cinnamon.", "Spoon into a bowl and top with remaining banana, pumpkin seeds and pomegranate."]
+  },
+  {
+    "id": "sprouted_moong_breakfast_chaat", "name": "Sprouted Moong Breakfast Chaat", "description": "Fresh sprouted moong, crunchy vegetables and pomegranate tossed with lime and chaat masala.",
+    "dietType": "Vegan", "mealType": "Breakfast", "emoji": "🥗", "imageAsset": "assets/images/recipes/sprouted_moong_breakfast_chaat.webp",
+    "calories": 330, "protein": 20, "carbs": 53, "fat": 5, "fiber": 14, "prepMinutes": 12, "servings": 1,
+    "tags": ["Vegan", "Quick", "High fiber"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 1/2 cups sprouted moong", "1/2 cup cucumber, diced", "1 small tomato, diced", "1/4 cup pomegranate", "2 tbsp red onion", "1 tbsp roasted pumpkin seeds", "Chaat masala and cumin", "Lime, coriander and salt"],
+    "steps": ["Steam the moong sprouts for 3 minutes, then cool completely for a tender crunch.", "Combine sprouts, cucumber, tomato, pomegranate and onion in a bowl.", "Season with chaat masala, cumin, salt and plenty of lime juice.", "Toss with coriander and pumpkin seeds just before serving."]
+  },
+  {
+    "id": "mushroom_cheese_omelette_roll", "name": "Mushroom Cheese Omelette Roll", "description": "A tender rolled omelette filled with mushrooms, spinach and cheese for a quick savoury breakfast.",
+    "dietType": "Non-vegetarian", "mealType": "Breakfast", "emoji": "🍳", "imageAsset": "assets/images/recipes/mushroom_cheese_omelette_roll.webp",
+    "calories": 410, "protein": 31, "carbs": 18, "fat": 24, "fiber": 5, "prepMinutes": 16, "servings": 1,
+    "tags": ["High protein", "Quick", "Lower carb"], "goalTags": ["Lose fat", "Build muscle"], "allergens": ["Egg", "Dairy"],
+    "ingredients": ["3 large eggs", "120 g mushrooms, sliced", "1 packed cup spinach", "35 g grated cheese", "1 small tomato", "1 tsp oil", "Garlic and black pepper", "Chives and salt"],
+    "steps": ["Saute mushrooms and garlic in half the oil until browned; fold in spinach to wilt.", "Whisk eggs with pepper, chives and a small pinch of salt.", "Pour into a lightly oiled pan, cook gently and scatter over mushrooms and cheese.", "Roll the omelette while warm, rest for a minute, slice and serve with tomato."]
+  },
+  {
+    "id": "lauki_chana_dal_thali", "name": "Lauki Chana Dal Thali", "description": "Bottle gourd and chana dal with jowar roti and cucumber salad for a light, complete lunch.",
+    "dietType": "Vegan", "mealType": "Lunch", "emoji": "🍛", "imageAsset": "assets/images/recipes/lauki_chana_dal_thali.webp",
+    "calories": 470, "protein": 22, "carbs": 78, "fat": 9, "fiber": 16, "prepMinutes": 32, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Indian"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 cup bottle gourd, cubed", "1/2 cup chana dal, soaked", "1 small tomato", "1 small jowar roti", "1/2 cup cucumber salad", "1 tsp oil", "Cumin, turmeric, ginger and chilli", "Lemon, coriander and salt"],
+    "steps": ["Pressure-cook soaked chana dal and bottle gourd with turmeric until tender but not mushy.", "Heat oil, bloom cumin and ginger, then cook tomato and chilli into a quick masala.", "Fold in the cooked dal mixture and simmer uncovered for 6 minutes to thicken.", "Finish with coriander and lemon, then serve with jowar roti and cucumber salad."]
+  },
+  {
+    "id": "tempeh_peanut_rice_bowl", "name": "Tempeh Peanut Rice Bowl", "description": "Glazed tempeh, brown rice and crisp vegetables with a creamy peanut-lime dressing.",
+    "dietType": "Vegan", "mealType": "Lunch", "emoji": "🥜", "imageAsset": "assets/images/recipes/tempeh_peanut_rice_bowl.webp",
+    "calories": 560, "protein": 31, "carbs": 66, "fat": 20, "fiber": 13, "prepMinutes": 25, "servings": 1,
+    "tags": ["Vegan", "High protein", "Meal prep"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Soy", "Peanut"],
+    "ingredients": ["150 g tempeh, sliced", "3/4 cup cooked brown rice", "1 cup shredded cabbage and carrot", "1/2 cup cucumber", "1/3 cup edamame", "1 tbsp peanut butter", "Low-sodium soy sauce, lime and ginger", "1 tsp oil and chilli"],
+    "steps": ["Whisk peanut butter, lime, ginger, soy sauce and warm water into a pourable dressing.", "Sear tempeh in oil until browned, then glaze with one spoonful of dressing.", "Arrange rice, cabbage, carrot, cucumber and edamame in a wide bowl.", "Add tempeh and drizzle over the remaining peanut-lime dressing."]
+  },
+  {
+    "id": "paneer_methi_pulao", "name": "Paneer Methi Pulao", "description": "Fragrant fenugreek rice with browned paneer and peas for a high-protein vegetarian lunch.",
+    "dietType": "Vegetarian", "mealType": "Lunch", "emoji": "🍚", "imageAsset": "assets/images/recipes/paneer_methi_pulao.webp",
+    "calories": 540, "protein": 30, "carbs": 63, "fat": 19, "fiber": 8, "prepMinutes": 28, "servings": 1,
+    "tags": ["High protein", "Indian", "One pot"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Dairy"],
+    "ingredients": ["150 g low-fat paneer, cubed", "3/4 cup cooked basmati rice", "1 packed cup fresh fenugreek leaves", "1/3 cup green peas", "1/2 small onion", "1 tsp oil", "Cumin, cinnamon, clove and chilli", "Lemon, coriander and salt"],
+    "steps": ["Sear paneer in half the oil until golden on two sides, then set aside.", "Heat remaining oil, bloom whole spices and soften the onion.", "Add fenugreek and peas, cook for 4 minutes, then fold in rice and paneer.", "Cover for 3 minutes, fluff gently and finish with lemon and coriander."]
+  },
+  {
+    "id": "chicken_shawarma_bulgur_bowl", "name": "Chicken Shawarma Bulgur Bowl", "description": "Spice-charred chicken, bulgur and fresh vegetables with a light garlic-yogurt sauce.",
+    "dietType": "Non-vegetarian", "mealType": "Lunch", "emoji": "🥙", "imageAsset": "assets/images/recipes/chicken_shawarma_bulgur_bowl.webp",
+    "calories": 550, "protein": 48, "carbs": 59, "fat": 14, "fiber": 9, "prepMinutes": 30, "servings": 1,
+    "tags": ["High protein", "Mediterranean", "Meal prep"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Dairy", "Gluten"],
+    "ingredients": ["180 g chicken breast, sliced", "3/4 cup cooked bulgur", "1/2 cup cucumber", "1/2 cup tomato", "2 tbsp pickled red onion", "3 tbsp garlic yogurt", "1 tsp olive oil", "Paprika, cumin, lemon, pepper and salt"],
+    "steps": ["Coat chicken with oil, paprika, cumin, lemon, pepper and salt for 10 minutes.", "Sear in a very hot pan for 7-8 minutes, turning until charred and cooked through.", "Fluff bulgur and arrange it with cucumber, tomato and pickled onion.", "Top with sliced chicken and spoon over the garlic-yogurt sauce."]
+  },
+  {
+    "id": "prawn_lemon_quinoa", "name": "Prawn Lemon Quinoa", "description": "Garlicky prawns, lemon-herb quinoa and green vegetables in a bright protein-rich lunch.",
+    "dietType": "Non-vegetarian", "mealType": "Lunch", "emoji": "🍤", "imageAsset": "assets/images/recipes/prawn_lemon_quinoa.webp",
+    "calories": 480, "protein": 40, "carbs": 52, "fat": 13, "fiber": 8, "prepMinutes": 22, "servings": 1,
+    "tags": ["High protein", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Build muscle", "Maintain weight"], "allergens": ["Shellfish"],
+    "ingredients": ["180 g cleaned prawns", "3/4 cup cooked quinoa", "1/2 cup asparagus", "1/3 cup green peas", "1/2 cup cherry tomatoes", "1 tsp olive oil", "Garlic, lemon zest and juice", "Parsley, chilli, pepper and salt"],
+    "steps": ["Pat prawns dry and season with pepper, chilli, lemon zest and salt.", "Sear in half the oil for 2 minutes per side until pink and opaque; remove.", "Saute asparagus, peas, tomatoes and garlic in the remaining oil for 4 minutes.", "Fold in quinoa, lemon juice and parsley, then return the prawns and warm through."]
+  },
+  {
+    "id": "black_bean_sweet_potato_burrito_bowl", "name": "Black Bean Sweet Potato Burrito Bowl", "description": "Roasted sweet potato, black beans and brown rice with corn salsa and creamy avocado.",
+    "dietType": "Vegan", "mealType": "Lunch", "emoji": "🥑", "imageAsset": "assets/images/recipes/black_bean_sweet_potato_burrito_bowl.webp",
+    "calories": 530, "protein": 19, "carbs": 88, "fat": 13, "fiber": 20, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "High fiber"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["180 g sweet potato, cubed", "3/4 cup cooked black beans", "1/2 cup cooked brown rice", "1/3 cup sweet corn", "1/2 cup tomato salsa", "1/4 avocado", "1 tsp oil", "Cumin, paprika, lime, coriander and salt"],
+    "steps": ["Toss sweet potato with oil, cumin and paprika and roast at 210°C for 20 minutes.", "Warm black beans with a spoonful of salsa and a pinch of salt.", "Arrange brown rice, beans, roasted potato, corn and remaining salsa in sections.", "Add avocado and finish with lime juice and coriander."]
+  },
+  {
+    "id": "kadhi_brown_rice_bowl", "name": "Kadhi Brown Rice Bowl", "description": "Tangy yogurt kadhi with spinach and brown rice, finished with a fragrant cumin tempering.",
+    "dietType": "Vegetarian", "mealType": "Lunch", "emoji": "🍲", "imageAsset": "assets/images/recipes/kadhi_brown_rice_bowl.webp",
+    "calories": 460, "protein": 20, "carbs": 68, "fat": 13, "fiber": 8, "prepMinutes": 28, "servings": 1,
+    "tags": ["Vegetarian", "Indian", "Comfort food"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Dairy"],
+    "ingredients": ["200 g low-fat yogurt", "2 tbsp chickpea flour", "3/4 cup cooked brown rice", "1 packed cup spinach", "1 tsp oil", "Ginger, turmeric and chilli", "Cumin, mustard seeds and curry leaves", "2 cups water and salt"],
+    "steps": ["Whisk yogurt, chickpea flour, turmeric, water and salt until completely smooth.", "Simmer gently with ginger and chilli for 18 minutes, stirring often.", "Fold in spinach and cook for another 3 minutes until wilted.", "Temper cumin, mustard seeds and curry leaves in oil; pour over and serve with rice."]
+  },
+  {
+    "id": "chicken_saag_millet_bowl", "name": "Chicken Saag Millet Bowl", "description": "Lean chicken in a silky spinach curry paired with fluffy millet for a gluten-free power lunch.",
+    "dietType": "Non-vegetarian", "mealType": "Lunch", "emoji": "🥬", "imageAsset": "assets/images/recipes/chicken_saag_millet_bowl.webp",
+    "calories": 510, "protein": 47, "carbs": 49, "fat": 15, "fiber": 10, "prepMinutes": 32, "servings": 1,
+    "tags": ["High protein", "Gluten free", "Indian"], "goalTags": ["Lose fat", "Build muscle", "Maintain weight"], "allergens": [],
+    "ingredients": ["180 g chicken breast, cubed", "3/4 cup cooked foxtail millet", "2 packed cups spinach", "1 small tomato", "1/2 small onion", "1 tsp oil", "Ginger, garlic, cumin and garam masala", "Lemon and salt"],
+    "steps": ["Blanch spinach for 2 minutes, cool and blend into a smooth puree.", "Brown chicken in half the oil until nearly cooked, then remove briefly.", "Cook onion, ginger, garlic, tomato and spices in remaining oil; add spinach puree.", "Return chicken, simmer for 7 minutes and serve with millet and lemon."]
+  },
+  {
+    "id": "thai_tofu_green_curry_rice", "name": "Thai Tofu Green Curry Rice", "description": "Tofu and vegetables in a fragrant basil-coconut green curry with jasmine rice.",
+    "dietType": "Vegan", "mealType": "Lunch", "emoji": "🍛", "imageAsset": "assets/images/recipes/thai_tofu_green_curry_rice.webp",
+    "calories": 520, "protein": 25, "carbs": 65, "fat": 19, "fiber": 11, "prepMinutes": 25, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Thai inspired"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Soy"],
+    "ingredients": ["180 g firm tofu, cubed", "2/3 cup cooked jasmine rice", "1/2 cup eggplant", "1/2 cup green beans", "150 ml light coconut milk", "1 tbsp vegan green curry paste", "1 tsp oil", "Thai basil, lime and salt"],
+    "steps": ["Sear tofu in oil until golden on several sides, then set aside.", "Fry curry paste for 30 seconds and stir in coconut milk and 100 ml water.", "Add eggplant and beans, simmer for 7 minutes, then return tofu.", "Finish with basil and lime and serve beside warm jasmine rice."]
+  },
+  {
+    "id": "masoor_dal_pumpkin_rice_bowl", "name": "Masoor Dal Pumpkin Rice Bowl", "description": "Red lentils and pumpkin simmered with warm spices, served over brown rice and greens.",
+    "dietType": "Vegan", "mealType": "Lunch", "emoji": "🎃", "imageAsset": "assets/images/recipes/masoor_dal_pumpkin_rice_bowl.webp",
+    "calories": 490, "protein": 22, "carbs": 83, "fat": 9, "fiber": 18, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "High fiber", "One pot"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1/2 cup red lentils, rinsed", "1 cup pumpkin, cubed", "2/3 cup cooked brown rice", "1 packed cup spinach", "1 small tomato", "1 tsp oil", "Cumin, ginger, turmeric and chilli", "Lime, coriander and salt"],
+    "steps": ["Heat oil and bloom cumin, ginger, turmeric and chilli for 30 seconds.", "Add lentils, pumpkin, tomato, salt and 2 cups water; simmer for 20 minutes.", "Stir firmly to break down some pumpkin, then fold in spinach until wilted.", "Spoon over brown rice and finish with lime and coriander."]
+  },
+  {
+    "id": "baingan_bharta_bajra_roti", "name": "Baingan Bharta with Bajra Roti", "description": "Smoky mashed aubergine with pearl-millet rotis for a rustic, fibre-rich vegan dinner.",
+    "dietType": "Vegan", "mealType": "Dinner", "emoji": "🍆", "imageAsset": "assets/images/recipes/baingan_bharta_bajra_roti.webp",
+    "calories": 450, "protein": 14, "carbs": 70, "fat": 13, "fiber": 15, "prepMinutes": 38, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Indian"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 large aubergine", "2 small bajra rotis", "1 small tomato, chopped", "1/2 small onion, chopped", "1/3 cup green peas", "1 tsp oil", "Garlic, cumin, chilli and turmeric", "Lemon, coriander and salt"],
+    "steps": ["Char the aubergine over a flame or under a grill until collapsed and smoky.", "Cool, peel and mash the flesh, discarding any tough seeds.", "Cook onion, garlic, tomato and spices in oil; add peas and mashed aubergine.", "Simmer for 6 minutes, finish with coriander and lemon and serve with bajra rotis."]
+  },
+  {
+    "id": "cauliflower_pea_tikka_bowl", "name": "Cauliflower Pea Tikka Bowl", "description": "Charred tikka-spiced cauliflower, peas and quinoa with a fresh mint-coriander sauce.",
+    "dietType": "Vegan", "mealType": "Dinner", "emoji": "🥦", "imageAsset": "assets/images/recipes/cauliflower_pea_tikka_bowl.webp",
+    "calories": 430, "protein": 18, "carbs": 63, "fat": 13, "fiber": 14, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "High fiber"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Sesame"],
+    "ingredients": ["2 cups cauliflower florets", "3/4 cup cooked quinoa", "1/2 cup green peas", "1/2 cup cucumber and tomato", "1 tbsp tahini", "1 tsp oil", "Tikka masala, garlic and lemon", "Mint, coriander and salt"],
+    "steps": ["Toss cauliflower with oil, tikka masala, garlic and salt.", "Roast at 220°C for 20 minutes, adding peas for the final 5 minutes.", "Blend tahini, mint, coriander, lemon and water into a thin green sauce.", "Build the bowl with quinoa, vegetables and tikka cauliflower, then drizzle with sauce."]
+  },
+  {
+    "id": "lemon_pepper_paneer_orzo", "name": "Lemon Pepper Paneer Orzo", "description": "Golden paneer and whole-wheat orzo with spinach, peas and a lively lemon-pepper finish.",
+    "dietType": "Vegetarian", "mealType": "Dinner", "emoji": "🍋", "imageAsset": "assets/images/recipes/lemon_pepper_paneer_orzo.webp",
+    "calories": 530, "protein": 32, "carbs": 58, "fat": 20, "fiber": 9, "prepMinutes": 25, "servings": 1,
+    "tags": ["High protein", "Quick", "Mediterranean inspired"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Dairy", "Gluten"],
+    "ingredients": ["150 g low-fat paneer, cubed", "70 g dry whole-wheat orzo", "1 packed cup spinach", "1/3 cup green peas", "1/2 cup cherry tomatoes", "1 tsp olive oil", "Garlic, lemon zest and juice", "Parsley, black pepper and salt"],
+    "steps": ["Cook orzo until just tender, reserving half a cup of cooking water.", "Sear paneer in half the oil until golden, then set aside.", "Saute garlic, tomatoes, peas and spinach in remaining oil until softened.", "Toss in orzo and paneer with lemon and a splash of cooking water; finish with pepper."]
+  },
+  {
+    "id": "chickpea_spinach_pasta", "name": "Chickpea Spinach Pasta", "description": "Whole-wheat pasta with chickpeas, spinach and roasted tomato in a light garlic-basil sauce.",
+    "dietType": "Vegan", "mealType": "Dinner", "emoji": "🍝", "imageAsset": "assets/images/recipes/chickpea_spinach_pasta.webp",
+    "calories": 500, "protein": 23, "carbs": 82, "fat": 10, "fiber": 16, "prepMinutes": 24, "servings": 1,
+    "tags": ["Vegan", "High fiber", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Gluten"],
+    "ingredients": ["75 g dry whole-wheat penne", "3/4 cup cooked chickpeas", "2 packed cups spinach", "1 cup chopped tomatoes", "2 garlic cloves", "1 tsp olive oil", "Basil and chilli flakes", "Lemon, pepper and salt"],
+    "steps": ["Cook pasta until al dente and reserve half a cup of its cooking water.", "Heat oil and soften garlic, tomatoes and chilli flakes into a chunky sauce.", "Add chickpeas and spinach, cooking until the leaves wilt.", "Toss with pasta, basil, lemon and enough cooking water to coat evenly."]
+  },
+  {
+    "id": "chicken_lentil_soup", "name": "Chicken Lentil Soup", "description": "A hearty tomato broth with chicken, brown lentils and vegetables for a lighter protein-rich dinner.",
+    "dietType": "Non-vegetarian", "mealType": "Dinner", "emoji": "🥣", "imageAsset": "assets/images/recipes/chicken_lentil_soup.webp",
+    "calories": 420, "protein": 45, "carbs": 42, "fat": 9, "fiber": 13, "prepMinutes": 35, "servings": 1,
+    "tags": ["High protein", "High fiber", "One pot"], "goalTags": ["Lose fat", "Build muscle"], "allergens": [],
+    "ingredients": ["160 g chicken breast", "3/4 cup cooked brown lentils", "1 carrot, diced", "1 celery stalk, diced", "1 packed cup spinach", "1 cup chopped tomatoes", "1 tsp olive oil", "Garlic, thyme, pepper and salt"],
+    "steps": ["Brown the chicken lightly in oil, then add carrot, celery and garlic.", "Pour in tomatoes and 2 cups water; season and simmer for 15 minutes.", "Remove chicken, shred it with two forks and return it with the lentils.", "Simmer for 5 minutes, fold in spinach and adjust pepper and salt."]
+  },
+  {
+    "id": "garlic_prawn_vegetable_rice", "name": "Garlic Prawn Vegetable Rice", "description": "Garlic-seared prawns, brown rice and crisp vegetables with spring onion and lime.",
+    "dietType": "Non-vegetarian", "mealType": "Dinner", "emoji": "🍤", "imageAsset": "assets/images/recipes/garlic_prawn_vegetable_rice.webp",
+    "calories": 500, "protein": 41, "carbs": 59, "fat": 12, "fiber": 9, "prepMinutes": 22, "servings": 1,
+    "tags": ["High protein", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Build muscle", "Maintain weight"], "allergens": ["Shellfish"],
+    "ingredients": ["180 g cleaned prawns", "3/4 cup cooked brown rice", "1 cup broccoli", "1/2 cup carrot and peas", "2 garlic cloves, sliced", "1 tsp oil", "Spring onion and chilli", "Lime, pepper and salt"],
+    "steps": ["Season prawns with pepper and salt, then sear in half the oil until just opaque.", "Remove prawns and stir-fry broccoli, carrot, peas, garlic and chilli for 4 minutes.", "Add rice and toss over high heat until hot and lightly toasted.", "Return prawns, add spring onion and finish with fresh lime juice."]
+  },
+  {
+    "id": "eggplant_lentil_moussaka", "name": "Eggplant Lentil Moussaka", "description": "Roasted aubergine layered with tomato lentils and a light golden yogurt topping.",
+    "dietType": "Vegetarian", "mealType": "Dinner", "emoji": "🍆", "imageAsset": "assets/images/recipes/eggplant_lentil_moussaka.webp",
+    "calories": 460, "protein": 25, "carbs": 56, "fat": 16, "fiber": 15, "prepMinutes": 48, "servings": 1,
+    "tags": ["High fiber", "Mediterranean", "Meal prep"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Dairy", "Egg"],
+    "ingredients": ["1 medium aubergine, sliced", "1 cup cooked brown lentils", "1 cup chopped tomatoes", "150 g low-fat yogurt", "1 small egg", "1 tsp olive oil", "Garlic, oregano and cinnamon", "Parsley, pepper and salt"],
+    "steps": ["Brush aubergine with half the oil and roast at 220°C for 18 minutes.", "Cook garlic, tomatoes, lentils, oregano and cinnamon until thick.", "Layer aubergine and lentil sauce in a small dish; whisk yogurt with egg and spread on top.", "Bake at 200°C for 18 minutes until golden, then rest for 5 minutes before slicing."]
+  },
+  {
+    "id": "tofu_thai_basil_rice", "name": "Tofu Thai Basil Rice", "description": "Crispy tofu and vegetables in a savoury chilli-basil sauce with fragrant jasmine rice.",
+    "dietType": "Vegan", "mealType": "Dinner", "emoji": "🌿", "imageAsset": "assets/images/recipes/tofu_thai_basil_rice.webp",
+    "calories": 490, "protein": 27, "carbs": 62, "fat": 17, "fiber": 10, "prepMinutes": 22, "servings": 1,
+    "tags": ["Vegan", "High protein", "Quick"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Soy"],
+    "ingredients": ["200 g firm tofu, cubed", "2/3 cup cooked jasmine rice", "1/2 cup green beans", "1/2 red capsicum", "1 tbsp low-sodium soy sauce", "1 tsp oil", "Garlic, chilli and lime", "Large handful Thai basil"],
+    "steps": ["Pat tofu dry and sear it in half the oil until crisp on several sides.", "Stir-fry beans, capsicum, garlic and chilli in the remaining oil.", "Return tofu, add soy sauce and two tablespoons water, then toss until glossy.", "Turn off the heat, fold in basil and lime and serve with jasmine rice."]
+  },
+  {
+    "id": "methi_chicken_jowar_roti", "name": "Methi Chicken with Jowar Roti", "description": "Lean chicken and fresh fenugreek in a tomato masala with gluten-free sorghum rotis.",
+    "dietType": "Non-vegetarian", "mealType": "Dinner", "emoji": "🍗", "imageAsset": "assets/images/recipes/methi_chicken_jowar_roti.webp",
+    "calories": 520, "protein": 47, "carbs": 51, "fat": 15, "fiber": 10, "prepMinutes": 35, "servings": 1,
+    "tags": ["High protein", "Gluten free", "Indian"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": [],
+    "ingredients": ["180 g chicken breast, cubed", "2 packed cups fenugreek leaves", "2 small jowar rotis", "1 small tomato", "1/2 small onion", "1 tsp oil", "Ginger, garlic, cumin and garam masala", "Lemon, chilli and salt"],
+    "steps": ["Brown chicken in half the oil until lightly coloured, then remove briefly.", "Cook onion, ginger, garlic, tomato and spices in remaining oil until jammy.", "Add fenugreek and cook until wilted, then return chicken with a splash of water.", "Cover for 8 minutes until cooked through; finish with lemon and serve with jowar rotis."]
+  },
+  {
+    "id": "soya_keema_stuffed_roti", "name": "Vegetable Soya Keema Stuffed Roti", "description": "Whole-wheat rolls filled with spiced soya mince and colourful vegetables.",
+    "dietType": "Vegan", "mealType": "Dinner", "emoji": "🌯", "imageAsset": "assets/images/recipes/soya_keema_stuffed_roti.webp",
+    "calories": 480, "protein": 29, "carbs": 70, "fat": 11, "fiber": 15, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "High protein", "Indian"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Soy", "Gluten"],
+    "ingredients": ["60 g dry soya granules", "2 small whole-wheat rotis", "1/3 cup green peas", "1/2 cup carrot and capsicum", "1/2 small onion", "1 tsp oil", "Cumin, ginger and garam masala", "Mint chutney, coriander and salt"],
+    "steps": ["Soak soya granules in hot water for 10 minutes, drain and squeeze very dry.", "Cook onion, ginger and spices in oil; add vegetables and saute for 4 minutes.", "Stir in soya, season and cook until the mixture is dry and lightly browned.", "Divide between warm rotis, add mint chutney, roll tightly and slice."]
+  },
+  {
+    "id": "guava_chilli_yogurt_cup", "name": "Guava Chilli Yogurt Cup", "description": "Cool yogurt, juicy guava and gentle chilli-cumin spice with crunchy pumpkin seeds.",
+    "dietType": "Vegetarian", "mealType": "Snack", "emoji": "🥛", "imageAsset": "assets/images/recipes/guava_chilli_yogurt_cup.webp",
+    "calories": 230, "protein": 15, "carbs": 28, "fat": 7, "fiber": 6, "prepMinutes": 6, "servings": 1,
+    "tags": ["Quick", "Gluten free", "No cook"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Dairy"],
+    "ingredients": ["180 g thick low-fat yogurt", "1 medium pink guava, cubed", "1 tbsp pumpkin seeds", "1 tbsp pomegranate", "1/4 tsp roasted cumin", "Pinch of mild chilli powder", "Mint leaves", "Lime and a pinch of salt"],
+    "steps": ["Whisk yogurt with cumin, chilli, lime and a tiny pinch of salt.", "Fold in two-thirds of the guava without crushing it.", "Spoon into a cup and top with remaining guava and pomegranate.", "Scatter over pumpkin seeds and mint immediately before eating."]
+  },
+  {
+    "id": "baked_masala_chickpea_crunch", "name": "Baked Masala Chickpea Crunch", "description": "Crisp roasted chickpeas with smoky Indian spices and curry leaves for a portable snack.",
+    "dietType": "Vegan", "mealType": "Snack", "emoji": "🫘", "imageAsset": "assets/images/recipes/baked_masala_chickpea_crunch.webp",
+    "calories": 250, "protein": 12, "carbs": 36, "fat": 7, "fiber": 10, "prepMinutes": 32, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Meal prep"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 cup cooked chickpeas", "1 tsp oil", "1/2 tsp cumin", "1/2 tsp smoked paprika", "1/4 tsp turmeric", "8 curry leaves", "Chaat masala", "Lime zest and salt"],
+    "steps": ["Rinse chickpeas, pat them very dry and remove any loose skins.", "Toss with oil, cumin, paprika, turmeric and salt.", "Bake at 200°C for 25-28 minutes, shaking the tray twice, until crisp.", "Cool for 5 minutes and toss with curry leaves, chaat masala and lime zest."]
+  },
+  {
+    "id": "moong_sprout_dhokla_bites", "name": "Moong Sprout Dhokla Bites", "description": "Airy steamed sprout cakes with curry leaves and coriander for a savoury protein snack.",
+    "dietType": "Vegan", "mealType": "Snack", "emoji": "🟩", "imageAsset": "assets/images/recipes/moong_sprout_dhokla_bites.webp",
+    "calories": 260, "protein": 15, "carbs": 42, "fat": 5, "fiber": 9, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "Steamed", "Indian"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 cup sprouted moong", "1/4 cup chickpea flour", "2 tbsp plant yogurt", "1 tsp lemon juice", "1/2 tsp fruit salt", "1 tsp oil", "Mustard seeds and curry leaves", "Ginger, chilli, coriander and salt"],
+    "steps": ["Blend sprouts, yogurt, ginger, chilli, lemon and salt into a thick batter.", "Stir in chickpea flour and fruit salt, then spread in a greased shallow tin.", "Steam for 14 minutes until springy and cool briefly before cutting into squares.", "Temper mustard seeds and curry leaves in oil and spoon over with coriander."]
+  },
+  {
+    "id": "strawberry_paneer_smoothie", "name": "Strawberry Paneer Smoothie", "description": "A naturally thick strawberry shake blended with paneer for a fresh high-protein snack.",
+    "dietType": "Vegetarian", "mealType": "Snack", "emoji": "🍓", "imageAsset": "assets/images/recipes/strawberry_paneer_smoothie.webp",
+    "calories": 300, "protein": 25, "carbs": 32, "fat": 9, "fiber": 6, "prepMinutes": 7, "servings": 1,
+    "tags": ["High protein", "Gluten free", "Quick"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Dairy"],
+    "ingredients": ["120 g low-fat paneer", "1 cup strawberries", "150 ml low-fat milk", "1/2 small banana", "1 tsp chia seeds", "1/4 tsp vanilla", "Ice cubes", "Pinch of cinnamon"],
+    "steps": ["Rinse and hull the strawberries, reserving one for the topping.", "Blend paneer, remaining strawberries, milk, banana, vanilla and ice until silky.", "Pour into a chilled glass and let it stand for a minute to thicken.", "Top with the reserved strawberry, chia seeds and cinnamon."]
+  },
+  {
+    "id": "tuna_cucumber_boats", "name": "Tuna Cucumber Boats", "description": "Crisp cucumber filled with herbed tuna, yogurt and vegetables for a refreshing protein snack.",
+    "dietType": "Non-vegetarian", "mealType": "Snack", "emoji": "🥒", "imageAsset": "assets/images/recipes/tuna_cucumber_boats.webp",
+    "calories": 240, "protein": 32, "carbs": 15, "fat": 7, "fiber": 4, "prepMinutes": 10, "servings": 1,
+    "tags": ["High protein", "Gluten free", "No cook"], "goalTags": ["Lose fat", "Build muscle"], "allergens": ["Fish", "Dairy"],
+    "ingredients": ["1 large cucumber", "120 g tuna in spring water, drained", "2 tbsp thick yogurt", "2 tbsp sweet corn", "2 tbsp diced red capsicum", "1 tsp lemon juice", "Dill or coriander", "Pepper and salt"],
+    "steps": ["Halve the cucumber lengthways, scoop out the watery centre and cut into six boats.", "Mix drained tuna with yogurt, corn, capsicum, lemon, herbs and pepper.", "Taste and add only a small pinch of salt if needed.", "Spoon the filling into the cucumber boats and serve immediately."]
+  },
+  {
+    "id": "pumpkin_seed_banana_bars", "name": "Pumpkin Seed Banana Bars", "description": "Soft-baked banana oat bars with pumpkin seeds and cinnamon for easy meal-prep snacking.",
+    "dietType": "Vegan", "mealType": "Snack", "emoji": "🍌", "imageAsset": "assets/images/recipes/pumpkin_seed_banana_bars.webp",
+    "calories": 280, "protein": 10, "carbs": 43, "fat": 9, "fiber": 7, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "Meal prep", "Portable"], "goalTags": ["Maintain weight"], "allergens": ["Gluten"],
+    "ingredients": ["1 ripe banana", "1/2 cup rolled oats", "2 tbsp pumpkin seeds", "1 tbsp ground flaxseed", "1 tbsp raisins", "1 tsp peanut-free seed butter", "Cinnamon and vanilla", "Pinch of salt"],
+    "steps": ["Mash banana smoothly and stir in seed butter, vanilla and salt.", "Fold in oats, flaxseed, raisins, cinnamon and most pumpkin seeds.", "Press into a lined small tin, scatter remaining seeds and bake at 180°C for 20 minutes.", "Cool completely before slicing into four small bars."]
+  },
+  {
+    "id": "avocado_chana_toast", "name": "Avocado Chana Toast", "description": "Whole-grain toast with smashed avocado and spiced chickpeas for a crunchy, fibre-rich snack.",
+    "dietType": "Vegan", "mealType": "Snack", "emoji": "🥑", "imageAsset": "assets/images/recipes/avocado_chana_toast.webp",
+    "calories": 320, "protein": 12, "carbs": 44, "fat": 12, "fiber": 12, "prepMinutes": 10, "servings": 1,
+    "tags": ["Vegan", "High fiber", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Gluten"],
+    "ingredients": ["2 small slices whole-grain bread", "1/3 avocado", "1/2 cup cooked chickpeas", "2 radishes, sliced", "1 tsp lemon juice", "Cumin and chilli flakes", "Coriander leaves", "Pepper and salt"],
+    "steps": ["Toast the bread until crisp at the edges.", "Mash avocado with lemon, pepper and a small pinch of salt.", "Warm chickpeas with cumin and chilli in a dry pan, crushing a few lightly.", "Spread avocado on toast, pile over chickpeas and finish with radish and coriander."]
+  },
+  {
+    "id": "mini_ragi_banana_pancakes", "name": "Mini Ragi Banana Pancakes", "description": "Small finger-millet and banana pancakes with fruit and a light date drizzle.",
+    "dietType": "Vegan", "mealType": "Snack", "emoji": "🥞", "imageAsset": "assets/images/recipes/mini_ragi_banana_pancakes.webp",
+    "calories": 290, "protein": 8, "carbs": 52, "fat": 7, "fiber": 8, "prepMinutes": 16, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Family friendly"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1/2 cup ragi flour", "1 small ripe banana", "1/3 cup unsweetened plant milk", "1 tsp ground flaxseed", "1/2 tsp baking powder", "1 tsp oil", "1 chopped date", "Cinnamon, berries and a pinch of salt"],
+    "steps": ["Mash half the banana and whisk with plant milk and ground flaxseed.", "Stir in ragi flour, baking powder, cinnamon and salt; rest for 5 minutes.", "Cook small spoonfuls on a lightly oiled pan for 2 minutes per side.", "Stack with remaining banana and berries and finish with the softened chopped date."]
+  },
+  {
+    "id": "savoury_yogurt_oats_jar", "name": "Savoury Yogurt Oats Jar", "description": "Chilled yogurt oats layered with cucumber, carrot, cumin and mint for a cooling savoury snack.",
+    "dietType": "Vegetarian", "mealType": "Snack", "emoji": "🥣", "imageAsset": "assets/images/recipes/savoury_yogurt_oats_jar.webp",
+    "calories": 270, "protein": 17, "carbs": 37, "fat": 7, "fiber": 7, "prepMinutes": 8, "servings": 1,
+    "tags": ["No cook", "Meal prep", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Dairy", "Gluten"],
+    "ingredients": ["170 g thick low-fat yogurt", "1/3 cup rolled oats", "1/3 cup grated cucumber", "1/4 cup grated carrot", "2 tbsp pomegranate", "1/4 tsp roasted cumin", "Mint and coriander", "Lemon, pepper and salt"],
+    "steps": ["Mix yogurt, oats, cumin, lemon, pepper and a small pinch of salt.", "Squeeze excess water from cucumber and fold half into the yogurt oats.", "Layer the mixture in a jar with remaining cucumber, carrot and herbs.", "Chill for at least 30 minutes and top with pomegranate before eating."]
+  },
+  {
+    "id": "cocoa_orange_tofu_mousse", "name": "Cocoa Orange Tofu Mousse", "description": "Silky chocolate-orange tofu mousse with cacao nibs for a dairy-free protein treat.",
+    "dietType": "Vegan", "mealType": "Snack", "emoji": "🍫", "imageAsset": "assets/images/recipes/cocoa_orange_tofu_mousse.webp",
+    "calories": 260, "protein": 17, "carbs": 28, "fat": 11, "fiber": 6, "prepMinutes": 10, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "No cook"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": ["Soy"],
+    "ingredients": ["180 g silken tofu, drained", "1 1/2 tbsp unsweetened cocoa", "1 small orange", "1 soft date, pitted", "1 tsp cacao nibs", "1/4 tsp vanilla", "Pinch of salt", "Extra orange zest"],
+    "steps": ["Finely zest the orange, then peel and reserve three segments for topping.", "Blend tofu, cocoa, date, vanilla, salt, half the zest and remaining orange until silky.", "Spoon into a glass and chill for at least 30 minutes to set.", "Top with reserved orange, cacao nibs and the remaining zest."]
+  }
+]

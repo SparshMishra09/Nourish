@@ -26,6 +26,51 @@ class ExerciseItem {
   };
 }
 
+class WorkoutSupportBlock {
+  const WorkoutSupportBlock({
+    required this.title,
+    required this.reason,
+    required this.estimatedMinutes,
+    required this.exercises,
+  });
+
+  static const empty = WorkoutSupportBlock(
+    title: '',
+    reason: '',
+    estimatedMinutes: 0,
+    exercises: [],
+  );
+
+  final String title;
+  final String reason;
+  final int estimatedMinutes;
+  final List<ExerciseItem> exercises;
+
+  bool get isEmpty => exercises.isEmpty;
+
+  factory WorkoutSupportBlock.fromMap(Map<String, dynamic>? map) {
+    if (map == null) return empty;
+    return WorkoutSupportBlock(
+      title: map['title'] as String? ?? '',
+      reason: map['reason'] as String? ?? '',
+      estimatedMinutes: (map['estimatedMinutes'] as num?)?.round() ?? 0,
+      exercises: (map['exercises'] as List? ?? const [])
+          .map(
+            (item) =>
+                ExerciseItem.fromMap(Map<String, dynamic>.from(item as Map)),
+          )
+          .toList(),
+    );
+  }
+
+  Map<String, dynamic> toMap() => {
+    'title': title,
+    'reason': reason,
+    'estimatedMinutes': estimatedMinutes,
+    'exercises': exercises.map((item) => item.toMap()).toList(),
+  };
+}
+
 class WorkoutDay {
   const WorkoutDay({
     required this.dayLabel,
@@ -33,6 +78,8 @@ class WorkoutDay {
     required this.subtitle,
     required this.durationMinutes,
     required this.exercises,
+    this.warmUp = WorkoutSupportBlock.empty,
+    this.coolDown = WorkoutSupportBlock.empty,
   });
 
   final String dayLabel;
@@ -40,6 +87,11 @@ class WorkoutDay {
   final String subtitle;
   final int durationMinutes;
   final List<ExerciseItem> exercises;
+  final WorkoutSupportBlock warmUp;
+  final WorkoutSupportBlock coolDown;
+
+  int get optionalExtraMinutes =>
+      warmUp.estimatedMinutes + coolDown.estimatedMinutes;
 
   factory WorkoutDay.fromMap(Map<String, dynamic> map) => WorkoutDay(
     dayLabel: map['dayLabel'] as String? ?? '',
@@ -52,6 +104,16 @@ class WorkoutDay {
               ExerciseItem.fromMap(Map<String, dynamic>.from(item as Map)),
         )
         .toList(),
+    warmUp: WorkoutSupportBlock.fromMap(
+      map['warmUp'] is Map
+          ? Map<String, dynamic>.from(map['warmUp'] as Map)
+          : null,
+    ),
+    coolDown: WorkoutSupportBlock.fromMap(
+      map['coolDown'] is Map
+          ? Map<String, dynamic>.from(map['coolDown'] as Map)
+          : null,
+    ),
   );
 
   Map<String, dynamic> toMap() => {
@@ -60,6 +122,8 @@ class WorkoutDay {
     'subtitle': subtitle,
     'durationMinutes': durationMinutes,
     'exercises': exercises.map((item) => item.toMap()).toList(),
+    'warmUp': warmUp.toMap(),
+    'coolDown': coolDown.toMap(),
   };
 }
 

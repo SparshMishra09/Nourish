@@ -1,0 +1,162 @@
+[
+  {
+    "id": "cucumber_tomato_kachumber", "name": "Cucumber Tomato Kachumber", "description": "A crisp everyday salad with cucumber, tomato, onion, cumin and plenty of lime.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥒", "imageAsset": "assets/images/recipes/cucumber_tomato_kachumber.webp",
+    "calories": 85, "protein": 3, "carbs": 15, "fat": 2, "fiber": 4, "prepMinutes": 8, "servings": 1,
+    "tags": ["Vegan", "No cook", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1/2 cucumber, finely diced", "1 medium tomato, finely diced", "2 tbsp red onion, finely chopped", "2 tbsp coriander leaves", "1 tbsp lime juice", "1/4 tsp roasted cumin", "Pinch of chilli powder", "Black pepper and salt"],
+    "steps": ["Dice the cucumber and tomato into similarly small pieces.", "Add red onion and coriander to a serving bowl.", "Season with cumin, chilli, pepper, salt and lime juice.", "Toss gently and serve immediately so the vegetables stay crisp."]
+  },
+  {
+    "id": "mint_curd_raita", "name": "Mint Curd Raita", "description": "Cooling cucumber yogurt with mint and roasted cumin for curries, rice bowls or wraps.",
+    "dietType": "Vegetarian", "mealType": "Side", "emoji": "🥛", "imageAsset": "assets/images/recipes/mint_curd_raita.webp",
+    "calories": 130, "protein": 10, "carbs": 12, "fat": 5, "fiber": 2, "prepMinutes": 7, "servings": 1,
+    "tags": ["Vegetarian", "No cook", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Dairy"],
+    "ingredients": ["170 g low-fat yogurt", "1/3 cucumber, grated", "2 tbsp chopped mint", "1 tbsp chopped coriander", "1/4 tsp roasted cumin", "Pinch of mild chilli", "1 tsp lemon juice", "Black pepper and salt"],
+    "steps": ["Whisk the yogurt until smooth and lightly aerated.", "Squeeze excess water from the grated cucumber.", "Fold cucumber, mint, coriander, cumin and chilli into the yogurt.", "Season with lemon, pepper and salt, then chill until serving."]
+  },
+  {
+    "id": "jeera_roasted_potatoes", "name": "Jeera Roasted Potatoes", "description": "Golden potato cubes with cumin, turmeric and lemon—an easy side for almost any main.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥔", "imageAsset": "assets/images/recipes/jeera_roasted_potatoes.webp",
+    "calories": 230, "protein": 5, "carbs": 41, "fat": 6, "fiber": 5, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Meal prep"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": [],
+    "ingredients": ["250 g baby potatoes, cubed", "1 tsp oil", "1 tsp cumin seeds", "1/4 tsp turmeric", "1/2 tsp coriander powder", "Pinch of chilli powder", "1 tbsp lemon juice", "Coriander and salt"],
+    "steps": ["Heat the oven to 220°C and line a small tray.", "Toss potatoes with oil, cumin, turmeric, coriander, chilli and salt.", "Roast for 24-26 minutes, turning once, until golden and tender.", "Finish with lemon juice and fresh coriander before serving."]
+  },
+  {
+    "id": "garlic_lemon_green_beans", "name": "Garlic Lemon Green Beans", "description": "Bright green beans lightly blistered with garlic, lemon and cracked black pepper.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🫛", "imageAsset": "assets/images/recipes/garlic_lemon_green_beans.webp",
+    "calories": 120, "protein": 5, "carbs": 17, "fat": 5, "fiber": 7, "prepMinutes": 12, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["220 g green beans, trimmed", "2 garlic cloves, thinly sliced", "1 tsp olive oil", "1 tsp lemon zest", "1 tbsp lemon juice", "1 tbsp chopped parsley", "Black pepper", "Chilli flakes and salt"],
+    "steps": ["Steam the green beans for 3 minutes, then drain thoroughly.", "Heat oil in a wide pan and toast the sliced garlic lightly.", "Add beans and cook over high heat for 4 minutes until blistered.", "Turn off the heat and toss with lemon, parsley, pepper and salt."]
+  },
+  {
+    "id": "turmeric_cabbage_peas", "name": "Turmeric Cabbage Peas", "description": "Quick shredded cabbage and peas with mustard seeds, turmeric and curry leaves.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥬", "imageAsset": "assets/images/recipes/turmeric_cabbage_peas.webp",
+    "calories": 145, "protein": 6, "carbs": 23, "fat": 4, "fiber": 8, "prepMinutes": 15, "servings": 1,
+    "tags": ["Vegan", "Indian", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["2 cups shredded cabbage", "1/2 cup green peas", "1 tsp oil", "1/2 tsp mustard seeds", "8 curry leaves", "1/4 tsp turmeric", "1 green chilli, sliced", "Lemon, coriander and salt"],
+    "steps": ["Heat oil and crackle mustard seeds with curry leaves and chilli.", "Add cabbage, peas, turmeric and a small pinch of salt.", "Stir-fry over medium-high heat for 7 minutes, keeping some crunch.", "Finish with lemon and coriander and serve warm."]
+  },
+  {
+    "id": "masala_roasted_cauliflower", "name": "Masala Roasted Cauliflower", "description": "Crisp-edged cauliflower florets with paprika, cumin and turmeric.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥦", "imageAsset": "assets/images/recipes/masala_roasted_cauliflower.webp",
+    "calories": 150, "protein": 7, "carbs": 20, "fat": 6, "fiber": 8, "prepMinutes": 28, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "High fiber"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["300 g cauliflower florets", "1 tsp oil", "1/2 tsp smoked paprika", "1/2 tsp ground cumin", "1/4 tsp turmeric", "1/4 tsp garlic powder", "1 tbsp lemon juice", "Coriander, pepper and salt"],
+    "steps": ["Heat the oven to 220°C and dry the cauliflower thoroughly.", "Toss florets with oil, paprika, cumin, turmeric, garlic, pepper and salt.", "Spread in one layer and roast for 20-22 minutes, turning once.", "Add lemon and coriander while hot and serve immediately."]
+  },
+  {
+    "id": "beetroot_carrot_kosambari", "name": "Beetroot Carrot Kosambari", "description": "Fresh grated vegetables, soaked moong dal and coconut in a lime-tempered salad.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥕", "imageAsset": "assets/images/recipes/beetroot_carrot_kosambari.webp",
+    "calories": 180, "protein": 8, "carbs": 28, "fat": 5, "fiber": 8, "prepMinutes": 15, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "No cook"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 small beetroot, grated", "1 medium carrot, grated", "1/4 cup yellow moong dal, soaked", "2 tbsp fresh grated coconut", "2 tbsp coriander", "1 tbsp lime juice", "1/2 tsp mustard seeds", "1/2 tsp oil, chilli and salt"],
+    "steps": ["Soak moong dal in hot water for 20 minutes, then drain well.", "Combine beetroot, carrot, drained dal, coconut and coriander.", "Heat oil and crackle mustard seeds with a little chilli.", "Pour over the salad, add lime and salt and toss evenly."]
+  },
+  {
+    "id": "sesame_ginger_broccoli", "name": "Sesame Ginger Broccoli", "description": "Tender-crisp broccoli with ginger, a light soy glaze and toasted sesame.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥦", "imageAsset": "assets/images/recipes/sesame_ginger_broccoli.webp",
+    "calories": 155, "protein": 8, "carbs": 19, "fat": 7, "fiber": 8, "prepMinutes": 13, "servings": 1,
+    "tags": ["Vegan", "Quick", "High fiber"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Soy", "Sesame"],
+    "ingredients": ["300 g broccoli florets", "1 tsp sesame oil", "1 tsp grated ginger", "1 tsp low-sodium soy sauce", "1 tsp sesame seeds", "1 spring onion, sliced", "1 tsp lime juice", "Chilli and black pepper"],
+    "steps": ["Steam broccoli for 4 minutes until bright green and tender-crisp.", "Warm sesame oil and ginger in a pan for 30 seconds.", "Add broccoli and soy sauce and toss over high heat for 2 minutes.", "Finish with sesame seeds, spring onion, lime, chilli and pepper."]
+  },
+  {
+    "id": "spiced_sweet_potato_wedges", "name": "Spiced Sweet Potato Wedges", "description": "Baked sweet-potato wedges with smoky cumin, paprika and fresh lime.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🍠", "imageAsset": "assets/images/recipes/spiced_sweet_potato_wedges.webp",
+    "calories": 220, "protein": 4, "carbs": 42, "fat": 5, "fiber": 7, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Family friendly"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": [],
+    "ingredients": ["250 g sweet potato", "1 tsp oil", "1/2 tsp smoked paprika", "1/2 tsp ground cumin", "1/4 tsp garlic powder", "Pinch of chilli", "1 tbsp lime juice", "Coriander and salt"],
+    "steps": ["Heat the oven to 220°C and cut sweet potato into even wedges.", "Toss with oil, paprika, cumin, garlic, chilli and salt.", "Arrange cut-side down and bake for 24-26 minutes, turning once.", "Squeeze over lime and scatter with coriander before serving."]
+  },
+  {
+    "id": "garlic_herb_mushrooms", "name": "Garlic Herb Mushrooms", "description": "Juicy browned mushrooms with garlic, thyme, parsley and black pepper.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🍄", "imageAsset": "assets/images/recipes/garlic_herb_mushrooms.webp",
+    "calories": 125, "protein": 8, "carbs": 14, "fat": 5, "fiber": 5, "prepMinutes": 12, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["300 g button mushrooms, halved", "2 garlic cloves, chopped", "1 tsp olive oil", "1/2 tsp dried thyme", "2 tbsp chopped parsley", "1 tsp lemon juice", "Cracked black pepper", "Chilli flakes and salt"],
+    "steps": ["Heat a wide pan until very hot and add the mushrooms dry.", "Cook for 4 minutes until their water evaporates and edges begin to brown.", "Add oil, garlic and thyme and saute for another 3 minutes.", "Finish with parsley, lemon, pepper, chilli and salt."]
+  },
+  {
+    "id": "tandoori_roasted_carrots", "name": "Tandoori Roasted Carrots", "description": "Sweet roasted carrots with warm tandoori spices, coriander and lemon.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥕", "imageAsset": "assets/images/recipes/tandoori_roasted_carrots.webp",
+    "calories": 135, "protein": 3, "carbs": 22, "fat": 5, "fiber": 7, "prepMinutes": 27, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Indian"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["300 g carrots, cut into batons", "1 tsp oil", "1/2 tsp paprika", "1/2 tsp ground cumin", "1/4 tsp garam masala", "1/4 tsp garlic powder", "1 tbsp lemon juice", "Coriander and salt"],
+    "steps": ["Heat the oven to 220°C and line a small baking tray.", "Toss carrot batons with oil, paprika, cumin, garam masala, garlic and salt.", "Roast for 20-22 minutes, turning once, until browned and tender.", "Finish with lemon and coriander and serve warm."]
+  },
+  {
+    "id": "palak_corn_saute", "name": "Palak Corn Sauté", "description": "Fast garlicky spinach and sweet corn with cumin and a touch of tomato.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🌽", "imageAsset": "assets/images/recipes/palak_corn_saute.webp",
+    "calories": 150, "protein": 7, "carbs": 23, "fat": 5, "fiber": 6, "prepMinutes": 12, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["3 packed cups spinach", "3/4 cup sweet corn", "1 small tomato, diced", "2 garlic cloves, sliced", "1 tsp oil", "1/2 tsp cumin seeds", "Pinch of chilli", "Lemon, pepper and salt"],
+    "steps": ["Heat oil and toast cumin and garlic until fragrant.", "Add tomato and corn and cook over high heat for 3 minutes.", "Fold in spinach by handfuls until just wilted.", "Season with chilli, pepper, salt and a squeeze of lemon."]
+  },
+  {
+    "id": "charred_capsicum_corn_salad", "name": "Charred Capsicum Corn Salad", "description": "Smoky peppers and sweet corn tossed with red onion, coriander and lime.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🫑", "imageAsset": "assets/images/recipes/charred_capsicum_corn_salad.webp",
+    "calories": 165, "protein": 6, "carbs": 29, "fat": 4, "fiber": 7, "prepMinutes": 15, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 red capsicum, sliced", "1 yellow capsicum, sliced", "3/4 cup sweet corn", "2 tbsp red onion", "2 tbsp coriander", "1 tsp oil", "1 tbsp lime juice", "Cumin, chilli and salt"],
+    "steps": ["Heat a grill pan until smoking hot and lightly oil the capsicum.", "Char capsicum for 5 minutes and add corn for the final 2 minutes.", "Transfer to a bowl with red onion and coriander.", "Season with lime, cumin, chilli and salt and toss well."]
+  },
+  {
+    "id": "herb_roasted_pumpkin", "name": "Herb Roasted Pumpkin", "description": "Caramelized pumpkin with rosemary, thyme, pepper and crunchy pumpkin seeds.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🎃", "imageAsset": "assets/images/recipes/herb_roasted_pumpkin.webp",
+    "calories": 175, "protein": 6, "carbs": 28, "fat": 6, "fiber": 7, "prepMinutes": 30, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Meal prep"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["320 g pumpkin, cubed", "1 tsp olive oil", "1 tsp pumpkin seeds", "1/2 tsp dried rosemary", "1/2 tsp dried thyme", "1 garlic clove, crushed", "Black pepper", "Lemon zest and salt"],
+    "steps": ["Heat the oven to 220°C and dry the pumpkin cubes well.", "Toss pumpkin with oil, rosemary, thyme, garlic, pepper and salt.", "Roast for 24 minutes, turning once, until caramelized at the edges.", "Scatter with pumpkin seeds and lemon zest before serving."]
+  },
+  {
+    "id": "cumin_carrot_peas", "name": "Cumin Carrot Peas", "description": "A colourful everyday side of tender carrots and peas with cumin and lemon.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥕", "imageAsset": "assets/images/recipes/cumin_carrot_peas.webp",
+    "calories": 155, "protein": 7, "carbs": 25, "fat": 4, "fiber": 8, "prepMinutes": 14, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["2 medium carrots, diced", "3/4 cup green peas", "1 tsp oil", "1/2 tsp cumin seeds", "1/4 tsp turmeric", "Pinch of chilli", "1 tbsp lemon juice", "Coriander and salt"],
+    "steps": ["Steam diced carrots for 4 minutes so they begin to soften.", "Heat oil and toast cumin seeds until fragrant.", "Add carrots, peas, turmeric, chilli and salt and saute for 5 minutes.", "Finish with lemon and coriander while the vegetables are bright."]
+  },
+  {
+    "id": "tangy_red_cabbage_slaw", "name": "Tangy Red Cabbage Slaw", "description": "Crunchy purple cabbage, carrot and apple in a fresh lime dressing without mayonnaise.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥗", "imageAsset": "assets/images/recipes/tangy_red_cabbage_slaw.webp",
+    "calories": 125, "protein": 3, "carbs": 24, "fat": 3, "fiber": 7, "prepMinutes": 10, "servings": 1,
+    "tags": ["Vegan", "No cook", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["2 cups finely shredded red cabbage", "1 small carrot, grated", "1/2 small apple, julienned", "2 tbsp coriander", "1 tsp olive oil", "1 tbsp lime juice", "1/2 tsp grated ginger", "Pepper and salt"],
+    "steps": ["Shred cabbage as finely as possible and place in a bowl.", "Add carrot, apple and coriander.", "Whisk oil, lime, ginger, pepper and salt into a dressing.", "Massage through the vegetables for 30 seconds and serve crisp."]
+  },
+  {
+    "id": "tomato_basil_white_beans", "name": "Tomato Basil White Beans", "description": "Creamy white beans with burst tomatoes, garlic and basil for a simple protein side.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🫘", "imageAsset": "assets/images/recipes/tomato_basil_white_beans.webp",
+    "calories": 220, "protein": 12, "carbs": 34, "fat": 5, "fiber": 11, "prepMinutes": 14, "servings": 1,
+    "tags": ["Vegan", "High fiber", "Quick"], "goalTags": ["Build muscle", "Maintain weight"], "allergens": [],
+    "ingredients": ["1 cup cooked cannellini beans", "1 cup cherry tomatoes, halved", "2 garlic cloves, sliced", "1 tsp olive oil", "Large handful basil", "1 tsp lemon juice", "Chilli flakes", "Black pepper and salt"],
+    "steps": ["Heat oil and soften garlic without letting it brown.", "Add tomatoes and chilli and cook for 4 minutes until some burst.", "Fold in white beans and warm gently for another 4 minutes.", "Turn off the heat and add basil, lemon, pepper and salt."]
+  },
+  {
+    "id": "peanut_lime_zucchini", "name": "Peanut Lime Zucchini", "description": "Tender-crisp zucchini with roasted peanuts, chilli, coriander and lime.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥒", "imageAsset": "assets/images/recipes/peanut_lime_zucchini.webp",
+    "calories": 180, "protein": 9, "carbs": 16, "fat": 10, "fiber": 6, "prepMinutes": 12, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": ["Peanut"],
+    "ingredients": ["2 medium zucchini, sliced", "2 tbsp roasted peanuts, crushed", "1 tsp oil", "1/2 tsp cumin seeds", "1 green chilli, sliced", "2 tbsp coriander", "1 tbsp lime juice", "Black pepper and salt"],
+    "steps": ["Heat a wide pan, add oil and toast cumin with chilli.", "Add zucchini in one layer and cook over high heat for 5 minutes.", "Season with pepper and salt while keeping the centres tender-crisp.", "Turn off the heat and toss with peanuts, coriander and lime."]
+  },
+  {
+    "id": "curry_leaf_coconut_beans", "name": "Curry Leaf Coconut Beans", "description": "South Indian-style green beans with coconut, mustard seeds and fragrant curry leaves.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🥥", "imageAsset": "assets/images/recipes/curry_leaf_coconut_beans.webp",
+    "calories": 170, "protein": 6, "carbs": 20, "fat": 9, "fiber": 8, "prepMinutes": 16, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Indian"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["250 g green beans, finely chopped", "3 tbsp fresh grated coconut", "1 tsp oil", "1/2 tsp mustard seeds", "8 curry leaves", "1 green chilli, sliced", "2 tbsp water", "Lime and salt"],
+    "steps": ["Heat oil and crackle mustard seeds, curry leaves and chilli.", "Add chopped beans, salt and water and cover for 6 minutes.", "Remove the lid and cook until the water evaporates and beans are tender.", "Fold in coconut and lime and warm for one final minute."]
+  },
+  {
+    "id": "lemon_pepper_asparagus", "name": "Lemon Pepper Asparagus", "description": "Quick roasted asparagus with lemon zest, parsley and plenty of cracked pepper.",
+    "dietType": "Vegan", "mealType": "Side", "emoji": "🌿", "imageAsset": "assets/images/recipes/lemon_pepper_asparagus.webp",
+    "calories": 105, "protein": 6, "carbs": 12, "fat": 5, "fiber": 6, "prepMinutes": 14, "servings": 1,
+    "tags": ["Vegan", "Gluten free", "Quick"], "goalTags": ["Lose fat", "Maintain weight"], "allergens": [],
+    "ingredients": ["250 g asparagus, trimmed", "1 tsp olive oil", "1 tsp lemon zest", "1 tbsp lemon juice", "1 tbsp chopped parsley", "1 garlic clove, grated", "Cracked black pepper", "Chilli flakes and salt"],
+    "steps": ["Heat the oven to 220°C and dry the asparagus spears.", "Toss with oil, garlic, pepper, chilli and salt.", "Roast in one layer for 8-10 minutes until bright and tender.", "Finish with lemon zest, juice and parsley before serving."]
+  }
+]

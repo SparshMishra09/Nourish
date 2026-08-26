@@ -364,6 +364,111 @@ const _guides = <String, ExerciseGuide>{
     cues: ['Surface cannot move', 'Body stays straight', 'Elbows about 45°'],
     avoid: 'Do not use a chair or table that can slide or tip.',
   ),
+  'Dynamic chest opener': ExerciseGuide(
+    motion: ExerciseMotion.standingFlow,
+    setup: 'Stand tall with soft knees and both arms open at shoulder height.',
+    action:
+        'Sweep the arms forward to cross gently, then open them wide again with control.',
+    breathing: 'Exhale as the arms cross · inhale as the chest opens.',
+    cues: ['Use a smooth rhythm', 'Keep ribs stacked', 'Relax your neck'],
+    avoid: 'Do not fling the arms backward or force a large range.',
+  ),
+  'Scapula push-up': ExerciseGuide(
+    motion: ExerciseMotion.shoulderTap,
+    setup:
+        'Use a high plank or place your hands on a firm raised surface for an easier version.',
+    action:
+        'Keep elbows straight, let the chest sink slightly between the shoulders, then push the floor away.',
+    breathing:
+        'Inhale as shoulder blades draw together · exhale as they spread.',
+    cues: ['Elbows stay long', 'Small clean motion', 'Head follows spine'],
+    avoid: 'Do not bend the elbows, shrug, or let the lower back sag.',
+  ),
+  'Ankle circles': ExerciseGuide(
+    motion: ExerciseMotion.calfRaise,
+    setup:
+        'Sit or stand with support and lift one foot just clear of the floor.',
+    action:
+        'Draw slow circles with the toes in both directions, then change feet.',
+    breathing: 'Breathe normally and keep the rest of the leg relaxed.',
+    cues: [
+      'Move from the ankle',
+      'Use a comfortable range',
+      'Circle both ways',
+    ],
+    avoid: 'Do not force through pinching or sharp ankle pain.',
+  ),
+  'Back & forth step': ExerciseGuide(
+    motion: ExerciseMotion.reverseLunge,
+    setup: 'Stand tall with clear space in front and behind you.',
+    action:
+        'Step one foot forward and return, then step it back and return; alternate sides at an easy pace.',
+    breathing: 'Use steady breaths and slow the rhythm whenever needed.',
+    cues: ['Soft quiet steps', 'Stay tall', 'Keep the effort easy'],
+    avoid: 'Do not turn the step into a deep lunge or rush your balance.',
+  ),
+  'Chest & shoulder stretch': ExerciseGuide(
+    motion: ExerciseMotion.standingFlow,
+    setup:
+        'Stand tall and extend one arm gently across the front of your chest.',
+    action:
+        'Use the other arm to draw it closer until the back and front of the shoulder feel mild tension.',
+    breathing: 'Breathe slowly throughout the hold.',
+    cues: [
+      'Shoulder stays down',
+      'Use gentle pressure',
+      'Hold without bouncing',
+    ],
+    avoid:
+        'Do not pull on the elbow or continue if the shoulder feels pinched.',
+  ),
+  'Kneeling lat stretch': ExerciseGuide(
+    motion: ExerciseMotion.childPose,
+    setup:
+        'Kneel in front of a stable bench or chair and place both hands on it.',
+    action:
+        'Send hips back while the chest lowers between the arms, then bias one side gently.',
+    breathing: 'Take slow breaths into the side and back ribs.',
+    cues: ['Hips travel back', 'Neck stays relaxed', 'Use mild tension'],
+    avoid: 'Do not force the shoulders or arch hard through the lower back.',
+  ),
+  'Triceps stretch': ExerciseGuide(
+    motion: ExerciseMotion.shoulderPress,
+    setup: 'Stand or sit tall and reach one arm overhead.',
+    action:
+        'Bend the elbow so the hand travels behind your head and add only light pressure with the other hand.',
+    breathing: 'Exhale slowly and keep the ribs relaxed.',
+    cues: ['Elbow points upward', 'Shoulders stay low', 'No bouncing'],
+    avoid: 'Do not pull hard on the elbow or arch your back.',
+  ),
+  'Hamstring stretch': ExerciseGuide(
+    motion: ExerciseMotion.hipHinge,
+    setup: 'Place one heel slightly ahead with that knee soft and toes lifted.',
+    action:
+        'Push hips back with a long spine until you feel mild tension behind the front thigh.',
+    breathing: 'Breathe slowly and soften a little further only on the exhale.',
+    cues: ['Hinge from hips', 'Back stays long', 'Front knee stays soft'],
+    avoid: 'Do not round toward the toes or lock the knee.',
+  ),
+  'Side-lying quad stretch': ExerciseGuide(
+    motion: ExerciseMotion.childPose,
+    setup:
+        'Lie on one side with the lower leg comfortable and your head supported.',
+    action:
+        'Bend the top knee, hold the ankle or trouser cuff, and guide the heel toward the glute.',
+    breathing: 'Breathe slowly while keeping the front of the hips relaxed.',
+    cues: ['Knees stay close', 'Hips stay stacked', 'Use mild tension'],
+    avoid: 'Do not yank the foot or let the top knee drift far forward.',
+  ),
+  'Standing calf stretch': ExerciseGuide(
+    motion: ExerciseMotion.calfRaise,
+    setup: 'Face a wall, place hands on it and step one foot behind you.',
+    action:
+        'Keep the back heel down and gently bend the front knee until the back calf feels mild tension.',
+    breathing: 'Use slow, relaxed breaths throughout the hold.',
+    cues: ['Back toes face forward', 'Heel stays heavy', 'Torso stays tall'],
+    avoid: 'Do not bounce or roll the back ankle outward.',
+  ),
 };
 
 const _exerciseDbDemos = <String, ExerciseDemo>{
@@ -486,5 +591,45 @@ const _exerciseDbDemos = <String, ExerciseDemo>{
   'Incline push-up': ExerciseDemo(
     exerciseDbId: 'B1EVP9F',
     sourceName: 'incline push-up',
+  ),
+  'Dynamic chest opener': ExerciseDemo(
+    exerciseDbId: '3uj0Ozg',
+    sourceName: 'dynamic chest stretch',
+  ),
+  'Scapula push-up': ExerciseDemo(
+    exerciseDbId: 'jV65tKx',
+    sourceName: 'scapula push-up',
+  ),
+  'Ankle circles': ExerciseDemo(
+    exerciseDbId: 'uL9CsKm',
+    sourceName: 'ankle circles',
+  ),
+  'Back & forth step': ExerciseDemo(
+    exerciseDbId: 'fNGumX0',
+    sourceName: 'back and forth step',
+  ),
+  'Chest & shoulder stretch': ExerciseDemo(
+    exerciseDbId: 'Uto7l43',
+    sourceName: 'chest and front of shoulder stretch',
+  ),
+  'Kneeling lat stretch': ExerciseDemo(
+    exerciseDbId: 'f38OEuO',
+    sourceName: 'kneeling lat stretch',
+  ),
+  'Triceps stretch': ExerciseDemo(
+    exerciseDbId: 'uOV3Itw',
+    sourceName: 'triceps stretch',
+  ),
+  'Hamstring stretch': ExerciseDemo(
+    exerciseDbId: '99rWm7w',
+    sourceName: 'hamstring stretch',
+  ),
+  'Side-lying quad stretch': ExerciseDemo(
+    exerciseDbId: 'BWnJR72',
+    sourceName: 'lying side quads stretch',
+  ),
+  'Standing calf stretch': ExerciseDemo(
+    exerciseDbId: 'qOKcgVP',
+    sourceName: 'standing calves stretch',
   ),
 };

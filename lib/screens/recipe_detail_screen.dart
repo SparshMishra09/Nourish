@@ -1,21 +1,39 @@
 import 'package:flutter/material.dart';
 
 import '../core/app_theme.dart';
+import '../models/meal_plan.dart';
 import '../models/recipe.dart';
+import '../models/user_profile.dart';
+import '../services/plan_engine.dart';
+import '../widgets/recipe_image.dart';
 import '../widgets/shared_ui.dart';
 
 class RecipeDetailScreen extends StatelessWidget {
-  const RecipeDetailScreen({super.key, required this.recipe});
+  const RecipeDetailScreen({
+    super.key,
+    required this.recipe,
+    required this.profile,
+  });
 
   final Recipe recipe;
+  final UserProfile profile;
 
   @override
   Widget build(BuildContext context) {
+    final engine = const PlanEngine();
+    final servingScale = engine.suggestedServingScale(recipe, profile);
+    final plannedMeal = PlannedMeal(
+      mealType: recipe.mealType,
+      recipe: recipe,
+      servingScale: servingScale,
+      fitReason: engine.recipeFitReason(recipe, profile),
+    );
+
     return Scaffold(
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
-            expandedHeight: 330,
+            expandedHeight: 390,
             pinned: true,
             backgroundColor: AppPalette.ink,
             foregroundColor: Colors.white,
@@ -25,7 +43,7 @@ class RecipeDetailScreen extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
                 icon: const Icon(Icons.arrow_back_rounded),
                 style: IconButton.styleFrom(
-                  backgroundColor: Colors.white.withValues(alpha: 0.16),
+                  backgroundColor: Colors.black.withValues(alpha: 0.38),
                   foregroundColor: Colors.white,
                 ),
               ),
@@ -46,6 +64,11 @@ class RecipeDetailScreen extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _PersonalFitCard(
+                      profile: profile,
+                      plannedMeal: plannedMeal,
+                    ),
+                    const SizedBox(height: 18),
                     Wrap(
                       spacing: 8,
                       runSpacing: 8,
@@ -62,10 +85,15 @@ class RecipeDetailScreen extends StatelessWidget {
                           )
                           .toList(),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 18),
                     Text(recipe.description, style: context.text.bodyLarge),
-                    const SizedBox(height: 24),
+                    const SizedBox(height: 22),
                     _NutritionStrip(recipe: recipe),
+                    const SizedBox(height: 7),
+                    const Text(
+                      'Nutrition shown per standard serving.',
+                      style: TextStyle(color: AppPalette.muted, fontSize: 11),
+                    ),
                     if (recipe.allergens.isNotEmpty) ...[
                       const SizedBox(height: 16),
                       Container(
@@ -93,11 +121,11 @@ class RecipeDetailScreen extends StatelessWidget {
                     const SizedBox(height: 30),
                     const SectionHeader(
                       title: 'Ingredients',
-                      subtitle: 'For one balanced serving',
+                      subtitle: 'Measured for one standard serving',
                     ),
                     const SizedBox(height: 14),
-                    ...recipe.ingredients.asMap().entries.map(
-                      (entry) => Padding(
+                    ...recipe.ingredients.map(
+                      (ingredient) => Padding(
                         padding: const EdgeInsets.only(bottom: 11),
                         child: Row(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -117,7 +145,7 @@ class RecipeDetailScreen extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 2),
                                 child: Text(
-                                  entry.value,
+                                  ingredient,
                                   style: context.text.bodyMedium,
                                 ),
                               ),
@@ -129,7 +157,7 @@ class RecipeDetailScreen extends StatelessWidget {
                     const SizedBox(height: 22),
                     const SectionHeader(
                       title: 'Make it',
-                      subtitle: 'Simple steps, no guesswork',
+                      subtitle: 'Step-by-step, with no guesswork',
                     ),
                     const SizedBox(height: 14),
                     ...recipe.steps.asMap().entries.map(
@@ -157,84 +185,140 @@ class RecipeDetailScreen extends StatelessWidget {
 
 class _RecipeHero extends StatelessWidget {
   const _RecipeHero({required this.recipe});
+
   final Recipe recipe;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(24, 90, 24, 44),
-      decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [Color(0xFF1B2824), AppPalette.ink],
-        ),
-      ),
-      child: Stack(
-        children: [
-          Positioned(
-            right: -28,
-            top: -25,
-            child: Container(
-              width: 180,
-              height: 180,
-              decoration: BoxDecoration(
-                color: AppPalette.lime.withValues(alpha: 0.08),
-                shape: BoxShape.circle,
-              ),
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        RecipeImage(recipe: recipe),
+        const DecoratedBox(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [Color(0x18000000), Color(0xE8000F0C)],
+              stops: [0.30, 1],
             ),
           ),
-          Align(
-            alignment: Alignment.bottomLeft,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Expanded(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        recipe.mealType.toUpperCase(),
-                        style: const TextStyle(
-                          color: AppPalette.lime,
-                          letterSpacing: 1.7,
-                          fontSize: 11,
-                          fontWeight: FontWeight.w800,
-                        ),
-                      ),
-                      const SizedBox(height: 10),
-                      Text(
-                        recipe.name,
-                        style: context.text.displayMedium?.copyWith(
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      Text(
-                        '${recipe.prepMinutes} min  ·  ${recipe.servings} serving',
-                        style: TextStyle(
-                          color: Colors.white.withValues(alpha: 0.56),
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                    ],
-                  ),
+        ),
+        Positioned(
+          left: 24,
+          right: 24,
+          bottom: 47,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                recipe.mealType.toUpperCase(),
+                style: const TextStyle(
+                  color: AppPalette.lime,
+                  letterSpacing: 1.7,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w800,
                 ),
-                Container(
-                  width: 92,
-                  height: 92,
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(28),
-                    border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.12),
+              ),
+              const SizedBox(height: 9),
+              Text(
+                recipe.name,
+                style: context.text.displayMedium?.copyWith(
+                  color: Colors.white,
+                  shadows: const [Shadow(blurRadius: 10)],
+                ),
+              ),
+              const SizedBox(height: 11),
+              Row(
+                children: [
+                  const Icon(
+                    Icons.schedule_rounded,
+                    size: 16,
+                    color: Colors.white70,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    '${recipe.prepMinutes} min',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                  child: Text(
-                    recipe.emoji,
-                    style: const TextStyle(fontSize: 52),
+                  const SizedBox(width: 16),
+                  const Icon(
+                    Icons.restaurant_rounded,
+                    size: 16,
+                    color: Colors.white70,
+                  ),
+                  const SizedBox(width: 5),
+                  Text(
+                    '${recipe.servings} serving',
+                    style: const TextStyle(
+                      color: Colors.white70,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class _PersonalFitCard extends StatelessWidget {
+  const _PersonalFitCard({required this.profile, required this.plannedMeal});
+
+  final UserProfile profile;
+  final PlannedMeal plannedMeal;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppPalette.lime.withValues(alpha: 0.2),
+        borderRadius: BorderRadius.circular(21),
+        border: Border.all(color: AppPalette.lime.withValues(alpha: 0.44)),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            width: 42,
+            height: 42,
+            decoration: const BoxDecoration(
+              color: AppPalette.lime,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(Icons.auto_awesome_rounded, size: 20),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Why it fits ${profile.goal.toLowerCase()}',
+                  style: context.text.titleMedium,
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  plannedMeal.fitReason,
+                  style: const TextStyle(
+                    color: AppPalette.muted,
+                    fontSize: 12,
+                    height: 1.35,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'Suggested: ${plannedMeal.portionLabel} · ${plannedMeal.calories} kcal · ${plannedMeal.protein}g protein',
+                  style: const TextStyle(
+                    fontWeight: FontWeight.w800,
+                    fontSize: 11.5,
                   ),
                 ),
               ],
@@ -248,24 +332,40 @@ class _RecipeHero extends StatelessWidget {
 
 class _NutritionStrip extends StatelessWidget {
   const _NutritionStrip({required this.recipe});
+
   final Recipe recipe;
 
   @override
   Widget build(BuildContext context) {
+    final items = [
+      ('${recipe.calories}', 'kcal'),
+      ('${recipe.protein}g', 'protein'),
+      ('${recipe.carbs}g', 'carbs'),
+      ('${recipe.fat}g', 'fat'),
+      ('${recipe.fiber}g', 'fibre'),
+    ];
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 17, horizontal: 8),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 8),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: AppPalette.line),
       ),
-      child: Row(
-        children: [
-          _NutritionItem(value: '${recipe.calories}', label: 'kcal'),
-          _NutritionItem(value: '${recipe.protein}g', label: 'protein'),
-          _NutritionItem(value: '${recipe.carbs}g', label: 'carbs'),
-          _NutritionItem(value: '${recipe.fat}g', label: 'fat'),
-        ],
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final itemWidth = constraints.maxWidth / 3;
+          return Wrap(
+            runSpacing: 14,
+            children: items
+                .map(
+                  (item) => SizedBox(
+                    width: itemWidth,
+                    child: _NutritionItem(value: item.$1, label: item.$2),
+                  ),
+                )
+                .toList(),
+          );
+        },
       ),
     );
   }
@@ -273,31 +373,31 @@ class _NutritionStrip extends StatelessWidget {
 
 class _NutritionItem extends StatelessWidget {
   const _NutritionItem({required this.value, required this.label});
+
   final String value;
   final String label;
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: Column(
-        children: [
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
-          ),
-          const SizedBox(height: 2),
-          Text(
-            label,
-            style: const TextStyle(color: AppPalette.muted, fontSize: 11),
-          ),
-        ],
-      ),
+    return Column(
+      children: [
+        Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+        ),
+        const SizedBox(height: 2),
+        Text(
+          label,
+          style: const TextStyle(color: AppPalette.muted, fontSize: 11),
+        ),
+      ],
     );
   }
 }
 
 class _StepCard extends StatelessWidget {
   const _StepCard({required this.number, required this.text});
+
   final int number;
   final String text;
 

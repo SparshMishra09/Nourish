@@ -6,6 +6,7 @@ import '../models/food_analysis.dart';
 import '../models/recipe.dart';
 import '../models/user_profile.dart';
 import '../models/workout.dart';
+import '../services/plan_engine.dart';
 import '../widgets/metric_ring.dart';
 import '../widgets/recipe_card.dart';
 import '../widgets/shared_ui.dart';
@@ -49,6 +50,7 @@ class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final today = workoutPlan.nextWorkout(DateTime.now());
+    final mealPlan = const PlanEngine().buildDailyMealPlan(recipes, profile);
     return CustomScrollView(
       key: const PageStorageKey('dashboard'),
       slivers: [
@@ -166,8 +168,10 @@ class DashboardScreen extends StatelessWidget {
           padding: const EdgeInsets.fromLTRB(20, 30, 20, 15),
           sliver: SliverToBoxAdapter(
             child: SectionHeader(
-              title: 'Picked for you',
-              subtitle: '${profile.dietType} · ${profile.goal}',
+              title: 'Today’s meal map',
+              subtitle: mealPlan.isComplete
+                  ? '${mealPlan.plannedCalories} kcal · ${mealPlan.plannedProtein}g protein planned'
+                  : '${profile.dietType} · ${profile.goal}',
               actionLabel: 'See all',
               onAction: onNutritionTap,
             ),
@@ -175,19 +179,29 @@ class DashboardScreen extends StatelessWidget {
         ),
         SliverToBoxAdapter(
           child: SizedBox(
-            height: 262,
-            child: recipes.isEmpty
-                ? const Center(child: Text('No matching recipes yet.'))
+            height: 350,
+            child: mealPlan.meals.isEmpty
+                ? const Center(
+                    child: Text(
+                      'No matching meals yet. Try adjusting your food preferences.',
+                      textAlign: TextAlign.center,
+                    ),
+                  )
                 : ListView.separated(
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     scrollDirection: Axis.horizontal,
-                    itemCount: recipes.take(5).length,
+                    itemCount: mealPlan.meals.length,
                     separatorBuilder: (_, _) => const SizedBox(width: 14),
-                    itemBuilder: (context, index) => RecipeCard(
-                      recipe: recipes[index],
-                      compact: true,
-                      onTap: () => onRecipeTap(recipes[index]),
-                    ),
+                    itemBuilder: (context, index) {
+                      final meal = mealPlan.meals[index];
+                      return RecipeCard(
+                        recipe: meal.recipe,
+                        compact: true,
+                        fitLabel: meal.fitReason,
+                        portionLabel: meal.portionLabel,
+                        onTap: () => onRecipeTap(meal.recipe),
+                      );
+                    },
                   ),
           ),
         ),
