@@ -47,11 +47,11 @@ The experience is designed around a simple loop:
 <p align="center">
   <img src="docs/screenshots/product/03-today.png" alt="Nourish personalized Today dashboard" width="30%" />
   &nbsp;
-  <img src="docs/screenshots/product/06-meals.png" alt="Nourish personalized recipe recommendations" width="30%" />
-  &nbsp;
   <img src="docs/screenshots/product/09-workout-plan.png" alt="Nourish personalized workout plan" width="30%" />
+  &nbsp;
+  <img src="docs/screenshots/product/11-profile.png" alt="Nourish personalized profile and targets" width="30%" />
 </p>
-<p align="center"><sub>Real screenshots captured from the Android release build.</sub></p>
+<p align="center"><sub>Current Android experience · daily guidance · personalized training · private progress</sub></p>
 
 ## Download and install
 
@@ -140,13 +140,9 @@ Workout reminders support:
 Recipes are ranked for the user's goal and diet. Every recipe opens into a complete cooking view with time, servings, dietary tags, estimated nutrition, allergens, ingredients, and step-by-step preparation.
 
 <p align="center">
-  <img src="docs/screenshots/product/06-meals.png" alt="Goal-aware Nourish meals screen" width="30%" />
-  &nbsp;
-  <img src="docs/screenshots/product/07-recipe-detail.png" alt="Detailed Nourish recipe screen" width="30%" />
-  &nbsp;
-  <img src="docs/screenshots/product/08-ai-food-scan.png" alt="Nourish AI meal scanner" width="30%" />
+  <img src="docs/screenshots/product/06-meals.png" alt="Latest Nourish meals, detailed recipe, and AI food scanner screens" width="92%" />
 </p>
-<p align="center"><sub>Goal-aware discovery · full recipes · camera and gallery meal scanning</sub></p>
+<p align="center"><sub>Latest meal experience · goal-aware discovery · full recipes · camera and gallery scanning</sub></p>
 
 The AI meal scanner is built around what the user actually ate—not what they planned to eat. A clear meal photo can be analysed into:
 
