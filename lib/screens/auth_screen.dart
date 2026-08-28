@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/app_theme.dart';
 import '../services/auth_service.dart';
 import '../widgets/brand_mark.dart';
+import '../widgets/google_auth_button.dart';
 import '../widgets/shared_ui.dart';
 
 class AuthScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isSignUp = false;
   bool _obscurePassword = true;
   bool _loading = false;
+  bool _googleLoading = false;
 
   @override
   void dispose() {
@@ -55,13 +57,21 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   Future<void> _googleSignIn() async {
-    setState(() => _loading = true);
+    setState(() {
+      _loading = true;
+      _googleLoading = true;
+    });
     try {
       await widget.authService.signInWithGoogle();
     } catch (error) {
       if (mounted) showAppMessage(context, AuthService.friendlyError(error));
     } finally {
-      if (mounted) setState(() => _loading = false);
+      if (mounted) {
+        setState(() {
+          _loading = false;
+          _googleLoading = false;
+        });
+      }
     }
   }
 
@@ -270,7 +280,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                     FilledButton(
                                       key: const ValueKey('authSubmit'),
                                       onPressed: _loading ? null : _submit,
-                                      child: _loading
+                                      child: _loading && !_googleLoading
                                           ? const SizedBox.square(
                                               dimension: 21,
                                               child: CircularProgressIndicator(
@@ -293,7 +303,7 @@ class _AuthScreenState extends State<AuthScreen> {
                                             horizontal: 12,
                                           ),
                                           child: Text(
-                                            'OR',
+                                            'OR CONTINUE WITH',
                                             style: TextStyle(
                                               color: AppPalette.muted
                                                   .withValues(alpha: 0.7),
@@ -306,40 +316,12 @@ class _AuthScreenState extends State<AuthScreen> {
                                       ],
                                     ),
                                     const SizedBox(height: 18),
-                                    OutlinedButton.icon(
-                                      key: const ValueKey('googleSignIn'),
+                                    GoogleAuthButton(
                                       onPressed: _loading
                                           ? null
                                           : _googleSignIn,
-                                      icon: Container(
-                                        width: 24,
-                                        height: 24,
-                                        alignment: Alignment.center,
-                                        decoration: const BoxDecoration(
-                                          color: Colors.white,
-                                          shape: BoxShape.circle,
-                                        ),
-                                        child: const Text(
-                                          'G',
-                                          style: TextStyle(
-                                            color: Color(0xFF4285F4),
-                                            fontWeight: FontWeight.w900,
-                                          ),
-                                        ),
-                                      ),
-                                      label: const Text('Continue with Google'),
-                                      style: OutlinedButton.styleFrom(
-                                        foregroundColor: AppPalette.ink,
-                                        minimumSize: const Size.fromHeight(54),
-                                        side: const BorderSide(
-                                          color: AppPalette.line,
-                                        ),
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(
-                                            18,
-                                          ),
-                                        ),
-                                      ),
+                                      isSignUp: _isSignUp,
+                                      isLoading: _googleLoading,
                                     ),
                                   ],
                                 ),

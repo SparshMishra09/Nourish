@@ -11,12 +11,12 @@
     <img src="https://img.shields.io/badge/Flutter-3.x-54C5F8?logo=flutter&logoColor=white" alt="Flutter" />
     <img src="https://img.shields.io/badge/Android-7.0%2B-3DDC84?logo=android&logoColor=white" alt="Android 7.0+" />
     <img src="https://img.shields.io/badge/Firebase-powered-FFCA28?logo=firebase&logoColor=black" alt="Firebase" />
-    <img src="https://img.shields.io/badge/release-v1.11.0-A8F20D" alt="Release v1.11.0" />
-    <img src="https://img.shields.io/badge/tests-48%20passing-05B875" alt="48 tests passing" />
+    <img src="https://img.shields.io/badge/release-v1.11.1-A8F20D" alt="Release v1.11.1" />
+    <img src="https://img.shields.io/badge/tests-49%20passing-05B875" alt="49 tests passing" />
   </p>
 
   <p>
-    <a href="https://github.com/SparshMishra09/Nourish/releases/download/v1.11.0/Nourish-Android-v1.11.0.apk">
+    <a href="https://github.com/SparshMishra09/Nourish/releases/download/v1.11.1/Nourish-Android-v1.11.1.apk">
       <img src="https://img.shields.io/badge/Download_Nourish-Android_APK-A8F20D?style=for-the-badge&logo=android&logoColor=101B17" alt="Download Nourish Android APK" />
     </a>
   </p>
@@ -59,13 +59,13 @@ The experience is designed around a simple loop:
 
 | Release | APK | Android support | Package |
 |---|---|---|---|
-| **Nourish v1.11.0** (`versionCode 16`) | [`Nourish-Android-v1.11.0.apk`](https://github.com/SparshMishra09/Nourish/releases/download/v1.11.0/Nourish-Android-v1.11.0.apk) | Android 7.0 / API 24 or newer | `com.rohitproject.rohit_fit_ai` |
+| **Nourish v1.11.1** (`versionCode 17`) | [`Nourish-Android-v1.11.1.apk`](https://github.com/SparshMishra09/Nourish/releases/download/v1.11.1/Nourish-Android-v1.11.1.apk) | Android 7.0 / API 24 or newer | `com.rohitproject.rohit_fit_ai` |
 
-You can also use the [Cortex organization release mirror](https://github.com/Cortex-org-in/Nourish/releases/download/v1.11.0/Nourish-Android-v1.11.0.apk).
+You can also use the [Cortex organization release mirror](https://github.com/Cortex-org-in/Nourish/releases/download/v1.11.1/Nourish-Android-v1.11.1.apk).
 
 To install the APK directly:
 
-1. Download **`Nourish-Android-v1.11.0.apk`** from the button above.
+1. Download **`Nourish-Android-v1.11.1.apk`** from the button above.
 2. Open the file on the Android device.
 3. If Android asks, allow installation from the browser or file manager used to open it.
 4. Install Nourish, open it, and grant camera/notification permissions only when the relevant feature needs them.
@@ -73,8 +73,9 @@ To install the APK directly:
 > [!NOTE]
 > This repository provides a release-mode APK for direct testing. Because it is installed outside Google Play, Nourish uses its sideload-safe Firebase configuration. A Play-distributed build can enable Play Integrity App Check explicitly.
 
-## What is new in v1.11.0
+## What is new in v1.11.1
 
+- **A first-class Google sign-in experience** — the authentication card now uses Google's official full-colour mark, current neutral button colours, clearer sign-in/sign-up wording, polished spacing, accessible semantics, and a dedicated connection state without changing the proven Firebase flow.
 - **Verified packaged-food scanning** — barcode and strict product matching now progress through Open Food Facts, grounded Google Search, and a source-visible public product-page fallback. Nourish uses a complete nutrition panel when available and never silently replaces a scan with a vaguely similar product.
 - **Evidence before logging** — packaged scans show the matched serving, exact-product confidence, source notes, and clickable product pages before anything is added to Today.
 - **A scanner that explains its work** — a polished scan-line animation moves through package reading, product matching, live-source verification, and review preparation while protecting the selected photo from accidental replacement.
@@ -377,12 +378,13 @@ The automated suite covers the product logic and the most failure-prone UI contr
 - staged scanner-animation rendering and progress messaging;
 - complete 100-recipe catalog integrity, photography, and meal-plan coverage;
 - workout-specific optional warm-up and cooldown construction.
+- Google authentication button wording, interaction, disabled state, and connection-state rendering.
 
 Before packaging the current release:
 
 ```text
 flutter analyze  → no issues
-flutter test     → 48 tests passed
+flutter test     → 49 tests passed
 Android QA       → auth, onboarding, live data, water, reminders, meals,
                    recipes, scan, workouts, demos, profile, heatmap,
                    completion celebration, web-label evidence, scanner animation,
@@ -400,15 +402,15 @@ Android QA       → auth, onboarding, live data, water, reminders, meals,
 
 ## Release information
 
-**Current release:** `v1.11.0`<br />
-**APK name:** `Nourish-Android-v1.11.0.apk`<br />
-**Build:** `1.11.0+16`<br />
-**SHA-256:** `441C6D015689C59775973B70C0367030CCEE53E197F43ACA9BC6F6CCB4C9DC5A`
+**Current release:** `v1.11.1`<br />
+**APK name:** `Nourish-Android-v1.11.1.apk`<br />
+**Build:** `1.11.1+17`<br />
+**SHA-256:** `059B95B8E7A8A37AFDC26A60DB5F53AA6953498B36AB7AA23FCDBE407A630011`
 
 Release downloads:
 
-- [Primary GitHub release](https://github.com/SparshMishra09/Nourish/releases/tag/v1.11.0)
-- [Cortex organization mirror](https://github.com/Cortex-org-in/Nourish/releases/tag/v1.11.0)
+- [Primary GitHub release](https://github.com/SparshMishra09/Nourish/releases/tag/v1.11.1)
+- [Cortex organization mirror](https://github.com/Cortex-org-in/Nourish/releases/tag/v1.11.1)
 
 ## Contributing
 
