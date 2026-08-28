@@ -88,6 +88,8 @@ The release was tested on Android with a front-only photo of a True Elements Cho
 
 ## Product tour
 
+Every screen below was freshly captured from the current Nourish `v1.11.1` Android build running in the emulator.
+
 ### 1. Start securely, then personalize
 
 Users can sign in with email/password or Google. New accounts move into a four-part onboarding experience that gathers only the information needed to shape nutrition and workouts.
@@ -140,9 +142,13 @@ Workout reminders support:
 Recipes are ranked for the user's goal and diet. Every recipe opens into a complete cooking view with time, servings, dietary tags, estimated nutrition, allergens, ingredients, and step-by-step preparation.
 
 <p align="center">
-  <img src="docs/screenshots/product/06-meals.png" alt="Latest Nourish meals, detailed recipe, and AI food scanner screens" width="92%" />
+  <img src="docs/screenshots/product/06-meals.png" alt="Goal-aware Nourish meal planner with food photography" width="30%" />
+  &nbsp;
+  <img src="docs/screenshots/product/07-recipe-detail.png" alt="Complete Nourish recipe with nutrition and serving guidance" width="30%" />
+  &nbsp;
+  <img src="docs/screenshots/product/08-ai-food-scan.png" alt="Nourish AI food and package scanner" width="30%" />
 </p>
-<p align="center"><sub>Latest meal experience · goal-aware discovery · full recipes · camera and gallery scanning</sub></p>
+<p align="center"><sub>80 goal-aware recipes · real food photography · full recipe details · camera and gallery scanning</sub></p>
 
 The AI meal scanner is built around what the user actually ate—not what they planned to eat. A clear meal photo can be analysed into:
 
@@ -186,13 +192,11 @@ Every generated exercise opens a professional ExerciseDB demonstration plus Nour
 Nourish considers the daily plan complete when energy is within a practical range and protein, fibre, hydration, and planned movement are ready. That moment receives a one-time in-app celebration and becomes a highlighted day in the yearly consistency view.
 
 <p align="center">
-  <img src="docs/screenshots/product/11-profile.png" alt="Nourish profile and plan summary" width="30%" />
-  &nbsp;
-  <img src="docs/screenshots/product/12-yearly-progress.png" alt="Nourish yearly consistency heatmap" width="30%" />
-  &nbsp;
-  <img src="docs/screenshots/product/13-goal-celebration.png" alt="Nourish daily-plan completion celebration" width="30%" />
+  <img src="docs/screenshots/product/11-profile.png" alt="Nourish profile and plan summary" width="42%" />
+  &nbsp;&nbsp;
+  <img src="docs/screenshots/product/12-yearly-progress.png" alt="Nourish yearly consistency heatmap" width="42%" />
 </p>
-<p align="center"><sub>Editable plan · private yearly history · a clear moment of progress</sub></p>
+<p align="center"><sub>Editable plan · personalized targets · private yearly history</sub></p>
 
 ## What Nourish does
 
